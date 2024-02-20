@@ -26,6 +26,36 @@ model Account {
     @@unique([provider, providerAccountId])
 }
 
+model User {
+    id                    String                 @id @default(cuid())
+    name                  String?
+    username              String?                @unique
+    email                 String?                @unique
+    emailVerified         DateTime?              @map("email_verified")
+    image                 String?
+    description           String?
+    password              String?                @db.Text
+    role                  role                   @default(user)
+    from                  String?
+    createdAt             DateTime               @default(now()) @map("created_at")
+    updatedAt             DateTime               @updatedAt @map("updated_at")
+    isTwoFactorEnabled    Boolean                @default(false)
+    twoFactorConfirmation TwoFactorConfirmation?
+    languages             Language[]
+    skills                Skill[]
+    education             Education[]
+    accounts              Account[]
+    sessions              Session[]
+    certifications        Certification[]
+    messages              Message[]
+    attachements          Attachement[]
+    conversations         Conversation[]         @relation("UserConversation")
+    Gig                   Gig[]
+    Review                Review[]
+
+    @@map("users")
+}
+
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique @map("session_token")
@@ -35,11 +65,40 @@ model Session {
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
 
-    @@unique([identifier, token])
+  @@unique([email, token])
+}
+
+
+model PasswordResetToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id String @id @default(cuid())
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
 }
 
 enum role {
@@ -102,35 +161,6 @@ model Skill {
     userId    String?  @map("user_id")
 
     @@map("skills")
-}
-
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    username      String?   @unique
-    email         String?   @unique
-    emailVerified DateTime? @map("email_verified")
-    image         String?
-    description   String?
-    password      String?   @db.Text
-    role          role      @default(user)
-    from          String?
-    createdAt     DateTime  @default(now()) @map("created_at")
-    updatedAt     DateTime  @updatedAt @map("updated_at")
-
-    languages      Language[]
-    skills         Skill[]
-    education      Education[]
-    accounts       Account[]
-    sessions       Session[]
-    certifications Certification[]
-    messages       Message[]
-    attachements   Attachement[]
-    conversations  Conversation[]  @relation("UserConversation")
-    Gig            Gig[]
-    Review         Review[]
-
-    @@map("users")
 }
 
 model Message {
