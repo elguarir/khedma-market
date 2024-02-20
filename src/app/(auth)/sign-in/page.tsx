@@ -26,11 +26,11 @@ export default function LoginPage() {
           Back
         </>
       </Link>
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[450px]">
         <div className="flex items-center gap-3">
           <img src="/dark/logo-dark.png" className="h-8" alt="" />
         </div>
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1">
           {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
           <h1 className="text-2xl font-semibold tracking-tight">
             Sign in to your account
