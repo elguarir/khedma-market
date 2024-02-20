@@ -9,6 +9,8 @@ import GithubProvider from "next-auth/providers/github";
 import { env } from "@/env";
 import { db } from "@/server/db";
 import { role } from "@prisma/client";
+import Credentials from "next-auth/providers/credentials";
+import { LoginSchema } from "@/schemas";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -47,7 +49,32 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
     }),
+    // Credentials({
+    //   async authorize(credentials) {
+    //     const validatedFields = LoginSchema.safeParse(credentials);
+
+    //     if (validatedFields.success) {
+    //       const { email, password } = validatedFields.data;
+          
+    //       const user = await getUserByEmail(email);
+    //       if (!user || !user.password) return null;
+
+    //       const passwordsMatch = await bcrypt.compare(
+    //         password,
+    //         user.password,
+    //       );
+
+    //       if (passwordsMatch) return user;
+    //     }
+
+    //     return null;
+    //   }
+    // }),
   ],
+  pages: {
+    signIn: "/sign-in",
+    error: "/auth/error",
+  },
 };
 
 export const getServerAuthSession = () => getServerSession(authOptions);
