@@ -16,26 +16,31 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
-const formSchema = z.object({
-  fullName: z.string().min(1, {
-    message: "Required.",
-  }),
-  username: z.string().min(1, {
-    message: "Required.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters long.",
-  }),
-});
+import { useEffect, useState, useTransition } from "react";
+import { register } from "@/actions/signup";
+import { RegisterSchema } from "@/schemas";
+import Callout from "../ui/callout";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
 
 export function SignUpForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
+  let schema = RegisterSchema.pick({
+    username: true,
+    email: true,
+    password: true,
+  }).extend({
+    firstName: z.string().min(1, { message: "First name is required" }),
+    lastName: z.string().min(1, { message: "Last name is required" }),
+  });
+  const router = useRouter();
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
       username: "",
       email: "",
       password: "",
@@ -43,29 +48,71 @@ export function SignUpForm() {
     mode: "onSubmit",
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof schema>) {
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      register({
+        email: values.email,
+        password: values.password,
+        name: `${values.firstName} ${values.lastName}`,
+        username: values.username,
+      }).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+        if (data.success)
+          form.reset({
+            username: "",
+            email: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+          });
+        router.push("/auth/sign-up?success=true");
+      });
+    });
   }
+
+  useEffect(() => {
+    console.log("error", error);
+    console.log("success", success);
+  }, [error, success]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-2 gap-3">
-          <FormField
-            control={form.control}
-            name="fullName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John Doe" {...field} />
-                </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <fieldset className="w-full space-y-4" disabled={isPending}>
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John" {...field} />
+                  </FormControl>
+                  <FormDescription></FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Doe" {...field} />
+                  </FormControl>
+                  <FormDescription></FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="username"
@@ -80,46 +127,59 @@ export function SignUpForm() {
               </FormItem>
             )}
           />
-        </div>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="johndoe@example.com"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription></FormDescription>
-              <FormMessage />
-            </FormItem>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="johndoe@example.com"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="••••••••" {...field} />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {error && (
+            <div className="flex items-center pb-3 ">
+              <Callout showCloseButton variant={"danger"}>
+                <ExclamationTriangleIcon className="h-4 w-4" />
+                <p>{error}</p>
+              </Callout>
+            </div>
           )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
-              </FormControl>
-              <FormDescription></FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button className="w-full" type="submit">
-          Create account
-        </Button>
+          <Button
+            isLoading={isPending}
+            loadingText="Creating account..."
+            className="w-full"
+            type="submit"
+          >
+            Create account
+          </Button>
+        </fieldset>
       </form>
-      <p className="text-sm !mt-3 font-[450] text-muted-foreground">
+      <p className="!mt-3 text-sm font-[450] text-muted-foreground">
         Already have an account?{" "}
-        <Link href="/sign-in" className="text-primary hover:underline">
+        <Link href="/auth/sign-in" className="text-primary hover:underline">
           Sign in
         </Link>
       </p>

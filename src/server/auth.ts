@@ -86,9 +86,7 @@ export const authOptions: NextAuthOptions = {
       if (!token.sub) return token;
 
       const existingUser = await getUserById(token.sub);
-
       if (!existingUser) return token;
-
       const existingAccount = await getAccountByUserId(existingUser.id);
 
       token.name = existingUser.name;

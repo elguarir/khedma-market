@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { TRPCReactProvider } from "@/trpc/react";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata = {
   title: "Khedma market",
@@ -16,9 +17,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${GeistSans.className} ${GeistMono.variable}`}>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+          >
+            {children}
+          </ThemeProvider>
+        </TRPCReactProvider>
       </body>
     </html>
   );

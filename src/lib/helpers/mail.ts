@@ -28,10 +28,11 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
 export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
-  await resend.emails.send({
+  let emailSent = await resend.emails.send({
     from: env.FROM_EMAIL,
     to: email,
     subject: "Confirm your email",
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
   });
+  console.log("emailSent", emailSent);
 };
