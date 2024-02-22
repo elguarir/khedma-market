@@ -1,6 +1,6 @@
 # Khedma Market
 
-![Khedma Market Logo](https://www.khedma.market/dark/logo-dark.png)
+![Khedma Market Logo](https://www.khedma.market/dark/logo-dark.png =100x20)
 
 > A freelancing platform for Moroccan people, offering a local alternative to international platforms like Fiverr and Upwork.
 
