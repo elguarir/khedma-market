@@ -1,8 +1,8 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import AuthError from "next-auth";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,10 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
-import { login } from "@/actions/signin";
+import { preCheck } from "@/actions/pre-signin";
+import Callout from "../ui/callout";
+import { signIn } from "next-auth/react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/lib/constants/routes";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -53,16 +56,14 @@ export function SignInForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("values", values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setError("");
     setSuccess("");
-    startTransition(() => {
-      login(values, callbackUrl)
-        .then((data) => {
-          console.log("data", data)
+    startTransition(async () => {
+      preCheck(values)
+        .then(async (data) => {
+          console.log("data", data);
           if (data?.error) {
-            form.reset();
             setError(data.error);
           }
 
@@ -73,6 +74,23 @@ export function SignInForm() {
 
           if (data?.twoFactor) {
             setShowTwoFactor(true);
+          }
+
+          if (data?.signin) {
+            let res = await signIn("credentials", {
+              email: values.email,
+              password: values.password,
+              redirect: false,
+              redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+            });
+            console.log("res", res);
+            if (!res?.ok) {
+              if (res?.error === "CredentialsSignin")
+                setError("The credentials you provided are incorrect.");
+              else {
+                setError("Something went wrong.");
+              }
+            }
           }
         })
         .catch(() => setError("Something went wrong"));
@@ -93,7 +111,15 @@ export function SignInForm() {
           </svg>
           Google
         </Button>
-        <Button variant={"outline"} className="text-sm">
+        <Button
+          onClick={() => {
+            signIn("github", {
+              callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+            });
+          }}
+          variant={"outline"}
+          className="text-sm"
+        >
           <svg
             fill="currentColor"
             viewBox="0 0 24 24"
@@ -165,7 +191,12 @@ export function SignInForm() {
               />
             </>
           )}
-
+          <div className="py-1">
+            {(error || urlError) && (
+              <Callout variant="danger">{error || urlError}</Callout>
+            )}
+            {success && <Callout variant="success">{success}</Callout>}
+          </div>
           <Button
             isLoading={isPending}
             loadingText={showTwoFactor ? "Confirming..." : "Signing in..."}
@@ -175,6 +206,7 @@ export function SignInForm() {
             {showTwoFactor ? "Confirm" : "Sign in"}
           </Button>
         </form>
+
         <p className="!mt-3 text-sm font-[450] text-muted-foreground">
           Forgot your password?{" "}
           <Link href="/reset-password" className="text-primary hover:underline">

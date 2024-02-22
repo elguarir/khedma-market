@@ -16,22 +16,6 @@ import { getAccountByUserId } from "@/lib/helpers/account";
 import { getTwoFactorConfirmationByUserId } from "@/lib/helpers/two-factor-confirmation";
 import NextAuth from "next-auth/next";
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
-// declare module "next-auth" {
-//   interface Session extends DefaultSession {
-//     user: {
-//       id: string;
-//       // ...other properties
-//       role: role;
-//     } & DefaultSession["user"];
-//   }
-// }
-
 export type ExtendedUser = DefaultSession["user"] & {
   id: string;
   role: role;
@@ -53,13 +37,6 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    // session: ({ session, user }) => ({
-    //   ...session,
-    //   user: {
-    //     ...session.user,
-    //     id: user.id,
-    //   },
-    // }),
     async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
@@ -88,7 +65,6 @@ export const authOptions: NextAuthOptions = {
       const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;
       const existingAccount = await getAccountByUserId(existingUser.id);
-
       token.name = existingUser.name;
       token.username = existingUser.username;
       token.email = existingUser.email;
@@ -131,6 +107,7 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
     Credentials({
       // @ts-ignore
@@ -163,10 +140,11 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/sign-in",
     error: "/auth/error",
   },
+  debug: process.env.NODE_ENV === "development",
 };
 
 export const getServerAuthSession = () => getServerSession(authOptions);
 
-export const { auth, signIn, signOut, update } = NextAuth({
+export const { auth, signin, signOut, update } = NextAuth({
   ...authOptions,
 });
