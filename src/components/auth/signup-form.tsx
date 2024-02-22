@@ -25,7 +25,6 @@ import { useRouter } from "next/navigation";
 
 export function SignUpForm() {
   const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   let schema = RegisterSchema.pick({
     username: true,
@@ -50,7 +49,6 @@ export function SignUpForm() {
 
   async function onSubmit(values: z.infer<typeof schema>) {
     setError("");
-    setSuccess("");
 
     startTransition(() => {
       register({
@@ -60,8 +58,7 @@ export function SignUpForm() {
         username: values.username,
       }).then((data) => {
         setError(data.error);
-        setSuccess(data.success);
-        if (data.success)
+        if (data.success) {
           form.reset({
             username: "",
             email: "",
@@ -69,15 +66,11 @@ export function SignUpForm() {
             firstName: "",
             lastName: "",
           });
-        router.push("/auth/sign-up?success=true");
+          router.push("/auth/sign-up?success=true");
+        }
       });
     });
   }
-
-  useEffect(() => {
-    console.log("error", error);
-    console.log("success", success);
-  }, [error, success]);
 
   return (
     <Form {...form}>

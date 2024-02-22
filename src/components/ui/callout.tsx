@@ -40,7 +40,7 @@ const Callout = ({
   let [visible, setVisible] = useState(true);
   if (!visible) return null;
   return (
-    <div className={cn(callOutVariants({ variant, className }))}>
+    <div className={cn(callOutVariants({ variant }), className)}>
       {children}
       {showCloseButton && (
         <Button

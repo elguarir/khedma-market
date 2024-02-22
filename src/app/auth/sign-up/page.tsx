@@ -38,7 +38,7 @@ const SignUpPage = (props: Props) => {
                     Check your email
                   </h2>
                   <p className="text-balance text-center text-muted-foreground">
-                    We just sent a verification link to your email address.
+                    We've sent you an email with a link to verify your account.
                   </p>
                 </div>
                 <Button asChild>
@@ -61,26 +61,25 @@ const SignUpPage = (props: Props) => {
                 </p>
               </div>
               <SignUpForm />
+
+              <p className="px-8 text-center text-sm text-muted-foreground">
+                By clicking continue, you agree to our{" "}
+                <Link
+                  href="/terms"
+                  className="hover:text-brand underline underline-offset-4"
+                >
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="hover:text-brand underline underline-offset-4"
+                >
+                  Privacy Policy
+                </Link>
+                .
+              </p>
             </>
-          )}
-          {!success && (
-            <p className="px-8 text-center text-sm text-muted-foreground">
-              By clicking continue, you agree to our{" "}
-              <Link
-                href="/terms"
-                className="hover:text-brand underline underline-offset-4"
-              >
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/privacy"
-                className="hover:text-brand underline underline-offset-4"
-              >
-                Privacy Policy
-              </Link>
-              .
-            </p>
           )}
         </div>
       </div>

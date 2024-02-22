@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 
 import { db } from "@/server/db";
-import { getVerificationTokenByEmail } from "./verificiation-token";
+import { getVerificationTokenByEmail } from "./verification-token";
 import { getPasswordResetTokenByEmail } from "./password-reset-token";
 import { getTwoFactorTokenByEmail } from "./two-factor-token";
 
