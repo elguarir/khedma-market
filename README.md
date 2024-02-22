@@ -1,28 +1,50 @@
-# Create T3 App
+# Khedma Market
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+<img src="https://www.khedma.market/dark/logo-dark.png" alt="drawing" width="200"/>
 
-## What's next? How do I make an app with this?
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+> A freelancing platform for Moroccan people, offering a local alternative to international platforms like Fiverr and Upwork.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Table of Contents
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Learn More
+## Introduction
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+Khedma Market is a project aimed at providing Moroccan freelancers with a platform to sell their services online, while offering companies a way to hire freelancers that fit their project needs. The platform aims to reduce competition and fees associated with international platforms, and offers local payment in Moroccan Dirhams.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Features
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- **Freelancer Profiles**: Freelancers can create detailed profiles showcasing their skills, experience, and past projects.
+- **Job Posting**: Companies can post job descriptions and requirements, and freelancers can apply.
+- **Reviews and Ratings**: A system for freelancers and companies to rate and review each other.
+- **Inbox Messaging**: A real-time messaging system for direct communication between freelancers and clients.
+- **Local Payment**: Payments are processed directly in Moroccan Dirhams to freelancers' bank accounts.
 
-## How do I deploy this?
+## Tech Stack
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+### Frontend
+
+- **React.js**: A JavaScript library for building user interfaces.
+- **Next.js**: A React framework for server-rendered applications.
+- **TypeScript**: A superset of JavaScript that adds static types.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly building custom designs.
+- **Radix UI**: A collection of low-level, accessible UI components for building high-quality design systems and web apps.
+- **React Hook Form**: A library for managing form state and validation.
+- **Zod**: A TypeScript-first schema declaration and validation library.
+- **React Query**: A data synchronization library for React.
+
+### Backend
+
+- **tRPC**: A framework for building typesafe APIs.
+- **MySQL**: A relational database management system.
+- **Prisma**: An open-source database toolkit.
+- **Next-Auth**: Authentication for Next.js applications.
+- **YouCan Pay**: A local payment service.
+- **Express.js**: A web application framework for Node.js.
+- **Socket.io**: A library for real-time web applications.
