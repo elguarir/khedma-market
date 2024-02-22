@@ -146,6 +146,6 @@ export const authOptions: NextAuthOptions = {
 
 export const getServerAuthSession = () => getServerSession(authOptions);
 
-export const { auth, signin, signOut, update } = NextAuth({
+export const { auth, signIn, signOut, update } = NextAuth({
   ...authOptions,
 });

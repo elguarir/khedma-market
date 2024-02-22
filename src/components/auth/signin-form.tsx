@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { preCheck } from "@/actions/pre-signin";
 import Callout from "../ui/callout";
@@ -26,8 +26,8 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters long.",
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters long.",
   }),
   code: z.optional(z.string()),
 });
@@ -43,8 +43,15 @@ export function SignInForm() {
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const [isSocialLogin, setIsSocialLogin] = useState<
+    | {
+        google?: boolean;
+        github?: boolean;
+      }
+    | undefined
+  >(undefined);
   const [isPending, startTransition] = useTransition();
-
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,47 +66,58 @@ export function SignInForm() {
     setError("");
     setSuccess("");
     startTransition(async () => {
-      preCheck(values)
-        .then(async (data) => {
-          console.log("data", data);
-          if (data?.error) {
-            setError(data.error);
-          }
+      try {
+        const data = await preCheck(values);
+        console.log("data", data);
 
-          if (data?.success) {
-            form.reset();
-            setSuccess(data.success);
-          }
+        if (data?.error) {
+          setError(data.error);
+        }
 
-          if (data?.twoFactor) {
-            setShowTwoFactor(true);
-          }
+        if (data?.success) {
+          form.reset();
+          setSuccess(data.success);
+        }
 
-          if (data?.signin) {
-            let res = await signIn("credentials", {
-              email: values.email,
-              password: values.password,
-              redirect: false,
-              redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-            });
-            console.log("res", res);
-            if (!res?.ok) {
-              if (res?.error === "CredentialsSignin")
-                setError("The credentials you provided are incorrect.");
-              else {
-                setError("Something went wrong.");
-              }
+        if (data?.twoFactor) {
+          setShowTwoFactor(true);
+        }
+
+        if (data?.signin) {
+          const res = await signIn("credentials", {
+            email: values.email,
+            password: values.password,
+            redirect: false,
+            redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+          });
+          console.log("res", res);
+          if (!res?.ok) {
+            if (res?.error === "CredentialsSignin")
+              setError("The credentials you provided are incorrect.");
+            else {
+              setError("Something went wrong.");
             }
           }
-        })
-        .catch(() => setError("Something went wrong"));
+
+          if (res?.ok) {
+            router.push(callbackUrl || DEFAULT_LOGIN_REDIRECT);
+          }
+        }
+      } catch (error) {
+        setError("Something went wrong");
+      }
     });
   }
 
   return (
     <div className="!mt-4">
       <div className="grid grid-cols-2 gap-3 pb-4 pt-2">
-        <Button variant={"outline"} className="text-sm">
+        <Button
+          isLoading={isSocialLogin?.google}
+          loadingText="Signing in..."
+          variant={"outline"}
+          className="text-sm"
+        >
           <svg
             fill="currentColor"
             viewBox="0 0 24 24"
@@ -112,12 +130,15 @@ export function SignInForm() {
         </Button>
         <Button
           onClick={() => {
+            setIsSocialLogin({ github: true });
             signIn("github", {
               callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
             });
           }}
           variant={"outline"}
           className="text-sm"
+          isLoading={isSocialLogin?.github}
+          loadingText="Signing in..."
         >
           <svg
             fill="currentColor"
