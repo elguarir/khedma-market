@@ -3,11 +3,10 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
-  publicProcedure,
 } from "@/server/api/trpc";
 
-export const postRouter = createTRPCRouter({
-  hello: publicProcedure
+export const profileRouter = createTRPCRouter({
+  hello: protectedProcedure
     .input(z.object({ text: z.string() }))
     .query(({ input }) => {
       return {

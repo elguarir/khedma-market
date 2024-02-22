@@ -111,6 +111,7 @@ export function SignInForm() {
 
   return (
     <div className="!mt-4">
+      {/* social login */}
       <div className="grid grid-cols-2 gap-3 pb-4 pt-2">
         <Button
           isLoading={isSocialLogin?.google}
@@ -152,79 +153,81 @@ export function SignInForm() {
         </Button>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {showTwoFactor ? (
-            <FormField
-              control={form.control}
-              name="code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Two Factor Code</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="123456"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ) : (
-            <>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <fieldset disabled={isPending} className="space-y-4">
+            {showTwoFactor ? (
               <FormField
                 control={form.control}
-                name="email"
+                name="code"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Two Factor Code</FormLabel>
                     <FormControl>
                       <Input
-                        type="email"
-                        placeholder="johndoe@example.com"
                         {...field}
+                        disabled={isPending}
+                        placeholder="123456"
                       />
                     </FormControl>
-                    <FormDescription></FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="••••••••"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </>
-          )}
-          <div className="py-1">
-            {(error || urlError) && (
-              <Callout variant="danger">{error || urlError}</Callout>
+            ) : (
+              <>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="johndoe@example.com"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription></FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="••••••••"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription></FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
-            {success && <Callout variant="success">{success}</Callout>}
-          </div>
-          <Button
-            isLoading={isPending}
-            loadingText={showTwoFactor ? "Confirming..." : "Signing in..."}
-            className="w-full"
-            type="submit"
-          >
-            {showTwoFactor ? "Confirm" : "Sign in"}
-          </Button>
+            <div className="py-1">
+              {(error || urlError) && (
+                <Callout variant="danger">{error || urlError}</Callout>
+              )}
+              {success && <Callout variant="success">{success}</Callout>}
+            </div>
+            <Button
+              isLoading={isPending}
+              loadingText={showTwoFactor ? "Confirming..." : "Signing in..."}
+              className="w-full"
+              type="submit"
+            >
+              {showTwoFactor ? "Confirm" : "Sign in"}
+            </Button>
+          </fieldset>
         </form>
 
         <p className="!mt-3 text-sm font-[450] text-muted-foreground">
