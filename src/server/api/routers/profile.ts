@@ -1,9 +1,7 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { db } from "@/server/db";
 
 export const profileRouter = createTRPCRouter({
   hello: protectedProcedure
@@ -13,5 +11,7 @@ export const profileRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
-
+  getUser: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {}),
 });

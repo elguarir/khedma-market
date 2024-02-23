@@ -14,7 +14,6 @@ import { NavLink, NavLinkProps } from "./nav-link";
 import { BellIcon } from "@radix-ui/react-icons";
 
 const SideBar = async () => {
-  
   let session = await getServerAuthSession();
   const navLinks: NavLinkProps[] = [
     {
@@ -67,7 +66,7 @@ const SideBar = async () => {
         <div className="pt flex h-screen flex-1 flex-col justify-between overflow-auto">
           <nav className="items-star grid gap-2 px-4 text-sm font-medium">
             {navLinks.map((link) => (
-              <NavLink link={link} />
+              <NavLink key={link.label} link={link} />
             ))}
           </nav>
 
