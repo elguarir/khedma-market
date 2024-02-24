@@ -2,8 +2,10 @@ import { SignUpForm } from "@/components/auth/signup-form";
 import { Icons } from "@/components/icons";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getServerAuthSession } from "@/server/auth";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
 type Props = {
@@ -12,9 +14,13 @@ type Props = {
   };
 };
 
-const SignUpPage = (props: Props) => {
+const SignUpPage = async (props: Props) => {
   let success = props.searchParams.success;
+  let session = await getServerAuthSession();
 
+  if (session && session.user) {
+    redirect("/dashboard");
+  }
   return (
     <div className="container grid h-screen w-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link

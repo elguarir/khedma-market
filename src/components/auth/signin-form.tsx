@@ -213,12 +213,18 @@ export function SignInForm() {
                 />
               </>
             )}
-            <div className="py-1">
-              {(error || urlError) && (
+            {(error || urlError) && (
+              <div className="py-1">
                 <Callout variant="danger">{error || urlError}</Callout>
-              )}
-              {success && <Callout variant="success">{success}</Callout>}
-            </div>
+              </div>
+            )}
+
+            {success && (
+              <div className="py-1">
+                <Callout variant="success">{success}</Callout>
+              </div>
+            )}
+
             <Button
               isLoading={isPending}
               loadingText={showTwoFactor ? "Confirming..." : "Signing in..."}

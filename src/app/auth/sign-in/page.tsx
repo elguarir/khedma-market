@@ -5,13 +5,20 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { SignInForm } from "@/components/auth/signin-form";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
+import { getServerAuthSession } from "@/server/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Login",
   description: "Login to your account",
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  let session = await getServerAuthSession();
+
+  if (session && session.user) {
+    redirect("/dashboard");
+  }
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <Link

@@ -1,17 +1,18 @@
-import { Input } from "@/components/ui/input";
-import { getServerAuthSession } from "@/server/auth";
+import { Separator } from "@/components/ui/separator";
 import { LucideProps } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 
 const GigsPage = async () => {
-  // let session = await getServerAuthSession();
   return (
-    <main className="container flex h-full w-full flex-col py-10 ">
-      <h1 className="text-xl font-semibold tracking-wide md:text-2xl lg:text-4xl">
-        Gigs
-      </h1>
-      <div className="w-full h-screen"></div>
+    <main>
+      <div className="space-y-0.5">
+        <h2 className="text-2xl font-bold tracking-tight">Gigs</h2>
+        <p className="text-muted-foreground">
+          bellow you can view, create and manage your gigs.
+        </p>
+      </div>
+      <Separator className="my-6" />
+      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0"></div>
     </main>
   );
 };

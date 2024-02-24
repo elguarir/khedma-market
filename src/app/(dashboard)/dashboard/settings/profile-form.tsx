@@ -1,12 +1,10 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
-import { z } from "zod"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import parsePhoneNumber from "libphonenumber-js";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,79 +13,106 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { vanilla } from "@/trpc/react";
+import PhoneInput from "@/components/ui/phone-input";
 
 const profileFormSchema = z.object({
+  firstName: z
+    .string({ required_error: "First Name is required." })
+    .min(2, "Must be atleast 2 characters.")
+    .max(30),
+  lastName: z
+    .string({ required_error: "Last Name is required." })
+    .min(2, "Must be atleast 2 characters.")
+    .max(30),
   username: z
-    .string()
+    .string({ required_error: "Username is required." })
     .min(2, {
       message: "Username must be at least 2 characters.",
     })
     .max(30, {
       message: "Username must not be longer than 30 characters.",
+    })
+    .refine(async (value) => {
+      let user = await vanilla.user.getUserbyUsername.query({
+        username: value,
+      });
+      if (user) {
+        return "Username already exists.";
+      }
+      return true;
     }),
   email: z
     .string({
-      required_error: "Please select an email to display.",
+      required_error: "Email is required.",
     })
     .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: "Please enter a valid URL." }),
-      })
-    )
+  phone: z
+    .string({
+      required_error: "Phone number is required.",
+    })
+    .refine((phone) => {})
     .optional(),
-})
+  bio: z.string().optional(),
+});
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>
-
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: "I own a computer.",
-  urls: [
-    { value: "https://shadcn.com" },
-    { value: "http://twitter.com/shadcn" },
-  ],
-}
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export function ProfileForm() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues,
-    mode: "onChange",
-  })
+    mode: "onBlur",
+  });
 
-  const { fields, append } = useFieldArray({
-    name: "urls",
-    control: form.control,
-  })
+  // const { fields, append } = useFieldArray({
+  //   name: "urls",
+  //   control: form.control,
+  // });
 
   function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+    console.log("data", data);
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="grid w-full grid-cols-2 gap-x-4 gap-y-2">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormDescription className="col-span-2">
+            This is your account name not your display name.
+          </FormDescription>
+        </div>
+
         <FormField
           control={form.control}
           name="username"
@@ -95,11 +120,10 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
+                This is your username and cannot be changed.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -111,21 +135,34 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Input disabled type="email" {...field} />
+              </FormControl>
               <FormDescription>
-                You can manage verified email addresses in your{" "}
-                <Link href="/examples/forms">email settings</Link>.
+                This is your primary email and cannot be changed, it will also
+                to contact you.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone number</FormLabel>
+              <FormControl>
+                <PhoneInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  autoComplete={"false"}
+                  aria-autocomplete="none"
+                />
+              </FormControl>
+              <FormDescription>
+                This phone number will be used to contact you when applying to
+                job offers.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -144,16 +181,12 @@ export function ProfileForm() {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription>
+              <FormDescription>This</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div>
-          {fields.map((field, index) => (
+        {/* {fields.map((field, index) => (
             <FormField
               control={form.control}
               key={field.id}
@@ -173,19 +206,9 @@ export function ProfileForm() {
                 </FormItem>
               )}
             />
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="mt-2"
-            onClick={() => append({ value: "" })}
-          >
-            Add URL
-          </Button>
-        </div>
-        <Button type="submit">Update profile</Button>
+          ))} */}
+        <Button type="submit">Save changes</Button>
       </form>
     </Form>
-  )
+  );
 }

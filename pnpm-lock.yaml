@@ -146,6 +146,9 @@ dependencies:
   jotai:
     specifier: ^2.6.5
     version: 2.6.5(@types/react@18.2.37)(react@18.2.0)
+  libphonenumber-js:
+    specifier: ^1.10.57
+    version: 1.10.57
   lucide-react:
     specifier: ^0.330.0
     version: 0.330.0(react@18.2.0)
@@ -173,6 +176,9 @@ dependencies:
   react-icons:
     specifier: ^5.0.1
     version: 5.0.1(react@18.2.0)
+  react-international-phone:
+    specifier: ^4.2.6
+    version: 4.2.6(react@18.2.0)
   react-resizable-panels:
     specifier: ^2.0.6
     version: 2.0.6(react-dom@18.2.0)(react@18.2.0)
@@ -3885,6 +3891,10 @@ packages:
       type-check: 0.4.0
     dev: true
 
+  /libphonenumber-js@1.10.57:
+    resolution: {integrity: sha512-OjsEd9y4LgcX+Ig09SbxWqcGESxliDDFNVepFhB9KEsQZTrnk3UdEU+cO0sW1APvLprHstQpS23OQpZ3bwxy6Q==}
+    dev: false
+
   /lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
@@ -4486,6 +4496,14 @@ packages:
     resolution: {integrity: sha512-WqLZJ4bLzlhmsvme6iFdgO8gfZP17rfjYEJ2m9RsZjZ+cc4k1hTzknEz63YS1MeT50kVzoa1Nz36f4BEx+Wigw==}
     peerDependencies:
       react: '*'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-international-phone@4.2.6(react@18.2.0):
+    resolution: {integrity: sha512-El/ZVYmov5uGuk07nrfxe7M3/4Y8HhA9c3aCpAwilbPU8DekISwNSZMplqxzvxS+TIavIh28ZMDDx1u/4GqULg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
     dev: false

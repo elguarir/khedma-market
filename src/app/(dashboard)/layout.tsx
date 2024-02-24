@@ -13,69 +13,15 @@ import {
   DropdownMenuContent,
   DropdownMenu,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
+import { redirect } from "next/navigation";
 export default async function layout({ children }: PropsWithChildren) {
   let session = await getServerAuthSession();
-
+  if (!session || !session.user) return redirect("/auth/sign-in");
   return (
     <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
       <SideBar />
       <div className="flex h-full w-full flex-col">
-        {/* main header */}
-        {/* main content */}
-        {/* <header className="flex h-14 items-center gap-4 border-b bg-neutral-100/40 px-6 dark:bg-neutral-800/40 lg:h-[60px]">
-          <Link className="lg:hidden" href="#">
-            <Icons.logo className="h-10 w-10" />
-            <span className="sr-only">Home</span>
-          </Link>
-          <div className="ml-auto w-full flex-1">
-            <form>
-              <div className="relative">
-                <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-neutral-500 dark:text-neutral-400" />
-                <Input
-                  className="w-full appearance-none bg-white pl-8 shadow-none dark:bg-neutral-950 md:w-2/3 lg:w-1/3"
-                  placeholder="Search projects..."
-                  type="search"
-                />
-              </div>
-            </form>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                className="block  h-8 w-8 rounded-full border border-neutral-200 dark:border-neutral-800 lg:hidden"
-                size="icon"
-                variant="ghost"
-              >
-                <img
-                  alt="Avatar"
-                  className="rounded-full"
-                  height="32"
-                  src={
-                    session?.user.image
-                      ? session?.user.image
-                      : "/images/placeholder.png"
-                  }
-                  style={{
-                    aspectRatio: "32/32",
-                    objectFit: "cover",
-                  }}
-                  width="32"
-                />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </header> */}
         <ScrollArea className="flex max-h-screen flex-1 flex-col gap-4 md:gap-8 ">
           <header className="flex h-14 items-center justify-between gap-4 border-b bg-neutral-100/40 px-6 dark:bg-neutral-800/40 lg:h-[60px]">
             <Link className="lg:hidden" href="#">
@@ -129,7 +75,9 @@ export default async function layout({ children }: PropsWithChildren) {
               </DropdownMenuContent>
             </DropdownMenu>
           </header>
-          {children}
+          <div className="container block space-y-6 py-10  pb-16 lg:p-10">
+            {children}
+          </div>
         </ScrollArea>
       </div>
     </div>

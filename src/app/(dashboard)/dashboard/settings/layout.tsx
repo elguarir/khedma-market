@@ -1,26 +1,20 @@
 import { Metadata } from "next";
-import Image from "next/image";
-
 import { Separator } from "@/components/ui/separator";
-import { SidebarNav } from "./components/sidebar-nav";
+import { SidebarNav } from "./_components/sidebar-nav";
 
 export const metadata: Metadata = {
-  title: "Forms",
-  description: "Advanced form example using react-hook-form and Zod.",
+  title: "Account settings",
+  description: "Manage your account settings and set e-mail preferences.",
 };
 
 const sidebarNavItems = [
   {
-    title: "Profile",
+    title: "Account",
     href: "/dashboard/settings",
   },
   {
-    title: "Account",
-    href: "/dashboard/settings/account",
-  },
-  {
-    title: "Appearance",
-    href: "/dashboard/settings/appearance",
+    title: "Security",
+    href: "/dashboard/settings/security",
   },
   {
     title: "Notifications",
@@ -39,7 +33,7 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
-      <div className="block container space-y-6 py-10  lg:p-10 pb-16">
+      <div>
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground">
@@ -51,7 +45,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <aside className="w-full lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-2xl w-full">{children}</div>
+          <div className="w-full flex-1 lg:max-w-2xl">{children}</div>
         </div>
       </div>
     </>
