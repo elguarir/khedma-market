@@ -28,34 +28,52 @@ model Account {
 }
 
 model User {
-    id                        String                 @id @default(cuid())
-    name                      String?
-    username                  String?                @unique
-    email                     String?                @unique
-    emailVerified             DateTime?              @map("email_verified")
-    image                     String?
-    description               String?
-    password                  String?                @db.Text
-    role                      role                   @default(user)
-    from                      String?
-    createdAt                 DateTime               @default(now()) @map("created_at")
-    updatedAt                 DateTime               @updatedAt @map("updated_at")
+    id            String    @id @default(cuid())
+    name          String?
+    username      String?   @unique
+    email         String?   @unique
+    emailVerified DateTime? @map("email_verified")
+    image         String?
+    password      String?   @db.Text
+    role          role      @default(user)
+
+    // personal info will be used when applying to jobs etc...
+    dob        DateTime? @map("date_of_birth")
+    bio        String?   @db.Text
+    country    String?   @default("Morocco")
+    city       String?
+    address    String?
+    phone      String?
+    website    String?
+    resume     String?   @db.Text
+    profilePic String?   @map("profile_pic")
+
+    // feature flags
     isTwoFactorEnabled        Boolean                @default(false) @map("is_two_factor_enabled")
     inboxNotifications        Boolean                @default(true) @map("inbox_notifications")
     orderUpdatesNotifications Boolean                @default(true) @map("order_updates_notifications")
     twoFactorConfirmation     TwoFactorConfirmation?
-    languages                 Language[]
-    skills                    Skill[]
-    education                 Education[]
-    accounts                  Account[]
-    sessions                  Session[]
-    certifications            Certification[]
-    messages                  Message[]
-    attachements              Attachement[]
-    conversations             Conversation[]         @relation("UserConversation")
-    Gig                       Gig[]
-    Review                    Review[]
-    orders                    Order[]
+
+    // freelancer, profile info
+    description    String?         @db.Text
+    languages      Language[]
+    skills         Skill[]
+    education      Education[]
+    certifications Certification[]
+
+    // extras
+    sessions Session[]
+    accounts Account[]
+
+    messages      Message[]
+    attachements  Attachement[]
+    conversations Conversation[] @relation("UserConversation")
+    Gig           Gig[]
+    Review        Review[]
+    orders        Order[]
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
     @@map("users")
 }

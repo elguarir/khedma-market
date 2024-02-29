@@ -13,7 +13,7 @@ export default function MailPage() {
 
   return (
     <>
-      <div className="md:hidden">
+      {/* <div className="md:hidden">
         <Image
           src="/examples/mail-dark.png"
           width={1280}
@@ -37,7 +37,8 @@ export default function MailPage() {
           defaultCollapsed={defaultCollapsed}
           navCollapsedSize={4}
         />
-      </div>
+      </div> */}
+      Inbox
     </>
   );
 }

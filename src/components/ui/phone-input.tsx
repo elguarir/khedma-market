@@ -32,6 +32,7 @@ const PhoneInput = ({
   countrySearch = false,
   value,
   onChange,
+  className,
   ...rest
 }: PhoneInputProps) => {
   const { inputValue, handlePhoneValueChange, inputRef, country, setCountry } =
@@ -40,14 +41,12 @@ const PhoneInput = ({
       value,
       countries: defaultCountries,
       onChange: (data) => {
-        console.log("phone", data.phone);
         if (onChange) onChange(data.phone);
-        const mask = getActiveFormattingMask({ phone: data.phone, country });
       },
     });
 
   return (
-    <div className="relative h-10">
+    <div className="relative h-10 w-full">
       {/* <Phone className="absolute left-2.5 top-2.5 h-4 w-4 text-neutral-500 dark:text-neutral-400" /> */}
       <Popover>
         <PopoverTrigger asChild>
@@ -84,7 +83,6 @@ const PhoneInput = ({
                       }}
                       value={item.name}
                     >
-
                       <div className="flex items-center text-sm">
                         <FlagImage iso2={item.iso2} className="mr-2 h-4 w-4" />
                         {item.name}
@@ -100,7 +98,6 @@ const PhoneInput = ({
                       >
                         +{item.dialCode}
                       </div>
-
                     </CommandItem>
                   );
                 })}
@@ -114,7 +111,10 @@ const PhoneInput = ({
         type="tel"
         value={inputValue}
         onChange={handlePhoneValueChange}
-        className="h-10 w-full appearance-none bg-white pl-14 shadow-none dark:bg-neutral-950 md:w-2/3 lg:w-1/3"
+        className={cn(
+          "h-10 w-full appearance-none bg-white pl-14 shadow-none dark:bg-neutral-950",
+          className,
+        )}
         {...rest}
       />
     </div>
