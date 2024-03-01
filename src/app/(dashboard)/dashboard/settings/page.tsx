@@ -1,22 +1,9 @@
 import { Separator } from "@/components/ui/separator";
 import { PersonalForm } from "./personal-form";
-import { db } from "@/server/db";
-import { getServerAuthSession } from "@/server/auth";
+import { getUserPersonalInfo } from "@/server/api/routers/user";
 
 export default async function SettingsProfilePage() {
-  let session = await getServerAuthSession();
-  let details = await db.user.findFirst({
-    where: {
-      id: session?.user.id!,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      username: true,
-      role: true,
-    },
-  });
+  let userDetails = await getUserPersonalInfo();
 
   return (
     <div className="space-y-6">
@@ -28,7 +15,20 @@ export default async function SettingsProfilePage() {
         </p>
       </div>
       <Separator />
-      <PersonalForm />
+      <PersonalForm
+        defaultValues={{
+          firstName: userDetails?.firstName ?? undefined,
+          lastName: userDetails?.lastName ?? undefined,
+          email: userDetails?.email ?? undefined,
+          dob: userDetails?.dob ?? undefined,
+          bio: userDetails?.bio ?? undefined,
+          country: userDetails?.country ?? undefined,
+          city: userDetails?.city ?? undefined,
+          address: userDetails?.address ?? undefined,
+          phone: userDetails?.phone ?? undefined,
+          resume: userDetails?.resume ?? undefined,
+        }}
+      />
     </div>
   );
 }

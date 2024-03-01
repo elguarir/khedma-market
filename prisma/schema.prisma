@@ -30,6 +30,8 @@ model Account {
 model User {
     id            String    @id @default(cuid())
     name          String?
+    firstName     String?   @map("first_name")
+    lastName      String?   @map("last_name")
     username      String?   @unique
     email         String?   @unique
     emailVerified DateTime? @map("email_verified")
@@ -68,9 +70,10 @@ model User {
     messages      Message[]
     attachements  Attachement[]
     conversations Conversation[] @relation("UserConversation")
-    Gig           Gig[]
-    Review        Review[]
-    orders        Order[]
+
+    gigs    Gig[]
+    reviews Review[]
+    orders  Order[]
 
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
@@ -236,13 +239,13 @@ model Gig {
     id          String        @id @default(cuid())
     title       String
     description Json
-    userId      String?       @map("user_id")
+    ownerId     String?       @map("owner_id")
     categoryId  String?       @map("category_id")
     createdAt   DateTime      @default(now()) @map("created_at")
     updatedAt   DateTime      @updatedAt @map("updated_at")
     packages    Package[]
     category    Category?     @relation(fields: [categoryId], references: [id])
-    user        User?         @relation(fields: [userId], references: [id])
+    owner       User?         @relation(fields: [ownerId], references: [id])
     attachments Attachement[]
     reviews     Review[]
     tags        GigTag[]
@@ -261,40 +264,26 @@ model Order {
     totalAmount Float       @map("total_amount")
     createdAt   DateTime    @default(now()) @map("created_at")
     updatedAt   DateTime    @updatedAt @map("updated_at")
-
-    user     User        @relation(fields: [userId], references: [id])
-    gig      Gig         @relation(fields: [gigId], references: [id])
-    items    OrderItem[]
-    payments Payment[]
+    packageId   String      @map("package_id")
+    
+    user        User        @relation(fields: [userId], references: [id])
+    package     Package     @relation(fields: [packageId], references: [id])
+    gig         Gig         @relation(fields: [gigId], references: [id])
+    payment     Payment?
 
     @@map("orders")
 }
 
-model OrderItem {
-    id        String   @id @default(cuid())
-    orderId   String   @map("order_id")
-    packageId String   @map("package_id")
-    quantity  Int      @default(1)
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
-
-    order   Order   @relation(fields: [orderId], references: [id])
-    package Package @relation(fields: [packageId], references: [id])
-
-    @@map("order_items")
-}
-
 model Payment {
     id            String        @id @default(cuid())
-    orderId       String        @map("order_id")
+    orderId       String        @unique @map("order_id")
     status        PaymentStatus @default(pending)
     amount        Float
     paymentMethod String        @map("payment_method")
     transactionId String?       @map("transaction_id")
     createdAt     DateTime      @default(now()) @map("created_at")
     updatedAt     DateTime      @updatedAt @map("updated_at")
-
-    order Order @relation(fields: [orderId], references: [id])
+    order         Order         @relation(fields: [orderId], references: [id])
 
     @@map("payments")
 }
@@ -333,9 +322,9 @@ model Package {
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
 
-    gig    Gig?        @relation(fields: [gigId], references: [id])
-    gigId  String?     @map("gig_id")
-    orders OrderItem[]
+    gig   Gig?    @relation(fields: [gigId], references: [id])
+    gigId String? @map("gig_id")
+    orders Order[]
 
     @@map("packages")
 }
