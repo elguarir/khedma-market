@@ -17,7 +17,7 @@ export const api = createTRPCReact<AppRouter>();
 export const vanilla = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/trpc`,
+      url: getUrl(),
     }),
   ],
   transformer: superjson,
