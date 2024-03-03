@@ -58,7 +58,7 @@ model User {
 
     // freelancer, profile info
     description    String?         @db.Text
-    languages      Language[]
+    languages      UserLanguages[]
     skills         Skill[]
     education      Education[]
     certifications Certification[]
@@ -141,13 +141,26 @@ enum SkillStatus {
 }
 
 model Language {
-    id        String   @id @default(cuid())
-    name      String
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
-    user      User[]
+    id         String          @id @default(cuid())
+    name       String
+    nativeName String?         @map("native_name")
+    value      String          @unique
+    createdAt  DateTime        @default(now()) @map("created_at")
+    updatedAt  DateTime        @updatedAt @map("updated_at")
+    users      UserLanguages[]
 
     @@map("languages")
+}
+
+model UserLanguages {
+    userId     String   @map("user_id")
+    user       User     @relation(fields: [userId], references: [id])
+    languageId String   @map("language_id")
+    language   Language @relation(fields: [languageId], references: [id])
+    level      String
+
+    @@id([userId, languageId])
+    @@map("user_languages")
 }
 
 model Education {
@@ -265,11 +278,11 @@ model Order {
     createdAt   DateTime    @default(now()) @map("created_at")
     updatedAt   DateTime    @updatedAt @map("updated_at")
     packageId   String      @map("package_id")
-    
-    user        User        @relation(fields: [userId], references: [id])
-    package     Package     @relation(fields: [packageId], references: [id])
-    gig         Gig         @relation(fields: [gigId], references: [id])
-    payment     Payment?
+
+    user    User     @relation(fields: [userId], references: [id])
+    package Package  @relation(fields: [packageId], references: [id])
+    gig     Gig      @relation(fields: [gigId], references: [id])
+    payment Payment?
 
     @@map("orders")
 }
@@ -322,8 +335,8 @@ model Package {
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
 
-    gig   Gig?    @relation(fields: [gigId], references: [id])
-    gigId String? @map("gig_id")
+    gig    Gig?    @relation(fields: [gigId], references: [id])
+    gigId  String? @map("gig_id")
     orders Order[]
 
     @@map("packages")

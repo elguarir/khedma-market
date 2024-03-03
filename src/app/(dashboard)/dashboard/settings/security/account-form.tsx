@@ -1,21 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
 import {
   Form,
   FormControl,
@@ -26,67 +15,156 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
-import { vanilla } from "@/trpc/react";
-
-const accountFormSchema = z.object({
-  username: z
-    .string({ required_error: "Username is required." })
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Username must not be longer than 30 characters.",
-    })
-    .refine(async (value) => {
-      let user = await vanilla.user.getUserbyUsername.query({
-        username: value,
-      });
-      if (user) {
-        return "Username already exists.";
-      }
-      return true;
-    }),
-});
+import { accountFormSchema } from "@/lib/schemas/security-form";
+import { Separator } from "@/components/ui/separator";
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
-// This can come from your database or API.
-const defaultValues: Partial<AccountFormValues> = {
-  // name: "Your name",
-  // dob: new Date("2023-01-23"),
-};
+interface AccountFormProps {
+  defaultValues: Partial<AccountFormValues>;
+  hasPassword?: boolean;
+}
 
-export function AccountForm() {
+export function AccountForm({ defaultValues, hasPassword }: AccountFormProps) {
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
   });
 
+  let { mutate: update, isLoading } =
+    api.user.updateUserSecurityInfo.useMutation();
   function onSubmit(data: AccountFormValues) {
-   
+    update(data, {
+      onSuccess: (data) => {
+        toast.success("Account updated successfully!");
+        form.setValue("currentpassword", "");
+        form.setValue("newpassword", "");
+        form.setValue("confirmPassword", "");
+      },
+      onError(error) {
+        if (error.message === "Invalid password") {
+          form.setError("currentpassword", {
+            type: "manual",
+            message: "Invalid password.",
+          });
+        }
+
+        if (error.message === "Username already taken") {
+          form.setError("username", {
+            type: "manual",
+            message: "Username already taken.",
+          });
+        }
+      },
+    });
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your username and cannot be changed.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Update account</Button>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <fieldset className="space-y-8" disabled={isLoading}>
+          <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription></FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isTwoFactorEnabled"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">
+                      Two factor authentication
+                    </FormLabel>
+                    <FormDescription>
+                      Secure your account with two factor authentication.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Separator />
+          <div className="space-y-4">
+            {hasPassword && (
+              <FormField
+                control={form.control}
+                name="currentpassword"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Current password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      For security reasons, please confirm your current
+                      password.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            {/* new password */}
+
+            <FormField
+              control={form.control}
+              name="newpassword"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>New password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    {!hasPassword &&
+                      "Your account doesn't have a password yet, you can set one now."}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* confirm new password */}
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Confirm password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button isLoading={isLoading} loadingText="Saving..." type="submit">
+            Save changes
+          </Button>
+        </fieldset>
       </form>
     </Form>
   );

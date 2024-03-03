@@ -1,0 +1,146 @@
+[
+    {
+        "name": "Arabic",
+        "value": "arabic",
+        "nativeName": "العربية"
+    },
+    {
+        "name": "Tamazight",
+        "value": "tamazight",
+        "nativeName": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
+    },
+    {
+        "name": "English",
+        "value": "english"
+    },
+    {
+        "name": "Spanish",
+        "value": "spanish",
+        "nativeName": "Español"
+    },
+    {
+        "name": "French",
+        "value": "french",
+        "nativeName": "Français"
+    },
+    {
+        "name": "German",
+        "value": "german",
+        "nativeName": "Deutsch"
+    },
+    {
+        "name": "Chinese (Mandarin)",
+        "value": "chinese_mandarin",
+        "nativeName": "中文 (普通话)"
+    },
+    {
+        "name": "Japanese",
+        "value": "japanese",
+        "nativeName": "日本語"
+    },
+    {
+        "name": "Korean",
+        "value": "korean",
+        "nativeName": "한국어"
+    },
+    {
+        "name": "Russian",
+        "value": "russian",
+        "nativeName": "Русский"
+    },
+    {
+        "name": "Portuguese",
+        "value": "portuguese",
+        "nativeName": "Português"
+    },
+    {
+        "name": "Hindi",
+        "value": "hindi",
+        "nativeName": "हिन्दी"
+    },
+    {
+        "name": "Urdu",
+        "value": "urdu",
+        "nativeName": "اردو"
+    },
+    {
+        "name": "Turkish",
+        "value": "turkish",
+        "nativeName": "Türkçe"
+    },
+    {
+        "name": "Italian",
+        "value": "italian",
+        "nativeName": "Italiano"
+    },
+    {
+        "name": "Dutch",
+        "value": "dutch",
+        "nativeName": "Nederlands"
+    },
+    {
+        "name": "Swedish",
+        "value": "swedish",
+        "nativeName": "Svenska"
+    },
+    {
+        "name": "Polish",
+        "value": "polish",
+        "nativeName": "Polski"
+    },
+    {
+        "name": "Greek",
+        "value": "greek",
+        "nativeName": "Ελληνικά"
+    },
+    {
+        "name": "Hebrew",
+        "value": "hebrew",
+        "nativeName": "עברית"
+    },
+    {
+        "name": "Thai",
+        "value": "thai",
+        "nativeName": "ไทย"
+    },
+    {
+        "name": "Vietnamese",
+        "value": "vietnamese",
+        "nativeName": "Tiếng Việt"
+    },
+    {
+        "name": "Indonesian",
+        "value": "indonesian",
+        "nativeName": "Bahasa Indonesia"
+    },
+    {
+        "name": "Malay",
+        "value": "malay",
+        "nativeName": "Bahasa Melayu"
+    },
+    {
+        "name": "Czech",
+        "value": "czech",
+        "nativeName": "Čeština"
+    },
+    {
+        "name": "Farsi (Persian)",
+        "value": "farsi_persian",
+        "nativeName": "فارسی"
+    },
+    {
+        "name": "Danish",
+        "value": "danish",
+        "nativeName": "Dansk"
+    },
+    {
+        "name": "Norwegian",
+        "value": "norwegian",
+        "nativeName": "Norsk"
+    },
+    {
+        "name": "Finnish",
+        "value": "finnish",
+        "nativeName": "Suomi"
+    }
+]

@@ -3,6 +3,8 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata = {
   title: "Khedma market",
@@ -20,13 +22,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${GeistSans.className} ${GeistMono.variable}`}>
         <TRPCReactProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-          >
-            {children}
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
           </ThemeProvider>
+          <Toaster closeButton />
         </TRPCReactProvider>
       </body>
     </html>

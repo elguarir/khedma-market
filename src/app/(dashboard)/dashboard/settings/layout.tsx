@@ -17,12 +17,12 @@ const sidebarNavItems = [
     href: "/dashboard/settings/security",
   },
   {
-    title: "Notifications",
-    href: "/dashboard/settings/notifications",
+    title: "Appearance",
+    href: "/dashboard/settings/appearance",
   },
   {
-    title: "Display",
-    href: "/dashboard/settings/display",
+    title: "Notifications",
+    href: "/dashboard/settings/notifications",
   },
 ];
 

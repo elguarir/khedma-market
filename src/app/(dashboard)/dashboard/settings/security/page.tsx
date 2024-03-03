@@ -1,7 +1,10 @@
 import { Separator } from "@/components/ui/separator";
 import { AccountForm } from "./account-form";
+import { getUserSecurityInfo } from "@/server/api/routers/user";
 
-export default function SettingsAccountPage() {
+export default async function SettingsAccountPage() {
+  let accountsDetails = await getUserSecurityInfo();
+
   return (
     <div className="space-y-6">
       <div>
@@ -11,7 +14,13 @@ export default function SettingsAccountPage() {
         </p>
       </div>
       <Separator />
-      <AccountForm />
+      <AccountForm
+        hasPassword={accountsDetails?.password ? true : false}
+        defaultValues={{
+          username: accountsDetails?.username ?? undefined,
+          isTwoFactorEnabled: accountsDetails?.isTwoFactorEnabled ?? undefined,
+        }}
+      />
     </div>
   );
 }

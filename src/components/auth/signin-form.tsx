@@ -68,7 +68,6 @@ export function SignInForm() {
     startTransition(async () => {
       try {
         const data = await preCheck(values);
-        console.log("data", data);
 
         if (data?.error) {
           setError(data.error);
@@ -90,7 +89,6 @@ export function SignInForm() {
             redirect: false,
             redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
           });
-          console.log("res", res);
           if (!res?.ok) {
             if (res?.error === "CredentialsSignin")
               setError("The credentials you provided are incorrect.");

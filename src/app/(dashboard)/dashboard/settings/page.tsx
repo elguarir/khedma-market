@@ -22,6 +22,7 @@ export default async function SettingsProfilePage() {
           email: userDetails?.email ?? undefined,
           dob: userDetails?.dob ?? undefined,
           bio: userDetails?.bio ?? undefined,
+          profilePic: userDetails?.profilePic ?? undefined,
           country: userDetails?.country ?? undefined,
           city: userDetails?.city ?? undefined,
           address: userDetails?.address ?? undefined,

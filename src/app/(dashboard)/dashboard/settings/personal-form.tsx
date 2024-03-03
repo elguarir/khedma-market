@@ -41,6 +41,7 @@ import UploadInput from "@/components/shared/upload-input";
 import { personalFormSchema } from "@/lib/schemas/personal-info";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type PersonalFormValues = z.infer<typeof personalFormSchema>;
 interface PersonalFormProps {
@@ -63,6 +64,7 @@ export function PersonalForm({ defaultValues }: PersonalFormProps) {
     update(data, {
       onSuccess: () => {
         router.refresh();
+        toast.success("Profile updated successfully!");
       },
     });
   }
