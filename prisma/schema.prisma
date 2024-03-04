@@ -59,13 +59,12 @@ model User {
     // freelancer, profile info
     description    String?         @db.Text
     languages      UserLanguages[]
-    skills         Skill[]
     education      Education[]
     certifications Certification[]
-
+    skills         UserSkill[]
     // extras
-    sessions Session[]
-    accounts Account[]
+    sessions       Session[]
+    accounts       Account[]
 
     messages      Message[]
     attachements  Attachement[]
@@ -195,14 +194,25 @@ model Certification {
 model Skill {
     id     String      @id @default(cuid())
     name   String
-    status SkillStatus @default(inactive)
+    value  String      @unique
+    status SkillStatus @default(active)
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
-    user      User?    @relation(fields: [userId], references: [id])
-    userId    String?  @map("user_id")
+    createdAt DateTime    @default(now()) @map("created_at")
+    updatedAt DateTime    @updatedAt @map("updated_at")
+    users     UserSkill[]
 
     @@map("skills")
+}
+
+model UserSkill {
+    userId  String @map("user_id")
+    skill   Skill  @relation(fields: [skillId], references: [id])
+    skillId String @map("skill_id")
+    level   String
+    user    User   @relation(fields: [userId], references: [id])
+
+    @@id([userId, skillId])
+    @@map("user_skills")
 }
 
 model Message {

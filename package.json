@@ -10,7 +10,7 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "preview": "next build && next start",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"

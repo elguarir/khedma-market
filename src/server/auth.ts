@@ -108,7 +108,6 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true,
-      
     }),
     Credentials({
       // @ts-ignore
@@ -135,6 +134,9 @@ export const authOptions: NextAuthOptions = {
         where: { id: user.id },
         data: { emailVerified: new Date() },
       });
+    },
+    createUser: async (message) => {
+      console.log("createUser", message);
     },
   },
   pages: {

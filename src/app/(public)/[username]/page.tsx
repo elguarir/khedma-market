@@ -19,7 +19,9 @@ import LanguagesForm from "./_components/languages-form";
 import {
   getUserDescription,
   getUserLanguages,
+  getUserSkills,
 } from "@/server/api/routers/profile";
+import SkillsForm from "./_components/skills-form";
 
 type Props = {
   params: {
@@ -35,6 +37,7 @@ const UserProfile = async (props: Props) => {
   }
 
   let languages = await getUserLanguages(user.id);
+  let skills = await getUserSkills(user.id);
   let description = await getUserDescription(user.id);
   return (
     <main className="flex min-h-[calc(100vh-90px)] w-full flex-col py-8">
@@ -91,6 +94,10 @@ const UserProfile = async (props: Props) => {
               <Separator />
               <div className="grid w-full gap-2">
                 <LanguagesForm languages={languages} />
+              </div>
+              <Separator />
+              <div className="grid w-full gap-2">
+                <SkillsForm skills={skills} />
               </div>
             </CardContent>
           </Card>

@@ -15,10 +15,8 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -47,32 +45,30 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  language: z.string({
-    required_error: "You need to select a language.",
-  }),
-  level: z.enum(["basic", "conversational", "fluent", "native_or_bilingual"]),
+  skill: z.string().optional(),
+  level: z.enum(["beginner", "intermediate", "expert"]),
 });
 
-interface LanguagesFormProps {
-  languages: RouterOutput["profile"]["getUserLanguages"];
+interface SkillsFormProps {
+  skills: RouterOutput["profile"]["getUserSkills"];
 }
 
-const LanguagesForm = (props: LanguagesFormProps) => {
+const SkillsForm = (props: SkillsFormProps) => {
   // states
   let [editMode, setEditMode] = useState(false);
-  let [languageEdit, setLanguageEdit] = useState(false);
+  let [skillEdit, setSkillEdit] = useState(false);
   // queries & mutations
-  let { mutate: addLanguage, isLoading: isAdding } =
-    api.profile.addLanguage.useMutation();
-  let { mutate: updateLanguage, isLoading: isUpdating } =
-    api.profile.updateLanguage.useMutation();
+  let { mutate: addSkill, isLoading: isAdding } =
+    api.profile.addSkill.useMutation();
+  let { mutate: updateSkill, isLoading: isUpdating } =
+    api.profile.updateSkill.useMutation();
   let { mutate: removeLanguage, isLoading: isRemoving } =
     api.profile.removeLanguage.useMutation();
-  let { data: userLanguages, isLoading: userLanguagesLoading } =
-    api.profile.getUserLanguages.useQuery(undefined, {
-      initialData: props.languages,
+  let { data: userSkills, isLoading: userSkillsLoading } =
+    api.profile.getUserSkills.useQuery(undefined, {
+      initialData: props.skills,
     });
-  let { data: languages, isLoading } = api.profile.getLanguages.useQuery();
+  let { data: skills, isLoading } = api.profile.getSkills.useQuery();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -80,15 +76,15 @@ const LanguagesForm = (props: LanguagesFormProps) => {
 
   let utils = api.useUtils();
   let refresh = () => {
-    utils.profile.getUserLanguages.invalidate();
+    utils.profile.getUserSkills.invalidate();
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    let language = languages?.find((lan) => lan.value === values.language);
-    if (!language) return;
-    if (languageEdit) {
-      updateLanguage(
-        { id: language.id, level: values.level },
+    let skill = skills?.find((lan) => lan.value === values.skill);
+    if (!skill) return;
+    if (skillEdit) {
+      updateSkill(
+        { id: skill.id, level: values.level },
         {
           onSuccess: () => {
             refresh();
@@ -96,7 +92,7 @@ const LanguagesForm = (props: LanguagesFormProps) => {
           onSettled: () => {
             refresh();
             form.reset({
-              language: undefined,
+              skill: undefined,
               level: undefined,
             });
             setEditMode(false);
@@ -105,16 +101,16 @@ const LanguagesForm = (props: LanguagesFormProps) => {
       );
       return;
     }
-    addLanguage(
-      { id: language.id, level: values.level },
+    addSkill(
+      { id: skill.id, level: values.level },
       {
-        onSuccess(data) {
+        onSuccess: () => {
           refresh();
         },
         onSettled: () => {
           refresh();
           form.reset({
-            language: undefined,
+            skill: undefined,
             level: undefined,
           });
           setEditMode(false);
@@ -128,13 +124,13 @@ const LanguagesForm = (props: LanguagesFormProps) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <CardTitle className="flex w-full items-center justify-between">
-            Languages
+            Skills
             <button
               onClick={() => {
                 setEditMode(true);
-                setLanguageEdit(false);
+                setSkillEdit(false);
                 form.reset({
-                  language: undefined,
+                  skill: undefined,
                   level: undefined,
                 });
               }}
@@ -145,7 +141,9 @@ const LanguagesForm = (props: LanguagesFormProps) => {
           </CardTitle>
         </TooltipTrigger>
         <TooltipContent align="start" className="mb-0.5 max-md:hidden">
-          <p className="w-fit font-[550]">Add languages you speak.</p>
+          <p className="w-fit font-[550]">
+            Add your skills and level of expertise.
+          </p>
         </TooltipContent>
       </Tooltip>
       {editMode ? (
@@ -154,7 +152,7 @@ const LanguagesForm = (props: LanguagesFormProps) => {
             <fieldset disabled={isAdding} className="grid gap-4">
               <FormField
                 control={form.control}
-                name="language"
+                name="skill"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <Popover>
@@ -169,10 +167,10 @@ const LanguagesForm = (props: LanguagesFormProps) => {
                             )}
                           >
                             {field.value
-                              ? languages?.find(
-                                  (language) => language.value === field.value,
+                              ? skills?.find(
+                                  (skill) => skill.value === field.value,
                                 )?.name
-                              : "Select language"}
+                              : "Select skill"}
                             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </FormControl>
@@ -185,10 +183,10 @@ const LanguagesForm = (props: LanguagesFormProps) => {
                       >
                         <Command>
                           <CommandInput
-                            placeholder="Search language..."
+                            placeholder="Search skill..."
                             className="h-9"
                           />
-                          <CommandEmpty>No language found.</CommandEmpty>
+                          <CommandEmpty>No skills found.</CommandEmpty>
                           <CommandGroup>
                             <ScrollArea className="h-[300px] pr-3">
                               {isLoading && (
@@ -198,23 +196,23 @@ const LanguagesForm = (props: LanguagesFormProps) => {
                                   </div>
                                 </>
                               )}
-                              {languages?.map((language) => (
+                              {skills?.map((skill) => (
                                 <CommandItem
-                                  value={language.name}
-                                  key={language.value}
+                                  value={skill.value}
+                                  key={skill.value}
                                   className={cn(
-                                    language.value === field.value &&
+                                    skill.value === field.value &&
                                       "bg-primary text-primary-foreground transition-colors data-[selected]:bg-green-800/90 data-[selected]:text-primary-foreground",
                                   )}
                                   onSelect={() => {
-                                    form.setValue("language", language.value);
+                                    form.setValue("skill", skill.value);
                                   }}
                                 >
-                                  {language.name}
+                                  {skill.name}
                                   <CheckIcon
                                     className={cn(
                                       "ml-auto h-4 w-4",
-                                      language.value === field.value
+                                      skill.value === field.value
                                         ? "opacity-100"
                                         : "opacity-0",
                                     )}
@@ -246,18 +244,15 @@ const LanguagesForm = (props: LanguagesFormProps) => {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Language level" />
+                          <SelectValue placeholder="Skill level" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="basic">Basic</SelectItem>
-                        <SelectItem value="conversational">
-                          Conversational
+                        <SelectItem value="beginner">Beginner</SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate
                         </SelectItem>
-                        <SelectItem value="fluent">Fluent</SelectItem>
-                        <SelectItem value="native_or_bilingual">
-                          Native/Bilingual
-                        </SelectItem>
+                        <SelectItem value="expert">Expert</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormDescription></FormDescription>
@@ -270,11 +265,11 @@ const LanguagesForm = (props: LanguagesFormProps) => {
                   className="w-1/2"
                   onClick={() => {
                     form.reset({
-                      language: undefined,
+                      skill: undefined,
                       level: undefined,
                     });
                     setEditMode(false);
-                    setLanguageEdit(false);
+                    setSkillEdit(false);
                   }}
                   type="button"
                   variant={"outline"}
@@ -283,46 +278,33 @@ const LanguagesForm = (props: LanguagesFormProps) => {
                 </Button>
                 <Button
                   isLoading={isAdding || isUpdating}
-                  loadingText={languageEdit ? "Saving..." : "Adding..."}
+                  loadingText={skillEdit ? "Saving..." : "Adding..."}
                   className="w-1/2"
                   type="submit"
                 >
-                  {languageEdit ? "Save" : "Add"}
+                  {skillEdit ? "Save" : "Add"}
                 </Button>
               </div>
             </fieldset>
           </form>
         </Form>
-      ) : userLanguages?.length === 0 ? (
+      ) : userSkills?.length === 0 ? (
         <div>
           <p className="text-sm font-normal text-muted-foreground">
-            No languages added yet.
+            No skills added yet.
           </p>
         </div>
       ) : (
         <div className="grid w-full gap-1.5 py-2">
-          {userLanguages?.map((language) => (
+          {userSkills?.map((skill) => (
             <div
-              key={language.value}
+              key={skill.value}
               className="group flex w-full items-center justify-between"
             >
               <div className="inline-flex flex-1 gap-1">
                 <p className="text-sm font-normal">
-                  {language.label}{" "}
-                  {language?.nativeName && (
-                    <span className="font-[550]">({language.nativeName})</span>
-                  )}
-                  {" - "}
-                  <span className="text-muted-foreground">
-                    {
-                      {
-                        basic: "Basic",
-                        conversational: "Conversational",
-                        fluent: "Fluent",
-                        native_or_bilingual: "Native/Bilingual",
-                      }[language.level]
-                    }
-                  </span>
+                  {skill.label}
+                  <span className="text-muted-foreground"></span>
                 </p>
               </div>
               {/* actions */}
@@ -331,12 +313,10 @@ const LanguagesForm = (props: LanguagesFormProps) => {
                   className="text-muted-foreground transition-colors duration-300 hover:text-foreground focus-visible:outline-primary"
                   onClick={() => {
                     form.reset({
-                      language: language.value,
-                      level: language.level as z.infer<
-                        typeof formSchema
-                      >["level"],
+                      skill: skill.value,
+                      level: skill.level as z.infer<typeof formSchema>["level"],
                     });
-                    setLanguageEdit(true);
+                    setSkillEdit(true);
                     setEditMode(true);
                   }}
                 >
@@ -346,7 +326,7 @@ const LanguagesForm = (props: LanguagesFormProps) => {
                   className="text-muted-foreground transition-colors duration-300 hover:text-foreground focus-visible:outline-primary"
                   onClick={() => {
                     removeLanguage(
-                      { id: language.id },
+                      { id: skill.id },
                       {
                         onSuccess() {
                           refresh();
@@ -366,4 +346,4 @@ const LanguagesForm = (props: LanguagesFormProps) => {
   );
 };
 
-export default LanguagesForm;
+export default SkillsForm;

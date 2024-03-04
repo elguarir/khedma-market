@@ -61,7 +61,7 @@ export function DisplayNameChangeModal({
                 {displayName}
               </CardTitle>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent className="max-md:hidden">
               <p className="font-[550]">Change display name</p>
             </TooltipContent>
           </Tooltip>

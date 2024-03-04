@@ -1,0 +1,468 @@
+[
+    {
+        "name": "Graphics & Design",
+        "slug": "graphics-design",
+        "subCategories": [
+            {
+                "name": "Logo & Brand Identity",
+                "slug": "logo-brand-identity",
+                "subCategories": [
+                    {
+                        "name": "Logo Design",
+                        "slug": "logo-design"
+                    },
+                    {
+                        "name": "Brand Style Guides",
+                        "slug": "brand-style-guides"
+                    },
+                    {
+                        "name": "Business Cards & Stationery",
+                        "slug": "business-cards-stationery"
+                    },
+                    {
+                        "name": "Fonts & Typography",
+                        "slug": "fonts-typography"
+                    },
+                    {
+                        "name": "Logo Maker Tool",
+                        "slug": "logo-maker-tool"
+                    }
+                ]
+            },
+            {
+                "name": "Art & Illustration",
+                "slug": "art-illustration",
+                "subCategories": [
+                    {
+                        "name": "Illustration",
+                        "slug": "illustration"
+                    },
+                    {
+                        "name": "AI Artists",
+                        "slug": "ai-artists"
+                    },
+                    {
+                        "name": "Children's Book Illustration",
+                        "slug": "childrens-book-illustration"
+                    },
+                    {
+                        "name": "Portraits & Caricatures",
+                        "slug": "portraits-caricatures"
+                    },
+                    {
+                        "name": "Cartoons & Comics",
+                        "slug": "cartoons-comics"
+                    }
+                ]
+            },
+            {
+                "name": "Web & App Design",
+                "slug": "web-app-design",
+                "subCategories": [
+                    {
+                        "name": "Website Design",
+                        "slug": "website-design"
+                    },
+                    {
+                        "name": "App Design",
+                        "slug": "app-design"
+                    },
+                    {
+                        "name": "UX Design",
+                        "slug": "ux-design"
+                    },
+                    {
+                        "name": "Landing Page Design",
+                        "slug": "landing-page-design"
+                    },
+                    {
+                        "name": "Icon Design",
+                        "slug": "icon-design"
+                    }
+                ]
+            },
+            {
+                "name": "Product & Gaming",
+                "slug": "product-gaming",
+                "subCategories": [
+                    {
+                        "name": "Industrial & Product Design",
+                        "slug": "industrial-product-design"
+                    },
+                    {
+                        "name": "Character Modeling",
+                        "slug": "character-modeling"
+                    },
+                    {
+                        "name": "Game Art",
+                        "slug": "game-art"
+                    },
+                    {
+                        "name": "Graphics for Streamers",
+                        "slug": "graphics-for-streamers"
+                    }
+                ]
+            },
+            {
+                "name": "Print Design",
+                "slug": "print-design",
+                "subCategories": [
+                    {
+                        "name": "Flyer Design",
+                        "slug": "flyer-design"
+                    },
+                    {
+                        "name": "Brochure Design",
+                        "slug": "brochure-design"
+                    },
+                    {
+                        "name": "Poster Design",
+                        "slug": "poster-design"
+                    },
+                    {
+                        "name": "Catalog Design",
+                        "slug": "catalog-design"
+                    },
+                    {
+                        "name": "Menu Design",
+                        "slug": "menu-design"
+                    }
+                ]
+            },
+            {
+                "name": "Visual Design",
+                "slug": "visual-design",
+                "subCategories": [
+                    {
+                        "name": "Image Editing",
+                        "slug": "image-editing"
+                    },
+                    {
+                        "name": "Presentation Design",
+                        "slug": "presentation-design"
+                    },
+                    {
+                        "name": "Background Removal",
+                        "slug": "background-removal"
+                    },
+                    {
+                        "name": "Infographic Design",
+                        "slug": "infographic-design"
+                    },
+                    {
+                        "name": "Vector Tracing",
+                        "slug": "vector-tracing"
+                    }
+                ]
+            },
+            {
+                "name": "Marketing Design",
+                "slug": "marketing-design",
+                "subCategories": [
+                    {
+                        "name": "Social Media Design",
+                        "slug": "social-media-design"
+                    },
+                    {
+                        "name": "Email Design",
+                        "slug": "email-design"
+                    },
+                    {
+                        "name": "Web Banners",
+                        "slug": "web-banners"
+                    },
+                    {
+                        "name": "Signage Design",
+                        "slug": "signage-design"
+                    },
+                    {
+                        "name": "Packaging & Covers",
+                        "slug": "packaging-covers"
+                    }
+                ]
+            },
+            {
+                "name": "Architecture & Building Design",
+                "slug": "architecture-building-design",
+                "subCategories": [
+                    {
+                        "name": "Architecture & Interior Design",
+                        "slug": "architecture-interior-design"
+                    },
+                    {
+                        "name": "Landscape Design",
+                        "slug": "landscape-design"
+                    },
+                    {
+                        "name": "Building Engineering",
+                        "slug": "building-engineering"
+                    }
+                ]
+            },
+            {
+                "name": "Fashion & Merchandise",
+                "slug": "fashion-merchandise",
+                "subCategories": [
+                    {
+                        "name": "T-Shirts & Merchandise",
+                        "slug": "t-shirts-merchandise"
+                    },
+                    {
+                        "name": "Fashion Design",
+                        "slug": "fashion-design"
+                    },
+                    {
+                        "name": "Jewelry Design",
+                        "slug": "jewelry-design"
+                    }
+                ]
+            },
+            {
+                "name": "3D Design",
+                "slug": "3d-design",
+                "subCategories": [
+                    {
+                        "name": "3D Architecture",
+                        "slug": "3d-architecture"
+                    },
+                    {
+                        "name": "3D Industrial Design",
+                        "slug": "3d-industrial-design"
+                    },
+                    {
+                        "name": "3D Fashion & Garment",
+                        "slug": "3d-fashion-garment"
+                    },
+                    {
+                        "name": "3D Printing Characters",
+                        "slug": "3d-printing-characters"
+                    },
+                    {
+                        "name": "3D Landscape",
+                        "slug": "3d-landscape"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Programming & Tech",
+        "slug": "programming-tech",
+        "subCategories": [
+            {
+                "name": "Website Development",
+                "slug": "website-development",
+                "subCategories": [
+                    {
+                        "name": "Business Websites",
+                        "slug": "business-websites"
+                    },
+                    {
+                        "name": "E-Commerce Development",
+                        "slug": "e-commerce-development"
+                    },
+                    {
+                        "name": "Landing Pages",
+                        "slug": "landing-pages"
+                    },
+                    {
+                        "name": "Dropshipping Websites",
+                        "slug": "dropshipping-websites"
+                    },
+                    {
+                        "name": "Build a Complete Website",
+                        "slug": "build-a-complete-website"
+                    }
+                ]
+            },
+            {
+                "name": "AI Development",
+                "slug": "ai-development",
+                "subCategories": [
+                    {
+                        "name": "AI Chatbot",
+                        "slug": "ai-chatbot"
+                    },
+                    {
+                        "name": "AI Applications",
+                        "slug": "ai-applications"
+                    },
+                    {
+                        "name": "AI Integrations",
+                        "slug": "ai-integrations"
+                    },
+                    {
+                        "name": "AI Agents",
+                        "slug": "ai-agents"
+                    },
+                    {
+                        "name": "AI Fine-Tuning",
+                        "slug": "ai-fine-tuning"
+                    },
+                    {
+                        "name": "Custom GPT Apps",
+                        "slug": "custom-gpt-apps"
+                    },
+                    {
+                        "name": "Chatbot Development",
+                        "slug": "chatbot-development"
+                    }
+                ]
+            },
+            {
+                "name": "Game Development",
+                "slug": "game-development",
+                "subCategories": [
+                    {
+                        "name": "PC Games",
+                        "slug": "pc-games"
+                    },
+                    {
+                        "name": "Mobile Games",
+                        "slug": "mobile-games"
+                    },
+                    {
+                        "name": "Console Games",
+                        "slug": "console-games"
+                    },
+                    {
+                        "name": "VR Games",
+                        "slug": "vr-games"
+                    }
+                ]
+            },
+            {
+                "name": "Mobile App Development",
+                "slug": "mobile-app-development",
+                "subCategories": [
+                    {
+                        "name": "Cross-platform Development",
+                        "slug": "cross-platform-development"
+                    },
+                    {
+                        "name": "Android App Development",
+                        "slug": "android-app-development"
+                    },
+                    {
+                        "name": "iOS App Development",
+                        "slug": "ios-app-development"
+                    },
+                    {
+                        "name": "Website to App",
+                        "slug": "website-to-app"
+                    },
+                    {
+                        "name": "Mobile App Maintenance",
+                        "slug": "mobile-app-maintenance"
+                    }
+                ]
+            },
+            {
+                "name": "Wearable App Development",
+                "slug": "wearable-app-development",
+                "subCategories": [
+                    {
+                        "name": "Smartwatch Development",
+                        "slug": "smartwatch-development"
+                    },
+                    {
+                        "name": "VR Headset Development",
+                        "slug": "vr-headset-development"
+                    }
+                ]
+            },
+            {
+                "name": "Support & Cybersecurity",
+                "slug": "support-cybersecurity",
+                "subCategories": [
+                    {
+                        "name": "Support & IT",
+                        "slug": "support-it"
+                    },
+                    {
+                        "name": "Cloud Computing",
+                        "slug": "cloud-computing"
+                    },
+                    {
+                        "name": "DevOps Engineering",
+                        "slug": "devops-engineering"
+                    },
+                    {
+                        "name": "Cybersecurity",
+                        "slug": "cybersecurity"
+                    }
+                ]
+            },
+            {
+                "name": "Software Development",
+                "slug": "software-development",
+                "subCategories": [
+                    {
+                        "name": "Web Applications",
+                        "slug": "web-applications"
+                    },
+                    {
+                        "name": "Desktop Applications",
+                        "slug": "desktop-applications"
+                    },
+                    {
+                        "name": "APIs & Integrations",
+                        "slug": "apis-integrations"
+                    },
+                    {
+                        "name": "Scripting",
+                        "slug": "scripting"
+                    },
+                    {
+                        "name": "Browser Extensions",
+                        "slug": "browser-extensions"
+                    }
+                ]
+            },
+            {
+                "name": "QA & Review",
+                "slug": "qa-review",
+                "subCategories": [
+                    {
+                        "name": "Software Testing",
+                        "slug": "software-testing"
+                    },
+                    {
+                        "name": "Code Review",
+                        "slug": "code-review"
+                    },
+                    {
+                        "name": "Design Review",
+                        "slug": "design-review"
+                    },
+                    {
+                        "name": "User Testing",
+                        "slug": "user-testing"
+                    }
+                ]
+            },
+            {
+                "name": "Miscellaneous",
+                "slug": "miscellaneous",
+                "subCategories": [
+                    {
+                        "name": "Electronics Engineering",
+                        "slug": "electronics-engineering"
+                    },
+                    {
+                        "name": "Development for Streamers",
+                        "slug": "development-for-streamers"
+                    },
+                    {
+                        "name": "Blockchain & Cryptocurrency",
+                        "slug": "blockchain-cryptocurrency"
+                    },
+                    {
+                        "name": "NFT Development",
+                        "slug": "nft-development"
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -33,7 +33,7 @@ const DescriptionForm = (props: DescriptionFormProps) => {
   let [editMode, setEditMode] = useState(false);
   let { mutate: update, isLoading: isUpdating } =
     api.profile.updateUserDescription.useMutation();
-  let { data: description, isLoading } =
+  let { data: description } =
     api.profile.getUserDescription.useQuery(undefined, {
       initialData: props.description,
     });
@@ -69,7 +69,7 @@ const DescriptionForm = (props: DescriptionFormProps) => {
             </button>
           </CardTitle>
         </TooltipTrigger>
-        <TooltipContent align="start" className="mb-0.5">
+        <TooltipContent align="start" className="mb-0.5 max-md:hidden">
           <p className="w-fit font-[550]">Tell us more about yourself.</p>
         </TooltipContent>
       </Tooltip>
