@@ -1,465 +1,261 @@
 [
     {
-        "name": "Graphics & Design",
-        "slug": "graphics-design",
+        "name": "Creative Services",
+        "slug": "creative-services",
         "subCategories": [
             {
-                "name": "Logo & Brand Identity",
-                "slug": "logo-brand-identity",
+                "name": "Graphic Design",
+                "slug": "graphic-design",
                 "subCategories": [
                     {
-                        "name": "Logo Design",
-                        "slug": "logo-design"
+                        "name": "Logo & Branding",
+                        "slug": "logo-branding"
                     },
                     {
-                        "name": "Brand Style Guides",
-                        "slug": "brand-style-guides"
+                        "name": "Illustration & Art",
+                        "slug": "illustration-art"
                     },
                     {
-                        "name": "Business Cards & Stationery",
-                        "slug": "business-cards-stationery"
+                        "name": "UI/UX Design",
+                        "slug": "ui-ux-design"
                     },
                     {
-                        "name": "Fonts & Typography",
-                        "slug": "fonts-typography"
+                        "name": "Print & Marketing Materials",
+                        "slug": "print-marketing-materials"
                     },
                     {
-                        "name": "Logo Maker Tool",
-                        "slug": "logo-maker-tool"
+                        "name": "3D Design",
+                        "slug": "3d-design"
                     }
                 ]
             },
             {
-                "name": "Art & Illustration",
-                "slug": "art-illustration",
+                "name": "Video & Animation",
+                "slug": "video-animation",
                 "subCategories": [
                     {
-                        "name": "Illustration",
-                        "slug": "illustration"
+                        "name": "Editing & Post-Production",
+                        "slug": "editing-post-production"
                     },
                     {
-                        "name": "AI Artists",
-                        "slug": "ai-artists"
+                        "name": "Social & Marketing Videos",
+                        "slug": "social-marketing-videos"
                     },
                     {
-                        "name": "Children's Book Illustration",
-                        "slug": "childrens-book-illustration"
+                        "name": "Animation & Motion Graphics",
+                        "slug": "animation-motion-graphics"
                     },
                     {
-                        "name": "Portraits & Caricatures",
-                        "slug": "portraits-caricatures"
+                        "name": "Filmed Video Production",
+                        "slug": "filmed-video-production"
                     },
                     {
-                        "name": "Cartoons & Comics",
-                        "slug": "cartoons-comics"
+                        "name": "Photography",
+                        "slug": "photography"
                     }
                 ]
             },
             {
-                "name": "Web & App Design",
-                "slug": "web-app-design",
+                "name": "Writing & Translation",
+                "slug": "writing-translation",
                 "subCategories": [
                     {
-                        "name": "Website Design",
-                        "slug": "website-design"
+                        "name": "Content Creation",
+                        "slug": "content-creation"
                     },
                     {
-                        "name": "App Design",
-                        "slug": "app-design"
+                        "name": "Editing & Proofreading",
+                        "slug": "editing-proofreading"
                     },
                     {
-                        "name": "UX Design",
-                        "slug": "ux-design"
+                        "name": "Book & eBook Services",
+                        "slug": "book-ebook-services"
                     },
                     {
-                        "name": "Landing Page Design",
-                        "slug": "landing-page-design"
+                        "name": "Business & Marketing Copy",
+                        "slug": "business-marketing-copy"
                     },
                     {
-                        "name": "Icon Design",
-                        "slug": "icon-design"
+                        "name": "Translation & Transcription",
+                        "slug": "translation-transcription"
                     }
                 ]
             },
             {
-                "name": "Product & Gaming",
-                "slug": "product-gaming",
+                "name": "Music & Audio",
+                "slug": "music-audio",
                 "subCategories": [
                     {
-                        "name": "Industrial & Product Design",
-                        "slug": "industrial-product-design"
+                        "name": "Music Production & Composition",
+                        "slug": "music-production-composition"
                     },
                     {
-                        "name": "Character Modeling",
-                        "slug": "character-modeling"
+                        "name": "Audio Engineering & Post Production",
+                        "slug": "audio-engineering-post-production"
                     },
                     {
-                        "name": "Game Art",
-                        "slug": "game-art"
+                        "name": "Voice Over & Narration",
+                        "slug": "voice-over-narration"
                     },
                     {
-                        "name": "Graphics for Streamers",
-                        "slug": "graphics-for-streamers"
-                    }
-                ]
-            },
-            {
-                "name": "Print Design",
-                "slug": "print-design",
-                "subCategories": [
-                    {
-                        "name": "Flyer Design",
-                        "slug": "flyer-design"
+                        "name": "DJing & Remixing",
+                        "slug": "djing-remixing"
                     },
                     {
-                        "name": "Brochure Design",
-                        "slug": "brochure-design"
-                    },
-                    {
-                        "name": "Poster Design",
-                        "slug": "poster-design"
-                    },
-                    {
-                        "name": "Catalog Design",
-                        "slug": "catalog-design"
-                    },
-                    {
-                        "name": "Menu Design",
-                        "slug": "menu-design"
-                    }
-                ]
-            },
-            {
-                "name": "Visual Design",
-                "slug": "visual-design",
-                "subCategories": [
-                    {
-                        "name": "Image Editing",
-                        "slug": "image-editing"
-                    },
-                    {
-                        "name": "Presentation Design",
-                        "slug": "presentation-design"
-                    },
-                    {
-                        "name": "Background Removal",
-                        "slug": "background-removal"
-                    },
-                    {
-                        "name": "Infographic Design",
-                        "slug": "infographic-design"
-                    },
-                    {
-                        "name": "Vector Tracing",
-                        "slug": "vector-tracing"
-                    }
-                ]
-            },
-            {
-                "name": "Marketing Design",
-                "slug": "marketing-design",
-                "subCategories": [
-                    {
-                        "name": "Social Media Design",
-                        "slug": "social-media-design"
-                    },
-                    {
-                        "name": "Email Design",
-                        "slug": "email-design"
-                    },
-                    {
-                        "name": "Web Banners",
-                        "slug": "web-banners"
-                    },
-                    {
-                        "name": "Signage Design",
-                        "slug": "signage-design"
-                    },
-                    {
-                        "name": "Packaging & Covers",
-                        "slug": "packaging-covers"
-                    }
-                ]
-            },
-            {
-                "name": "Architecture & Building Design",
-                "slug": "architecture-building-design",
-                "subCategories": [
-                    {
-                        "name": "Architecture & Interior Design",
-                        "slug": "architecture-interior-design"
-                    },
-                    {
-                        "name": "Landscape Design",
-                        "slug": "landscape-design"
-                    },
-                    {
-                        "name": "Building Engineering",
-                        "slug": "building-engineering"
-                    }
-                ]
-            },
-            {
-                "name": "Fashion & Merchandise",
-                "slug": "fashion-merchandise",
-                "subCategories": [
-                    {
-                        "name": "T-Shirts & Merchandise",
-                        "slug": "t-shirts-merchandise"
-                    },
-                    {
-                        "name": "Fashion Design",
-                        "slug": "fashion-design"
-                    },
-                    {
-                        "name": "Jewelry Design",
-                        "slug": "jewelry-design"
-                    }
-                ]
-            },
-            {
-                "name": "3D Design",
-                "slug": "3d-design",
-                "subCategories": [
-                    {
-                        "name": "3D Architecture",
-                        "slug": "3d-architecture"
-                    },
-                    {
-                        "name": "3D Industrial Design",
-                        "slug": "3d-industrial-design"
-                    },
-                    {
-                        "name": "3D Fashion & Garment",
-                        "slug": "3d-fashion-garment"
-                    },
-                    {
-                        "name": "3D Printing Characters",
-                        "slug": "3d-printing-characters"
-                    },
-                    {
-                        "name": "3D Landscape",
-                        "slug": "3d-landscape"
+                        "name": "Sound Design",
+                        "slug": "sound-design"
                     }
                 ]
             }
         ]
     },
     {
-        "name": "Programming & Tech",
-        "slug": "programming-tech",
+        "name": "Tech & Development",
+        "slug": "tech-development",
         "subCategories": [
             {
-                "name": "Website Development",
-                "slug": "website-development",
-                "subCategories": [
-                    {
-                        "name": "Business Websites",
-                        "slug": "business-websites"
-                    },
-                    {
-                        "name": "E-Commerce Development",
-                        "slug": "e-commerce-development"
-                    },
-                    {
-                        "name": "Landing Pages",
-                        "slug": "landing-pages"
-                    },
-                    {
-                        "name": "Dropshipping Websites",
-                        "slug": "dropshipping-websites"
-                    },
-                    {
-                        "name": "Build a Complete Website",
-                        "slug": "build-a-complete-website"
-                    }
-                ]
+                "name": "Programming & Development",
+                "slug": "programming-development"
             },
             {
-                "name": "AI Development",
-                "slug": "ai-development",
-                "subCategories": [
-                    {
-                        "name": "AI Chatbot",
-                        "slug": "ai-chatbot"
-                    },
-                    {
-                        "name": "AI Applications",
-                        "slug": "ai-applications"
-                    },
-                    {
-                        "name": "AI Integrations",
-                        "slug": "ai-integrations"
-                    },
-                    {
-                        "name": "AI Agents",
-                        "slug": "ai-agents"
-                    },
-                    {
-                        "name": "AI Fine-Tuning",
-                        "slug": "ai-fine-tuning"
-                    },
-                    {
-                        "name": "Custom GPT Apps",
-                        "slug": "custom-gpt-apps"
-                    },
-                    {
-                        "name": "Chatbot Development",
-                        "slug": "chatbot-development"
-                    }
-                ]
+                "name": "Website Development",
+                "slug": "website-development"
             },
             {
                 "name": "Game Development",
-                "slug": "game-development",
-                "subCategories": [
-                    {
-                        "name": "PC Games",
-                        "slug": "pc-games"
-                    },
-                    {
-                        "name": "Mobile Games",
-                        "slug": "mobile-games"
-                    },
-                    {
-                        "name": "Console Games",
-                        "slug": "console-games"
-                    },
-                    {
-                        "name": "VR Games",
-                        "slug": "vr-games"
-                    }
-                ]
+                "slug": "game-development"
             },
             {
                 "name": "Mobile App Development",
-                "slug": "mobile-app-development",
-                "subCategories": [
-                    {
-                        "name": "Cross-platform Development",
-                        "slug": "cross-platform-development"
-                    },
-                    {
-                        "name": "Android App Development",
-                        "slug": "android-app-development"
-                    },
-                    {
-                        "name": "iOS App Development",
-                        "slug": "ios-app-development"
-                    },
-                    {
-                        "name": "Website to App",
-                        "slug": "website-to-app"
-                    },
-                    {
-                        "name": "Mobile App Maintenance",
-                        "slug": "mobile-app-maintenance"
-                    }
-                ]
-            },
-            {
-                "name": "Wearable App Development",
-                "slug": "wearable-app-development",
-                "subCategories": [
-                    {
-                        "name": "Smartwatch Development",
-                        "slug": "smartwatch-development"
-                    },
-                    {
-                        "name": "VR Headset Development",
-                        "slug": "vr-headset-development"
-                    }
-                ]
+                "slug": "mobile-app-development"
             },
             {
                 "name": "Support & Cybersecurity",
-                "slug": "support-cybersecurity",
+                "slug": "support-cybersecurity"
+            }
+        ]
+    },
+    {
+        "name": "Digital Marketing",
+        "slug": "digital-marketing",
+        "subCategories": [
+            {
+                "name": "Search Engine Optimization",
+                "slug": "search-engine-optimization"
+            },
+            {
+                "name": "Social Media Marketing",
+                "slug": "social-media-marketing"
+            },
+            {
+                "name": "Video & E-Commerce Marketing",
+                "slug": "video-e-commerce-marketing"
+            },
+            {
+                "name": "Analytics & Strategy",
+                "slug": "analytics-strategy"
+            }
+        ]
+    },
+    {
+        "name": "Business & Consulting",
+        "slug": "business-consulting",
+        "subCategories": [
+            {
+                "name": "Business Services",
+                "slug": "business-services",
                 "subCategories": [
                     {
-                        "name": "Support & IT",
-                        "slug": "support-it"
+                        "name": "Virtual Assistance",
+                        "slug": "virtual-assistance"
                     },
                     {
-                        "name": "Cloud Computing",
-                        "slug": "cloud-computing"
+                        "name": "Business Management",
+                        "slug": "business-management"
                     },
                     {
-                        "name": "DevOps Engineering",
-                        "slug": "devops-engineering"
+                        "name": "Accounting & Finance",
+                        "slug": "accounting-finance"
                     },
                     {
-                        "name": "Cybersecurity",
-                        "slug": "cybersecurity"
+                        "name": "Legal Services",
+                        "slug": "legal-services"
+                    },
+                    {
+                        "name": "Sales & Customer Care",
+                        "slug": "sales-customer-care"
                     }
                 ]
             },
             {
-                "name": "Software Development",
-                "slug": "software-development",
+                "name": "Consulting",
+                "slug": "consulting",
                 "subCategories": [
                     {
-                        "name": "Web Applications",
-                        "slug": "web-applications"
+                        "name": "Business Consultants",
+                        "slug": "business-consultants"
                     },
                     {
-                        "name": "Desktop Applications",
-                        "slug": "desktop-applications"
+                        "name": "Marketing Strategy",
+                        "slug": "marketing-strategy"
                     },
                     {
-                        "name": "APIs & Integrations",
-                        "slug": "apis-integrations"
+                        "name": "Tech & Data Consulting",
+                        "slug": "tech-data-consulting"
                     },
                     {
-                        "name": "Scripting",
-                        "slug": "scripting"
+                        "name": "Coaching & Mentorship",
+                        "slug": "coaching-mentorship"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Data & AI",
+        "slug": "data-ai",
+        "subCategories": [
+            {
+                "name": "Data & Analytics",
+                "slug": "data-analytics",
+                "subCategories": [
+                    {
+                        "name": "Data Science & ML",
+                        "slug": "data-science-ml"
                     },
                     {
-                        "name": "Browser Extensions",
-                        "slug": "browser-extensions"
+                        "name": "Data Analysis",
+                        "slug": "data-analysis"
+                    },
+                    {
+                        "name": "Data Collection & Management",
+                        "slug": "data-collection-management"
                     }
                 ]
             },
             {
-                "name": "QA & Review",
-                "slug": "qa-review",
+                "name": "AI Services",
+                "slug": "ai-services",
                 "subCategories": [
                     {
-                        "name": "Software Testing",
-                        "slug": "software-testing"
+                        "name": "AI Development",
+                        "slug": "ai-development"
                     },
                     {
-                        "name": "Code Review",
-                        "slug": "code-review"
+                        "name": "AI Artists",
+                        "slug": "ai-artists"
                     },
                     {
-                        "name": "Design Review",
-                        "slug": "design-review"
+                        "name": "AI for Businesses",
+                        "slug": "ai-for-businesses"
                     },
                     {
-                        "name": "User Testing",
-                        "slug": "user-testing"
-                    }
-                ]
-            },
-            {
-                "name": "Miscellaneous",
-                "slug": "miscellaneous",
-                "subCategories": [
-                    {
-                        "name": "Electronics Engineering",
-                        "slug": "electronics-engineering"
+                        "name": "AI Video & Audio",
+                        "slug": "ai-video-audio"
                     },
                     {
-                        "name": "Development for Streamers",
-                        "slug": "development-for-streamers"
-                    },
-                    {
-                        "name": "Blockchain & Cryptocurrency",
-                        "slug": "blockchain-cryptocurrency"
-                    },
-                    {
-                        "name": "NFT Development",
-                        "slug": "nft-development"
+                        "name": "AI Content",
+                        "slug": "ai-content"
                     }
                 ]
             }

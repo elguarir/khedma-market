@@ -359,7 +359,7 @@ model Category {
     parentCategory Category?  @relation(name: "CategoryRelation", fields: [parentId], references: [id])
     subCategories  Category[] @relation(name: "CategoryRelation")
     parentId       String?    @map("parent_id")
-    Gig            Gig[]
+    gigs           Gig[]
 
     @@map("categories")
 }
