@@ -38,7 +38,10 @@ const NavBar = async () => {
           {/* Desktop */}
           <ul className="hidden h-full flex-1 items-center justify-start gap-6 md:flex">
             {links.map((link) => (
-              <li className="text-base font-medium transition-colors duration-300 hover:text-primary">
+              <li
+                key={link?.href}
+                className="text-base font-medium transition-colors duration-300 hover:text-primary"
+              >
                 <Link href={link.href}>{link.label}</Link>
               </li>
             ))}

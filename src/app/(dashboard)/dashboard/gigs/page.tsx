@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { LucideProps } from "lucide-react";
-import Link from "next/link";
 import React from "react";
+import AddNew from "./_components/add-new";
 
 const GigsPage = async () => {
   return (
@@ -15,10 +13,8 @@ const GigsPage = async () => {
               bellow you can view, create and manage your gigs.
             </p>
           </div>
-          <div className="max-sm:w-full flex items-center justify-end">
-            <Button asChild>
-              <Link href={"/dashboard/gigs/new"}>Create a Gig</Link>
-            </Button>
+          <div className="flex items-center justify-end max-sm:w-full">
+            <AddNew />
           </div>
         </div>
       </div>

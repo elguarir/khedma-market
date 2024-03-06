@@ -259,16 +259,20 @@ model Attachement {
 }
 
 model Gig {
-    id          String        @id @default(cuid())
-    title       String
-    description Json
-    ownerId     String?       @map("owner_id")
-    categoryId  String?       @map("category_id")
-    createdAt   DateTime      @default(now()) @map("created_at")
-    updatedAt   DateTime      @updatedAt @map("updated_at")
+    id                     String   @id @default(cuid())
+    title                  String?
+    slug                   String?
+    description            Json?
+    status                 String   @default("draft")
+    offersMultiplePackages Boolean  @default(false) @map("offers_multiple_packages")
+    ownerId                String   @map("owner_id")
+    categoryId             String?  @map("category_id")
+    createdAt              DateTime @default(now()) @map("created_at")
+    updatedAt              DateTime @updatedAt @map("updated_at")
+
     packages    Package[]
     category    Category?     @relation(fields: [categoryId], references: [id])
-    owner       User?         @relation(fields: [ownerId], references: [id])
+    owner       User          @relation(fields: [ownerId], references: [id])
     attachments Attachement[]
     reviews     Review[]
     tags        GigTag[]
