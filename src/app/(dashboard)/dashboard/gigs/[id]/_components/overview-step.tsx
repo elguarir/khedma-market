@@ -107,9 +107,9 @@ export const OverviewStep = ({
     });
 
     setOverview(data);
-
     setCurrentStep(step + 1);
   }
+  
   if (currentStep !== step) return null;
 
   return (

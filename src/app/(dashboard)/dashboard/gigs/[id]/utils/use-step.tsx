@@ -6,7 +6,7 @@ type Store = {
 };
 
 export const useStep = create<Store>()((set, get) => ({
-  step: 2,
+  step: 1,
   setStep: (step) => {
     set({ step });
   },

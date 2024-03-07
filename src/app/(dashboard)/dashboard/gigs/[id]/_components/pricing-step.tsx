@@ -94,10 +94,10 @@ const PricingStep = (props: Props) => {
     console.log("data", data);
     setCurrentStep(props.step + 1);
   }
-  if (props.step !== currentStep) return null;
   let [offerPackages, setOfferPackages] = useState(false);
   let errors = form.formState.errors;
   console.log("errors", errors);
+  if (props.step !== currentStep) return null;
   return (
     <>
       <div>
@@ -136,40 +136,42 @@ const PricingStep = (props: Props) => {
                   />
                 </div>
               </header>
-              <div className="grid w-full grid-cols-11 divide-x overflow-hidden rounded-md border border-input shadow-sm">
-                {/* labels & options */}
-                <div className="col-span-2 h-full w-full">
-                  <header className="flex h-16 w-full items-center justify-center border-b" />
-                  <div className="grid w-full space-y-0 divide-y">
-                    <div className="h-[80px] px-3">
-                      <Label className="font-semibold">Name</Label>
-                    </div>
-                    <div className="h-[81px] px-3">
-                      <Label className="font-semibold">Description</Label>
-                    </div>
-                    <div className="flex h-[37px] items-center px-3">
-                      <Label className="font-semibold">Delivery Time</Label>
-                    </div>
-                    <div className="flex h-[37px] items-center px-3">
-                      <Label className="font-semibold">Revisions</Label>
-                    </div>
-                    <div className="flex h-[37px] items-center px-3">
-                      <Label className="font-semibold">Price</Label>
+              <div className="w-full max-md:overflow-auto">
+                <div className="grid w-full grid-cols-11 divide-x overflow-hidden rounded-md border border-input shadow-sm max-md:min-w-[800px]">
+                  {/* labels & options */}
+                  <div className="col-span-2 h-full w-full">
+                    <header className="flex h-16 w-full items-center justify-center border-b" />
+                    <div className="grid w-full space-y-0 divide-y">
+                      <div className="h-[80px] px-3">
+                        <Label className="font-semibold">Name</Label>
+                      </div>
+                      <div className="h-[81px] px-3">
+                        <Label className="font-semibold">Description</Label>
+                      </div>
+                      <div className="flex h-[37px] items-center px-3">
+                        <Label className="font-semibold">Delivery Time</Label>
+                      </div>
+                      <div className="flex h-[37px] items-center px-3">
+                        <Label className="font-semibold">Revisions</Label>
+                      </div>
+                      <div className="flex h-[37px] items-center px-3">
+                        <Label className="font-semibold">Price</Label>
+                      </div>
                     </div>
                   </div>
+                  {/* packages */}
+                  <PackageOption form={form} type="basic" />
+                  <PackageOption
+                    form={form}
+                    disabled={!offerPackages}
+                    type="standard"
+                  />
+                  <PackageOption
+                    form={form}
+                    disabled={!offerPackages}
+                    type="premium"
+                  />
                 </div>
-                {/* packages */}
-                <PackageOption form={form} type="basic" />
-                <PackageOption
-                  form={form}
-                  disabled={!offerPackages}
-                  type="standard"
-                />
-                <PackageOption
-                  form={form}
-                  disabled={!offerPackages}
-                  type="premium"
-                />
               </div>
             </div>
             <div className="flex items-center justify-end">
