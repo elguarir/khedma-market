@@ -22,11 +22,13 @@ const Stepper = (props: Props) => {
           {steps.map((step, i) => {
             let isActive = step.id === currentStep;
             let isCompleted = step.id < currentStep;
+            let isDisabled = step.id > currentStep;
             return (
               <>
                 <li
                   key={step.id}
-                  className="flex cursor-pointer select-none items-center gap-2"
+                  aria-disabled={isDisabled}
+                  className="flex cursor-pointer select-none items-center gap-2 aria-disabled:cursor-auto"
                 >
                   <div
                     className={cn(
@@ -52,7 +54,11 @@ const Stepper = (props: Props) => {
                     data-active={isActive}
                     data-step={step.id}
                     key={i}
-                    onClick={() => setCurrentStep(step.id)}
+                    onClick={() => {
+                      if (step.id < currentStep) {
+                        setCurrentStep(step.id);
+                      }
+                    }}
                   >
                     {step.label}
                   </span>

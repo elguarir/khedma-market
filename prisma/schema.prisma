@@ -342,16 +342,17 @@ model Review {
 
 model Package {
     id          String   @id @default(cuid())
+    name        String
     price       Float
-    delivery    Int
     description String
+    delivery    Int
     revision    Int
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
-
-    gig    Gig?    @relation(fields: [gigId], references: [id])
-    gigId  String? @map("gig_id")
-    orders Order[]
+    type        String
+    gig         Gig?     @relation(fields: [gigId], references: [id])
+    gigId       String?  @map("gig_id")
+    orders      Order[]
 
     @@map("packages")
 }
