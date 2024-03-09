@@ -2,22 +2,15 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
-  SelectGroup,
-  SelectLabel,
   SelectSeparator,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import CurrencyInput from "react-currency-input-field";
 
@@ -26,10 +19,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Switch } from "@/components/ui/switch";
-import {
-  ExclamationTriangleIcon,
-  QuestionMarkCircledIcon,
-} from "@radix-ui/react-icons";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,65 +28,80 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { useDebugValue, useState } from "react";
+import { toast } from "sonner";
+import { packageSchema } from "@/schemas";
+import { api } from "@/trpc/react";
+
+export const formSchema = z.object({
+  basic: packageSchema.required(),
+  standard: packageSchema,
+  premium: packageSchema,
+});
+
+export type TformSchema = z.infer<typeof formSchema>;
 
 type Props = {
   step: number;
+  gigId: string;
+  defaultValues: Partial<TformSchema>;
+  offersMultiplePackages: boolean | undefined;
 };
+const PricingStep = (props: Props) => {
+  // states
+  let currentStep = useStep((s) => s.step);
+  let setCurrentStep = useStep((s) => s.setStep);
+  // mutations
+  let { mutate: createPackages, isLoading } =
+    api.gig.createPackages.useMutation();
 
-let packageSchema = z.object({
-  name: z.string().min(5, "Name is too short").max(20, "Name is too long"),
-  description: z
-    .string()
-    .min(5, "Description is too short")
-    .max(100, "Description is too long"),
-  revisions: z.number().int().min(1, "Revisions must be at least 1"),
-  deliveryTime: z.number().int().min(1, "Delivery time must be at least a day"),
-  price: z.number().int().min(10, "Price must be at least 10 MAD"),
-});
-
-export const formSchema = z
-  .object({
-    basic: packageSchema,
-    standard: packageSchema.optional(),
-    premium: packageSchema.optional(),
-  })
-  .refine(
-    (v) => {
-      let names = new Set<string>();
-      for (let key in v) {
-        // @ts-ignore
-        let name = v[key].name;
-        if (names.has(name)) {
-          return false;
-        }
-        names.add(name);
-      }
-
-      if (names.size !== 3) {
-        return false;
-      }
-    },
+  let { data: offerPackages } = api.gig.doesOffersMultiplePackages.useQuery(
+    { id: props.gigId },
     {
-      message: "Package names must be unique",
-      path: ["name"],
+      initialData: props.offersMultiplePackages,
     },
   );
 
-const PricingStep = (props: Props) => {
-  let currentStep = useStep((s) => s.step);
+  let utils = api.useUtils();
+
+  let { mutate: updateOffersMultiplePackages, isLoading: isUpdating } =
+    api.gig.udpateOffersMultiplePackages.useMutation();
+
   let form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      basic: props.defaultValues.basic,
+      standard: props.defaultValues.standard,
+      premium: props.defaultValues.premium,
+    },
   });
 
-  let setCurrentStep = useStep((s) => s.setStep);
   function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log("data", data);
-    setCurrentStep(props.step + 1);
+    let standardExists = Object.values(data.standard).every(
+      (v) => v !== undefined,
+    );
+    let premiumExists = Object.values(data.premium).every(
+      (v) => v !== undefined,
+    );
+    if (offerPackages && (!standardExists || !premiumExists)) {
+      toast.error("When offering packages, all fields are required");
+      return;
+    }
+
+    createPackages(
+      {
+        basic: data.basic,
+        standard: offerPackages ? data.standard : undefined,
+        premium: offerPackages ? data.premium : undefined,
+        gigId: props.gigId,
+      },
+      {
+        onSuccess: (data) => {
+          setCurrentStep(3);
+        },
+      },
+    );
   }
-  let [offerPackages, setOfferPackages] = useState(false);
-  let errors = form.formState.errors;
-  console.log("errors", errors);
+
   if (props.step !== currentStep) return null;
   return (
     <>
@@ -111,14 +116,14 @@ const PricingStep = (props: Props) => {
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <fieldset className="w-full space-y-6" disabled={false}>
+          <fieldset className="w-full space-y-6" disabled={isLoading}>
             <div className="grid gap-8">
               <header className="flex items-center justify-between">
                 <h4 className="text-lg font-semibold">Scope & Pricing</h4>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center font-medium text-muted-foreground">
                     <Tooltip>
-                      <TooltipTrigger>
+                      <TooltipTrigger type="button">
                         <QuestionMarkCircledIcon className="mr-1 h-4 w-4" />
                       </TooltipTrigger>
                       <TooltipContent className="max-w-60">
@@ -132,7 +137,16 @@ const PricingStep = (props: Props) => {
                   </div>
                   <Switch
                     checked={offerPackages}
-                    onCheckedChange={setOfferPackages}
+                    onCheckedChange={(v) => {
+                      updateOffersMultiplePackages(
+                        { id: props.gigId, value: v },
+                        {
+                          onSuccess: () => {
+                            utils.gig.doesOffersMultiplePackages.invalidate();
+                          },
+                        },
+                      );
+                    }}
                   />
                 </div>
               </header>
@@ -198,7 +212,6 @@ const PackageOption = ({
   disabled = false,
   form,
 }: PackageOptionProps) => {
-  console.log("price", form.watch("basic.price"));
   return (
     <div
       className={cn(
@@ -278,7 +291,7 @@ const PackageOption = ({
         <div>
           <FormField
             control={form.control}
-            name={(type + ".deliveryTime") as any}
+            name={(type + ".delivery") as any}
             render={({ field, fieldState }) => (
               <FormItem className="flex items-center space-y-0 pr-3">
                 <FormControl>
@@ -287,7 +300,13 @@ const PackageOption = ({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className="border-none p-3 py-4 shadow-none focus:ring-0 focus-visible:ring-0">
-                      <SelectValue placeholder="Delivery time" />
+                      <span>
+                        {!field.value
+                          ? "Delivery Time"
+                          : field.value === 1
+                            ? "1 Day"
+                            : field.value + " Days"}
+                      </span>
                     </SelectTrigger>
                     <SelectContent align="center">
                       <SelectItem value="1">1 Day</SelectItem>
@@ -337,7 +356,13 @@ const PackageOption = ({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className="border-none p-3 py-4 shadow-none focus:ring-0 focus-visible:ring-0">
-                      <SelectValue placeholder="Revision" />
+                      <span>
+                        {!field.value
+                          ? "Revisions"
+                          : field.value === -1
+                            ? "Unlimited Revisions"
+                            : field.value + " Revisions"}
+                      </span>
                     </SelectTrigger>
                     <SelectContent align="center">
                       <SelectItem value="1">1 Revisions</SelectItem>

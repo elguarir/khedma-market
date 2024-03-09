@@ -340,20 +340,27 @@ model Review {
     userId    String?  @map("user_id")
 }
 
+enum PackageType {
+    basic
+    standard
+    premium
+}
+
 model Package {
-    id          String   @id @default(cuid())
+    id          String      @id @default(cuid())
     name        String
     price       Float
     description String
     delivery    Int
-    revision    Int
-    createdAt   DateTime @default(now()) @map("created_at")
-    updatedAt   DateTime @updatedAt @map("updated_at")
-    type        String
-    gig         Gig?     @relation(fields: [gigId], references: [id])
-    gigId       String?  @map("gig_id")
+    revisions   Int
+    createdAt   DateTime    @default(now()) @map("created_at")
+    updatedAt   DateTime    @updatedAt @map("updated_at")
+    type        PackageType
+    gig         Gig?        @relation(fields: [gigId], references: [id])
+    gigId       String?     @map("gig_id")
     orders      Order[]
 
+    @@unique([gigId, type])
     @@map("packages")
 }
 

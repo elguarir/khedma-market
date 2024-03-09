@@ -153,7 +153,7 @@ const UserProfile = async (props: Props) => {
               ))}
               <Link
                 href={"/dashboard/gigs/new"}
-                className="relative flex h-full w-full items-center justify-center rounded-lg border border-input"
+                className="relative flex py-14 h-full w-full items-center justify-center rounded-lg border border-input"
               >
                 <div className="flex flex-col items-center gap-2">
                   <div className="flex h-24 w-24 items-center justify-center rounded-full bg-foreground text-background">

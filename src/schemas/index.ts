@@ -72,3 +72,23 @@ export const RegisterSchema = z.object({
     message: "Password needs to be at least 6 characters",
   }),
 });
+
+
+export const packageSchema = z.object({
+  name: z
+    .string()
+    .min(5, "Name is too short")
+    .max(20, "Name is too long")
+    .optional(),
+  description: z
+    .string()
+    .min(5, "Description is too short")
+    .max(100, "Description is too long")
+    .optional(),
+  revisions: z.number().int().min(1, "Revisions must be at least 1").optional(),
+  delivery: z
+    .number()
+    .int()
+    .optional(),
+  price: z.number().int().min(10, "Price must be at least 10 MAD").optional(),
+});

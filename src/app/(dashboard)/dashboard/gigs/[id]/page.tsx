@@ -4,9 +4,12 @@ import { OverviewStep } from "./_components/overview-step";
 import Stepper from "./_components/stepper";
 import PricingStep from "./_components/pricing-step";
 import DescriptionFaq from "./_components/description-faq";
-import { getGigById } from "@/server/api/routers/gig";
+import {
+  getGigById,
+  getGigPackages,
+  doesOffersMultiplePackages,
+} from "@/server/api/routers/gig";
 import { redirect } from "next/navigation";
-import { randomUUID } from "crypto";
 
 type Props = {
   params: {
@@ -19,6 +22,9 @@ const NewGigPage = async (props: Props) => {
   if (!gig) {
     return redirect("/dashboard/gigs");
   }
+  let offers = await doesOffersMultiplePackages(gig.id);
+  let packages = await getGigPackages(gig.id);
+
   return (
     <main>
       <div className="space-y-0.5">
@@ -45,7 +51,12 @@ const NewGigPage = async (props: Props) => {
             }}
             step={1}
           />
-          <PricingStep step={2} />
+          <PricingStep
+            offersMultiplePackages={offers}
+            defaultValues={packages}
+            gigId={gig.id}
+            step={2}
+          />
           <DescriptionFaq step={3} />
         </div>
       </div>
