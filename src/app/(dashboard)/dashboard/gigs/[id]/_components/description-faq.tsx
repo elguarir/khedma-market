@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextInput } from "@/components/shared/richtext-input";
 
 type Props = {
   step: number;
@@ -62,7 +63,7 @@ const DescriptionFaq = (props: Props) => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <RichTextInput />
                   </FormControl>
                   <FormDescription></FormDescription>
                   <FormMessage />

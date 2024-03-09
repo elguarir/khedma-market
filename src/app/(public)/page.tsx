@@ -1,10 +1,8 @@
 
 export default async function Home() {
   return (
-    <main className="flex justify-center flex-col w-full items-center">
-      <div>
-        <h1 className="text-3xl font-semibold">
-        </h1>
+    <main className="flex w-full flex-col items-center justify-center">
+      <div className="w-[500px]">
       </div>
     </main>
   );
