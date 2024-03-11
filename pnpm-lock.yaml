@@ -17,6 +17,9 @@ dependencies:
   '@editorjs/header':
     specifier: ^2.8.1
     version: 2.8.1
+    'jotai':
+    specifier: ^2.7.0
+    version: 2.7.0
   '@editorjs/inline-code':
     specifier: ^1.5.0
     version: 1.5.0
