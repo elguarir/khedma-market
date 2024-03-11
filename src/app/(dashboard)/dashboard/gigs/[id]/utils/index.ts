@@ -17,10 +17,6 @@ export let steps = [
     },
     {
       id: 5,
-      label: "Requirements",
-    },
-    {
-      id: 6,
       label: "Publish",
     },
   ];

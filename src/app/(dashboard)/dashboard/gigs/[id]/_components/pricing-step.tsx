@@ -108,7 +108,7 @@ const PricingStep = (props: Props) => {
       <div>
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Pricing</h3>
-          <p className="text-muted-foreground">Step {props.step} of 6</p>
+          <p className="text-muted-foreground">Step {props.step} of 5</p>
         </div>
         <p className="text-muted-foreground">
           Add packages you offer for this gig, and set your pricing.

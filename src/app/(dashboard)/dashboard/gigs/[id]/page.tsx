@@ -8,6 +8,8 @@ import {
   getGigById,
   getGigPackages,
   doesOffersMultiplePackages,
+  getGigGallery,
+  getDescriptionFaq,
 } from "@/server/api/routers/gig";
 import { redirect } from "next/navigation";
 import Gallery from "./_components/gallery";
@@ -25,7 +27,9 @@ const NewGigPage = async (props: Props) => {
   }
   let offers = await doesOffersMultiplePackages(gig.id);
   let packages = await getGigPackages(gig.id);
-
+  let descriptionFaq = await getDescriptionFaq(gig.id);
+  let gallery = await getGigGallery(gig.id);
+  console.log("gig questions", descriptionFaq.faq);
   return (
     <main>
       <div className="space-y-0.5">
@@ -38,7 +42,7 @@ const NewGigPage = async (props: Props) => {
       <div className="grid w-full grid-cols-1 gap-16">
         <Stepper />
         <div className="grid grid-cols-1 gap-8">
-          {/* <OverviewStep
+          <OverviewStep
             id={gig.id}
             defaultValues={{
               title: gig.title ?? undefined,
@@ -58,8 +62,15 @@ const NewGigPage = async (props: Props) => {
             gigId={gig.id}
             step={2}
           />
-          <DescriptionFaq gigId={gig.id} step={3} /> */}
-          <Gallery gigId={gig.id} step={4} />
+          <DescriptionFaq
+            defaultValues={{
+              description: descriptionFaq.description,
+              faq: descriptionFaq.faq,
+            }}
+            gigId={gig.id}
+            step={3}
+          />
+          <Gallery defaultValues={gallery} gigId={gig.id} step={4} />
         </div>
       </div>
     </main>

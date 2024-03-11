@@ -30,6 +30,7 @@ import { toast } from "sonner";
 type Props = {
   step: number;
   gigId: string;
+  defaultValues?: Partial<z.infer<typeof DescriptionFaqSchema>>;
 };
 
 const DescriptionFaq = (props: Props) => {
@@ -40,12 +41,8 @@ const DescriptionFaq = (props: Props) => {
   let form = useForm<z.infer<typeof DescriptionFaqSchema>>({
     resolver: zodResolver(DescriptionFaqSchema),
     defaultValues: {
-      faq: [
-        {
-          question: "What frameworks will you be using ?",
-          answer: "Next.js, Hono",
-        },
-      ],
+      description: props.defaultValues?.description,
+      faq: props.defaultValues?.faq ?? [],
     },
   });
   const { fields, append, remove, update } = useFieldArray({
@@ -57,7 +54,6 @@ const DescriptionFaq = (props: Props) => {
     api.gig.updateDescriptionFaq.useMutation();
 
   function onSubmit(data: z.infer<typeof DescriptionFaqSchema>) {
-    console.log("data", data);
     updateDescriptionFaq(
       { ...data, id: props.gigId },
       {
@@ -78,7 +74,7 @@ const DescriptionFaq = (props: Props) => {
       <div>
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Description & Faq</h3>
-          <p className="text-muted-foreground">Step {props.step} of 6</p>
+          <p className="text-muted-foreground">Step {props.step} of 5</p>
         </div>
         <p className="text-muted-foreground">
           Add a description and frequently asked questions for your gig

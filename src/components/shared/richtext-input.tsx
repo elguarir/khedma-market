@@ -5,9 +5,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 interface EditorProps {
   value?: OutputData;
   onChange?: (data: OutputData) => void;
+  initialData?: OutputData;
 }
 
-export default function RichTextInput({ value, onChange }: EditorProps) {
+export default function RichTextInput({
+  value,
+  onChange,
+  initialData,
+}: EditorProps) {
   let [isMounted, setIsMounted] = useState<boolean>(false);
   let ref = useRef<EditorJS>();
 
@@ -30,10 +35,8 @@ export default function RichTextInput({ value, onChange }: EditorProps) {
         data: value,
         onChange: async () => {
           const savedData = await editor.save();
-          console.log("savedData", savedData);
           onChange && onChange(savedData);
         },
-
         placeholder: "Type your page content here...",
         inlineToolbar: true,
         tools: {
@@ -75,7 +78,7 @@ export default function RichTextInput({ value, onChange }: EditorProps) {
   }, [isMounted, initializeEditor]);
 
   return (
-    <div className="prose dark:prose-neutral dark:prose-invert mx-auto md:max-w-[calc(100vw-150px)] w-full space-y-2 pb-0 2xl:max-w-[calc(100vw-400px)]">
+    <div className="prose mx-auto w-full space-y-2 pb-0 dark:prose-neutral dark:prose-invert md:max-w-[calc(100vw-150px)] 2xl:max-w-[calc(100vw-400px)]">
       <div
         id="editor"
         className={cn(

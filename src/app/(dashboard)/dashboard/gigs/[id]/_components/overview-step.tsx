@@ -117,7 +117,7 @@ export const OverviewStep = ({
       <div>
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Overview</h3>
-          <p className="text-muted-foreground">Step 1 of 6</p>
+          <p className="text-muted-foreground">Step {step} of 5</p>
         </div>
         <p className="text-muted-foreground">
           Let's start with the basics to get your gig up and running

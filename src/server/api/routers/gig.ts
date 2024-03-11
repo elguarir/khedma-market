@@ -212,7 +212,11 @@ export const gigRouter = createTRPCRouter({
       });
 
       let faq = await ctx.db.gigFaq.createMany({
-        data: input.faq,
+        data: input.faq.map((faq) => ({
+          gigId: input.id,
+          question: faq.question,
+          answer: faq.answer,
+        })),
       });
 
       return {
@@ -235,6 +239,14 @@ export const gigRouter = createTRPCRouter({
           code: "UNAUTHORIZED",
           message: "This is not found!",
         });
+
+      // delete all attachments
+      await ctx.db.attachement.deleteMany({
+        where: {
+          gigId: input.id,
+        },
+      });
+
       let attachements = [];
       for (let image of input.images) {
         // https://khedma-market.s3.amazonaws.com/dcda736d-d0cc-436f-9bed-89e460d73ecd/1_-Lvx1Z0lKBn1xQGX-_2B0Q.webp
@@ -352,7 +364,73 @@ export async function getGigPackages(id: string) {
     premium: premiumPackage ?? undefined,
   };
 }
+export type TGetDescriptionFaq = Awaited<ReturnType<typeof getDescriptionFaq>>;
+export async function getDescriptionFaq(id: string) {
+  let gig = await db.gig.findFirst({
+    where: {
+      id,
+    },
+    select: {
+      description: true,
+      faqs: {
+        select: {
+          question: true,
+          answer: true,
+        },
+      },
+    },
+  });
 
+  return {
+    description: gig?.description,
+    faq: gig?.faqs ?? [],
+  };
+}
+export type TGetGigGallery = Awaited<ReturnType<typeof getGigGallery>>;
+export async function getGigGallery(id: string) {
+  let images = await db.attachement.findMany({
+    where: {
+      gigId: id,
+      type: "image",
+    },
+    select: {
+      id: true,
+      name: true,
+      url: true,
+      type: true,
+    },
+  });
+  let videos = await db.attachement.findMany({
+    where: {
+      gigId: id,
+      type: "video",
+    },
+    select: {
+      id: true,
+      name: true,
+      url: true,
+      type: true,
+    },
+  });
+  let documents = await db.attachement.findMany({
+    where: {
+      gigId: id,
+      type: "document",
+    },
+    select: {
+      id: true,
+      name: true,
+      url: true,
+      type: true,
+    },
+  });
+
+  return {
+    images: images.map((image) => image.url),
+    videos: videos.map((vid) => vid.url),
+    documents: documents.map((doc) => doc.url),
+  };
+}
 export type TOffersMultiplePackages = Awaited<
   ReturnType<typeof doesOffersMultiplePackages>
 >;

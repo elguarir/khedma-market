@@ -26,7 +26,7 @@ import { api } from "@/trpc/react";
 type Props = {
   step: number;
   gigId: string;
-  initialData: z.infer<typeof GallerySchema>;
+  defaultValues?: Partial<z.infer<typeof GallerySchema>>;
 };
 
 const Gallery = (props: Props) => {
@@ -36,9 +36,9 @@ const Gallery = (props: Props) => {
   let form = useForm<z.infer<typeof GallerySchema>>({
     resolver: zodResolver(GallerySchema),
     defaultValues: {
-      images: [],
-      videos: [],
-      documents: [],
+      images: props.defaultValues?.images ?? [],
+      videos: props.defaultValues?.videos ?? [],
+      documents: props.defaultValues?.documents ?? [],
     },
   });
 
@@ -47,7 +47,6 @@ const Gallery = (props: Props) => {
 
   console.log(form.watch());
   function onSubmit(data: z.infer<typeof GallerySchema>) {
-    console.log("data", data);
     updateGallery(
       {
         id: props.gigId,
@@ -56,7 +55,7 @@ const Gallery = (props: Props) => {
       {
         onSuccess: (data) => {
           console.log("res", data);
-          // setCurrentStep(currentStep + 1);
+          setCurrentStep(currentStep + 1);
         },
         onError: (error) => {
           console.error(error);
@@ -64,17 +63,15 @@ const Gallery = (props: Props) => {
       },
     );
   }
-  // if (props.step !== currentStep) return null;
+  if (props.step !== currentStep) return null;
   return (
     <>
       <div>
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Gallery</h3>
-          <p className="text-muted-foreground">Step {props.step} of 6</p>
+          <p className="text-muted-foreground">Step {props.step} of 5</p>
         </div>
         <p className="text-muted-foreground">
-          {/* Encourage buyers to choose your Gig by featuring a variety of your
-          work. */}
           Add images and videos to showcase your work.
         </p>
       </div>
@@ -201,7 +198,10 @@ const Gallery = (props: Props) => {
               name="videos"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Videos</FormLabel>
+                  <FormLabel>
+                    Videos{" "}
+                    <span className="text-muted-foreground">(up to 1)</span>
+                  </FormLabel>
                   <FormControl>
                     <UploadField
                       value={field.value}
