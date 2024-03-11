@@ -69,7 +69,7 @@ export const OverviewStep = ({
 }: OverviewStepProps) => {
   let currentStep = useStep((s) => s.step);
   let setCurrentStep = useStep((s) => s.setStep);
-  let { mutate: updateGig, isLoading } = api.gig.updateGig.useMutation();
+  let { mutate: updateGig, isLoading } = api.gig.updateOverview.useMutation();
   let form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,

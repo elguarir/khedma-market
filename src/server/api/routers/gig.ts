@@ -2,13 +2,13 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { db } from "@/server/db";
 import { TRPCError } from "@trpc/server";
-import { packageSchema } from "@/schemas";
+import { DescriptionFaqSchema, GallerySchema, packageSchema } from "@/schemas";
 
 export const gigRouter = createTRPCRouter({
   createDraft: protectedProcedure.mutation(({ ctx }) => {
     return createDraft(ctx.session.user.id);
   }),
-  updateGig: protectedProcedure
+  updateOverview: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -181,6 +181,81 @@ export const gigRouter = createTRPCRouter({
         },
       });
     }),
+  updateDescriptionFaq: protectedProcedure
+    .input(DescriptionFaqSchema.extend({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      let gig = await ctx.db.gig.findUnique({
+        where: {
+          id: input.id,
+          ownerId: ctx.session.user.id,
+        },
+      });
+      if (!gig)
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "This is not found!",
+        });
+
+      let updatedGig = await ctx.db.gig.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          description: input.description,
+        },
+      });
+
+      await ctx.db.gigFaq.deleteMany({
+        where: {
+          gigId: input.id,
+        },
+      });
+
+      let faq = await ctx.db.gigFaq.createMany({
+        data: input.faq,
+      });
+
+      return {
+        success: true,
+        description: updatedGig.description,
+        faq: faq.count,
+      };
+    }),
+  updateGallery: protectedProcedure
+    .input(GallerySchema.extend({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      let gig = await ctx.db.gig.findUnique({
+        where: {
+          id: input.id,
+          ownerId: ctx.session.user.id,
+        },
+      });
+      if (!gig)
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "This is not found!",
+        });
+      let attachements = [];
+      for (let image of input.images) {
+        // https://khedma-market.s3.amazonaws.com/dcda736d-d0cc-436f-9bed-89e460d73ecd/1_-Lvx1Z0lKBn1xQGX-_2B0Q.webp
+        let name = image.split("/").pop();
+        let attache = await ctx.db.attachement.create({
+          data: {
+            name: name!,
+            url: image,
+            type: "image",
+            gigId: input.id,
+            userId: ctx.session.user.id,
+          },
+        });
+        attachements.push(attache);
+      }
+
+      return {
+        success: true,
+        images: attachements,
+      };
+    }),
 });
 
 export async function createDraft(userId: string) {
@@ -332,7 +407,34 @@ model Package {
 
     @@map("packages")
 }
-    
+
+model Attachement {
+    id        String   @id @default(cuid())
+    name      String
+    url       String
+    type      String
+    userId    String?  @map("user_id")
+    User      User?    @relation(fields: [userId], references: [id])
+    messageId String?  @map("message_id")
+    message   Message? @relation(fields: [messageId], references: [id])
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    gig       Gig?     @relation(fields: [gigId], references: [id])
+    gigId     String?
+
+    @@map("attachements")
+}
+    model GigFaq {
+    id        String   @id @default(cuid())
+    question  String
+    answer    String
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    gig       Gig?     @relation(fields: [gigId], references: [id])
+    gigId     String?  @map("gig_id")
+
+    @@map("gig_faqs")
+}
 model GigTag {
     id        String   @id @default(cuid())
     name      String

@@ -7,8 +7,6 @@ import { steps } from "../utils";
 import { useStep } from "../utils/use-step";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
-import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
 
 type Props = {};
 

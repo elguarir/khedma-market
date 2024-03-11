@@ -110,3 +110,162 @@
     @apply bg-background text-foreground;
   }
 }
+
+.ce-block__content {
+  @apply max-w-[calc(100vw-80px)] md:max-w-[calc(100vw-280px)] 2xl:max-w-[calc(100vw-600px)];
+}
+
+
+.ce-popover {
+  --border-radius: 6px;
+  --width: 200px;
+  --max-height: 270px;
+  --padding: 6px;
+  --offset-from-target: 8px;
+  --color-border: hsl(var(--input));
+  --color-shadow: rgba(13, 20, 33, .13);
+  --color-background: white;
+  --color-text-primary: black;
+  --color-text-secondary: #707684;
+  --color-border-icon: hsl(var(--border));
+  --color-border-icon-disabled: #EFF0F1;
+  --color-text-icon-active: #388AE5;
+  --color-background-icon-active: rgba(56, 138, 229, .1);
+  --color-background-item-focus: rgba(34, 186, 255, .08);
+  --color-shadow-item-focus: rgba(7, 161, 227, .08);
+  --color-background-item-hover: #eff2f5;
+  --color-background-item-confirm: #E24A4A;
+  --color-background-item-confirm-hover: #CE4343;
+}
+
+.dark .ce-popover {
+  --border-radius: 6px;
+  --width: 200px;
+  --max-height: 270px;
+  --padding: 6px;
+  --offset-from-target: 8px;
+  --color-border: hsl(var(--input));
+  --color-shadow: rgba(13, 20, 33, .13);
+  --color-background: hsl(var(--background));
+  --color-text-primary: hsl(var(--foreground));
+  --color-text-secondary: #292929;
+  --color-border-icon: rgba(8, 8, 8, 0.48);
+  --color-border-icon-disabled: #EFF0F1;
+  --color-text-icon-active: #388AE5;
+  --color-background-icon-active: rgba(56, 138, 229, .1);
+  --color-background-item-focus: rgba(10, 13, 14, 0.08);
+  --color-shadow-item-focus: rgba(7, 161, 227, .08);
+  --color-background-item-hover: hsl(var(--muted));
+  --color-background-item-confirm: #E24A4A;
+  --color-background-item-confirm-hover: #CE4343;
+}
+
+
+.dark .ce-toolbar__actions>div,
+.dark .ce-toolbar__actions>span {
+  @apply bg-transparent text-muted-foreground;
+}
+
+.dark .ce-popover__search {
+  @apply bg-transparent text-muted-foreground
+}
+
+.dark .ce-block--selected .ce-block__content {
+  @apply bg-neutral-800;
+}
+
+.dark .ce-paragraph[data-placeholder]:empty::before {
+  @apply text-muted-foreground;
+
+}
+
+.dark .ce-popover .ce-popover-item__icon {
+  background-color: transparent;
+  color: inherit;
+  border: 1.5px solid hsl(var(--input));
+}
+
+
+.dark .ce-popover-item--focused:not(.ce-popover-item--no-focus) {
+  @apply !bg-muted border border-neutral-700/30 shadow-none
+}
+
+.dark .ce-inline-toolbar {
+  background-color: hsl(var(--background));
+  border: 1.5px solid hsl(var(--border));
+}
+
+.dark .ce-popover-item--confirmation {
+  @apply text-destructive-foreground
+}
+
+.dark .ce-block__content *::selection {
+  @apply bg-primary/80
+}
+
+.dark .ce-inline-toolbar .ce-inline-toolbar__dropdown {
+  @apply px-1.5 transition-colors duration-200 ease-in-out text-accent-foreground hover:bg-muted;
+}
+
+.dark .ce-inline-toolbar button {
+  @apply px-1.5 transition-colors duration-200 ease-in-out text-accent-foreground hover:bg-muted;
+}
+
+.dark .ce-inline-toolbar button.ce-inline-tool--active {
+  @apply bg-muted;
+}
+
+.dark .ce-conversion-toolbar {
+  @apply bg-background border-border;
+}
+
+.dark .ce-conversion-toolbar .ce-conversion-tool__icon {
+  @apply bg-transparent border-[1.5px] shadow-none border-input;
+}
+
+.dark .ce-conversion-toolbar .ce-conversion-tool {
+  @apply transition-colors duration-200 ease-in-out hover:bg-muted;
+}
+
+.dark .ce-block__content,
+.dark .ce-inline-toolbar,
+.dark .codex-editor--narrow .ce-toolbox,
+.dark .ce-conversion-toolbar,
+.dark .ce-settings,
+.dark .ce-settings__button,
+.dark .ce-toolbar__settings-btn,
+.dark .cdx-button,
+.dark .ce-popover,
+.dark .tc-popover,
+.dark .ce-toolbar__plus:hover {
+  color: inherit;
+  border-color: theme("colors.border");
+}
+
+
+.dark .tc-popover__item-icon,
+.dark .ce-popover-item__icon,
+.dark .ce-toolbar__plus,
+.dark .tc-add-column,
+.dark .ce-conversion-tool__icon {
+  background-color: theme("colors.muted.DEFAULT");
+  color: theme("colors.foreground");
+  box-shadow: none;
+  border-color: theme("colors.border");
+}
+
+.ce-conversion-tool.ce-conversion-tool--focused {
+  @apply !bg-primary-dark/20;
+}
+
+.ce-conversion-tool.ce-conversion-tool--focused .ce-conversion-tool__icon {
+  @apply border-primary/20;
+}
+
+.cdx-checklist__item--checked .cdx-checklist__item-checkbox-check {
+  @apply !bg-primary !border-primary/80;
+}
+
+.cdx-checklist__item-checkbox-check:before {
+  @apply !bg-primary;
+}

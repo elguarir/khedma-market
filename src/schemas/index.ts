@@ -1,5 +1,6 @@
 import * as z from "zod";
 import { role } from "@prisma/client";
+import { OutputData } from "@editorjs/editorjs";
 
 export const SettingsSchema = z
   .object({
@@ -73,7 +74,6 @@ export const RegisterSchema = z.object({
   }),
 });
 
-
 export const packageSchema = z.object({
   name: z
     .string()
@@ -86,9 +86,29 @@ export const packageSchema = z.object({
     .max(100, "Description is too long")
     .optional(),
   revisions: z.number().int().min(1, "Revisions must be at least 1").optional(),
-  delivery: z
-    .number()
-    .int()
-    .optional(),
+  delivery: z.number().int().optional(),
   price: z.number().int().min(10, "Price must be at least 10 MAD").optional(),
+});
+
+export const DescriptionFaqSchema = z.object({
+  description: z
+    .any({ required_error: "Description is required" })
+    .refine((data: OutputData) => data && data.blocks.length > 0, {
+      message: "Description is required",
+    }),
+  faq: z.array(
+    z.object({
+      question: z.string({ required_error: "Question is required" }),
+      answer: z.string({ required_error: "Answer is required" }),
+    }),
+  ),
+});
+
+
+export const GallerySchema = z.object({
+  images: z.array(z.string()).refine((images) => images.length > 0, {
+    message: "At least one image is required",
+  }),
+  videos: z.array(z.string()),
+  documents: z.array(z.string()),
 });

@@ -10,6 +10,7 @@ import {
   doesOffersMultiplePackages,
 } from "@/server/api/routers/gig";
 import { redirect } from "next/navigation";
+import Gallery from "./_components/gallery";
 
 type Props = {
   params: {
@@ -37,7 +38,7 @@ const NewGigPage = async (props: Props) => {
       <div className="grid w-full grid-cols-1 gap-16">
         <Stepper />
         <div className="grid grid-cols-1 gap-8">
-          <OverviewStep
+          {/* <OverviewStep
             id={gig.id}
             defaultValues={{
               title: gig.title ?? undefined,
@@ -57,7 +58,8 @@ const NewGigPage = async (props: Props) => {
             gigId={gig.id}
             step={2}
           />
-          <DescriptionFaq step={3} />
+          <DescriptionFaq gigId={gig.id} step={3} /> */}
+          <Gallery gigId={gig.id} step={4} />
         </div>
       </div>
     </main>
