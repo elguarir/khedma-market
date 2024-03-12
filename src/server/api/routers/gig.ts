@@ -3,6 +3,8 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { db } from "@/server/db";
 import { TRPCError } from "@trpc/server";
 import { DescriptionFaqSchema, GallerySchema, packageSchema } from "@/schemas";
+import slugify from "slugify";
+import { nanoid } from "nanoid";
 
 export const gigRouter = createTRPCRouter({
   createDraft: protectedProcedure.mutation(({ ctx }) => {
@@ -268,7 +270,154 @@ export const gigRouter = createTRPCRouter({
         images: attachements,
       };
     }),
+  publish: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      let gig = await ctx.db.gig.findUnique({
+        where: {
+          id: input.id,
+          ownerId: ctx.session.user.id,
+        },
+      });
+
+      if (!gig)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "This gig is not found!",
+        });
+
+      if (!gig.title)
+        throw new TRPCError({
+          code: "UNPROCESSABLE_CONTENT",
+          message: "You haven't set a title for your gig yet",
+        });
+
+      let success = false;
+      let slug = slugify(gig.title, {
+        trim: true,
+        strict: true,
+        lower: true,
+      });
+      
+      while (!success) {
+        let exists = await checkSlug(slug, ctx.session.user.id, input.id);
+        if (exists) {
+          slug += `-${nanoid(5)}`;
+        } else {
+          success = true;
+        }
+      }
+
+      let updatedGig = await ctx.db.gig.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          status: "published",
+          slug,
+        },
+        select: {
+          owner: {
+            select: {
+              name: true,
+              username: true,
+            },
+          },
+          id: true,
+          slug: true,
+        },
+      });
+
+      return updatedGig;
+    }),
 });
+
+export type TGetUserGigs = Awaited<ReturnType<typeof getUserGigs>>;
+export async function getUserGigs(username: string) {
+  let gigs = await db.gig.findMany({
+    where: {
+      owner: {
+        username,
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      status: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+          parentId: true,
+        },
+      },
+      packages: {
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          type: true,
+        },
+      },
+      offersMultiplePackages: true,
+      attachments: {
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          url: true,
+        },
+      },
+      createdAt: true,
+    },
+  });
+
+  return gigs.map((gig) => {
+    let images = gig.attachments.filter((att) => att.type === "image");
+    let videos = gig.attachments.filter((att) => att.type === "video");
+    let documents = gig.attachments.filter((att) => att.type === "document");
+    let basicPackage = gig.packages.find((p) => p.type === "basic");
+    let standardPackage = gig.packages.find((p) => p.type === "standard");
+    let premiumPackage = gig.packages.find((p) => p.type === "premium");
+    return {
+      id: gig.id,
+      title: gig.title,
+      slug: gig.slug,
+      status: gig.status,
+      category: gig.category,
+      attachaments: {
+        images,
+        videos,
+        documents,
+      },
+      offersMultiplePackages: gig.offersMultiplePackages,
+      packages: {
+        basic: basicPackage,
+        standard: standardPackage,
+        premium: premiumPackage,
+      },
+      createdAt: gig.createdAt,
+    };
+  });
+}
+
+async function checkSlug(slug: string, ownerId: string, gigId: string) {
+  let gig = await db.gig.findFirst({
+    where: {
+      AND: [
+        {
+          slug,
+          ownerId,
+          id: {
+            not: gigId,
+          },
+        },
+      ],
+    },
+  });
+  return gig ? true : false;
+}
 
 export async function createDraft(userId: string) {
   return await db.gig.create({
@@ -277,7 +426,6 @@ export async function createDraft(userId: string) {
     },
   });
 }
-
 // gigs
 export async function getGigById(id: string) {
   return await db.gig.findUnique({

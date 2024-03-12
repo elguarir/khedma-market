@@ -515,6 +515,8 @@ let trash = (props: LucideProps) => (
   </svg>
 );
 
+
+
 let editIcon = (props: LucideProps) => (
   <svg
     {...props}
@@ -582,8 +584,50 @@ let ImageIcon = (props: LucideProps) => (
     />
   </svg>
 );
+
+let sendIcon = (props: LucideProps) => (
+  <svg
+    {...props}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M4.39967 8.4481L4.55722 8.38279L18.0486 3.37963C19.6547 2.78516 21.2178 4.34829 20.6232 5.95469L15.6241 19.4399C14.9388 21.2868 12.2804 21.1405 11.8025 19.2302L10.396 13.618L4.76523 12.2034C2.91247 11.7379 2.72146 9.22119 4.39967 8.4481ZM14.2178 18.9183L19.2166 5.43365C19.3662 5.0297 18.9733 4.63684 18.5698 4.7862L5.0786 9.78926C4.61493 9.96108 4.65131 10.6281 5.13071 10.7486L11.1977 12.2726C11.4659 12.34 11.6753 12.5495 11.7425 12.8178L13.2576 18.866C13.3777 19.346 14.0454 19.3827 14.2178 18.9183Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+let pause = (props: LucideProps) => (
+  <svg
+    {...props}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M14 8.25C14.3797 8.25 14.6935 8.53215 14.7432 8.89823L14.75 9V15C14.75 15.4142 14.4142 15.75 14 15.75C13.6203 15.75 13.3065 15.4678 13.2568 15.1018L13.25 15V9C13.25 8.58579 13.5858 8.25 14 8.25Z"
+      fill="currentColor"
+    />
+    <path
+      d="M10 8.25C10.3797 8.25 10.6935 8.53215 10.7432 8.89823L10.75 9V15C10.75 15.4142 10.4142 15.75 10 15.75C9.6203 15.75 9.30651 15.4678 9.25685 15.1018L9.25 15V9C9.25 8.58579 9.58579 8.25 10 8.25Z"
+      fill="currentColor"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M11.7238 2.25392L12 2.25C17.2782 2.25 21.5935 6.44926 21.7461 11.7238L21.75 12C21.75 17.2782 17.5507 21.5935 12.2762 21.7461L12 21.75C6.72183 21.75 2.40653 17.5507 2.25392 12.2762L2.25 12C2.25 6.72183 6.44926 2.40653 11.7238 2.25392ZM12 3.75L11.7563 3.75352C7.30329 3.88244 3.75 7.53391 3.74992 11.9892L3.75352 12.2437C3.88244 16.6967 7.53391 20.25 11.9892 20.2501L12.2437 20.2465C16.6967 20.1176 20.25 16.4661 20.2501 12.0108L20.2465 11.7563C20.1176 7.30329 16.4661 3.75 12 3.75Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
 export const Icons = {
   add: Plus,
+  sendIcon,
+  pause,
   alignCenter: AlignCenter,
   alignJustify: AlignJustify,
   alignLeft: AlignLeft,
@@ -641,7 +685,7 @@ export const Icons = {
   superscript: Superscript,
   table: Table,
   text: Text,
-  trash: Trash,
+  trash,
   ul: List,
   underline: Underline,
   unlink: Link2Off,

@@ -13,6 +13,7 @@ import {
 } from "@/server/api/routers/gig";
 import { redirect } from "next/navigation";
 import Gallery from "./_components/gallery";
+import Publish from "./_components/publish";
 
 type Props = {
   params: {
@@ -71,6 +72,7 @@ const NewGigPage = async (props: Props) => {
             step={3}
           />
           <Gallery defaultValues={gallery} gigId={gig.id} step={4} />
+          <Publish gigId={gig.id} step={5} />
         </div>
       </div>
     </main>

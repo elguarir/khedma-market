@@ -263,6 +263,7 @@ model Gig {
     title                  String?
     slug                   String?
     description            Json?
+    isPaused               Boolean  @default(false) @map("is_paused")
     status                 String   @default("draft")
     offersMultiplePackages Boolean  @default(false) @map("offers_multiple_packages")
     ownerId                String   @map("owner_id")

@@ -1,11 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import {
-  ToolTipArrow,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { getUserByUsername } from "@/lib/helpers/user";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -24,8 +18,9 @@ import {
 } from "@/server/api/routers/profile";
 import SkillsForm from "./_components/skills-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { getUserGigs } from "@/server/api/routers/gig";
+import GigActions from "./_components/gig-actions";
+
 type Props = {
   params: {
     username: string;
@@ -34,28 +29,14 @@ type Props = {
 
 const UserProfile = async (props: Props) => {
   let user = await getUserByUsername(props.params.username);
-
-  if (!user) {
+  if (user === null || !user.username) {
     return notFound();
   }
-
+  
+  let gigs = await getUserGigs(user.username);
   let languages = await getUserLanguages(user.id);
   let skills = await getUserSkills(user.id);
   let description = await getUserDescription(user.id);
-  let gigs = [
-    {
-      title: "I will create serverless aws amplify and react app",
-      price: 500,
-      image:
-        "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/255407634/original/1cd25fb052f234958b8f00277036091d545fc7a6/create-serverless-aws-amplify-and-react-app.png",
-    },
-    {
-      title: "I will build firebase reactjs nextjs app for you",
-      image:
-        "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/185170484/original/5d11fa2b7cde89a8ad1a61d73715bf60e076b432/build-firebase-reactjs-nextjs-app-for-you.png",
-      price: 750,
-    },
-  ];
 
   return (
     <main className="flex min-h-[calc(100vh-90px)] w-full flex-col py-8">
@@ -140,20 +121,24 @@ const UserProfile = async (props: Props) => {
               </div>
             </TabsList>
             <TabsContent
-              className="grid grid-cols-1 gap-6 px-1.5 py-6 md:grid-cols-2 lg:grid-cols-3"
+              className="grid grid-cols-1 gap-6 px-1.5 py-6 lg:grid-cols-3"
               value="active_gigs"
             >
-              {gigs.map((gig, i) => (
-                <GigCard
-                  key={i}
-                  image={gig.image}
-                  title={gig.title}
-                  price={gig.price}
-                />
-              ))}
+              {gigs
+                .filter((gig) => gig.status === "published")
+                .map((gig, i) => (
+                  <GigCard
+                    key={gig.id}
+                    username={user!.username!}
+                    image={gig.attachaments.images[0]?.url ?? ""}
+                    title={gig.title!}
+                    slug={gig.slug!}
+                    price={gig.packages.basic?.price!}
+                  />
+                ))}
               <Link
                 href={"/dashboard/gigs/new"}
-                className="relative flex py-14 h-full w-full items-center justify-center rounded-lg border border-input"
+                className="relative flex h-full w-full items-center justify-center rounded-lg border border-input py-14"
               >
                 <div className="flex flex-col items-center gap-2">
                   <div className="flex h-24 w-24 items-center justify-center rounded-full bg-foreground text-background">
@@ -178,7 +163,9 @@ const UserProfile = async (props: Props) => {
 export default UserProfile;
 
 interface GigCardProps {
+  username: string;
   title: string;
+  slug: string;
   price: number;
   image: string;
 }
@@ -193,7 +180,7 @@ const GigCard = (props: GigCardProps) => {
         />
         <div className="w-full px-4 py-3">
           <Link
-            href={"#"}
+            href={`/${props.username}/${props.slug}`}
             className="line-clamp-2 text-sm font-medium leading-none transition-colors duration-200 hover:text-primary"
           >
             {props.title}
@@ -201,16 +188,14 @@ const GigCard = (props: GigCardProps) => {
         </div>
         <div className="flex w-full items-center justify-between px-4 py-2">
           <div>
-            <button className="focus-visible:outline-primary">
-              <DotsHorizontalIcon className="h-5 w-5 text-muted-foreground transition-colors duration-150  hover:text-foreground" />
-            </button>
+            <GigActions />
           </div>
           <div className="text-sm">
             <span className="text-[10px] font-[450] uppercase">
               Starting at
             </span>{" "}
             <span className="font-semibold">
-              {props.price.toLocaleString("en-MA", {
+              {props.price?.toLocaleString("en-MA", {
                 style: "currency",
                 currency: "MAD",
               })}
