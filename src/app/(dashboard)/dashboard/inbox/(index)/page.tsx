@@ -8,9 +8,8 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import React, { PropsWithChildren } from "react";
 
-const InboxLayout = async ({ children }: PropsWithChildren) => {
+const InboxPage = async () => {
   let session = await getServerAuthSession();
   if (!session || !session.user) {
     return redirect("/auth/sign-in");
@@ -69,7 +68,7 @@ const InboxLayout = async ({ children }: PropsWithChildren) => {
   );
 };
 
-export default InboxLayout;
+export default InboxPage;
 
 interface ConversationProps {
   id: string;
