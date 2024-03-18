@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "./_components/sidebar-nav";
+import MaxWidthWrapper from "../_components/max-width-wrapper";
 
 export const metadata: Metadata = {
   title: "Account settings",
@@ -32,7 +33,7 @@ interface SettingsLayoutProps {
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
-    <>
+    <MaxWidthWrapper>
       <div className="pb-12">
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
@@ -48,6 +49,6 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <div className="w-full flex-1 lg:max-w-2xl">{children}</div>
         </div>
       </div>
-    </>
+    </MaxWidthWrapper>
   );
 }

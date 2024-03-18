@@ -104,7 +104,6 @@ export const DescriptionFaqSchema = z.object({
   ),
 });
 
-
 export const GallerySchema = z.object({
   images: z.array(z.string()).refine((images) => images.length > 0, {
     message: "At least one image is required",
@@ -112,3 +111,30 @@ export const GallerySchema = z.object({
   videos: z.array(z.string()),
   documents: z.array(z.string()),
 });
+
+export const projectSchema = z.object({
+  title: z.string().min(5, "Title is too short").max(250, "Title is too long"),
+  status: z.enum(["draft", "published"]).default("draft"),
+  description: z
+    .string()
+    .min(5, "Description is too short")
+    .max(2000, "Description is too long"),
+  gallery: GallerySchema,
+});
+
+/**
+ * 
+ * model Project {
+    id          String        @id @default(cuid())
+    title       String
+    description String        @db.Text
+    gallery     Attachement[]
+    createdAt   DateTime      @default(now()) @map("created_at")
+    updatedAt   DateTime      @updatedAt @map("updated_at")
+    user        User?         @relation(fields: [userId], references: [id])
+    userId      String?       @map("user_id")
+
+    @@map("projects")
+}
+
+ */

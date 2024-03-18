@@ -5,14 +5,18 @@ import { fileRouter } from "./routers/file";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { CategoryRouter } from "./routers/category";
 import { gigRouter } from "./routers/gig";
+import { projectRouter } from "./routers/project";
+import { conversationRouter } from "./routers/conversation";
 
 export const appRouter = createTRPCRouter({
   post: profileRouter,
   user: userRouter,
   file: fileRouter,
   profile: profileRouter,
-  category:CategoryRouter,
-  gig:gigRouter
+  category: CategoryRouter,
+  gig: gigRouter,
+  project: projectRouter,
+  conversation: conversationRouter,
 });
 
 export type AppRouter = typeof appRouter;

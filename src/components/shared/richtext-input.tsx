@@ -78,7 +78,7 @@ export default function RichTextInput({
   }, [isMounted, initializeEditor]);
 
   return (
-    <div className="prose mx-auto w-full space-y-2 pb-0 dark:prose-neutral dark:prose-invert md:max-w-[calc(100vw-150px)] 2xl:max-w-[calc(100vw-400px)]">
+    <div className="prose w-full space-y-2 pb-0 dark:prose-neutral dark:prose-invert max-md:prose-sm md:max-w-[calc(100vw-150px)] 2xl:max-w-[calc(100vw-400px)]">
       <div
         id="editor"
         className={cn(

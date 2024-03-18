@@ -298,7 +298,7 @@ export const gigRouter = createTRPCRouter({
         strict: true,
         lower: true,
       });
-      
+
       while (!success) {
         let exists = await checkSlug(slug, ctx.session.user.id, input.id);
         if (exists) {
@@ -330,10 +330,38 @@ export const gigRouter = createTRPCRouter({
 
       return updatedGig;
     }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      let gig = await ctx.db.gig.findUnique({
+        where: {
+          id: input.id,
+          ownerId: ctx.session.user.id,
+        },
+      });
+
+      if (!gig)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "This gig is not found!",
+        });
+
+      return await ctx.db.gig.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+  getUserGigs: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      let res = await getUserGigsById(input.id);
+      return res;
+    }),
 });
 
-export type TGetUserGigs = Awaited<ReturnType<typeof getUserGigs>>;
-export async function getUserGigs(username: string) {
+export type TGetUserGigs = Awaited<ReturnType<typeof getUserGigsByUsername>>;
+export async function getUserGigsByUsername(username: string) {
   let gigs = await db.gig.findMany({
     where: {
       owner: {
@@ -369,7 +397,16 @@ export async function getUserGigs(username: string) {
           url: true,
         },
       },
+      owner: {
+        select: {
+          name: true,
+          username: true,
+        },
+      },
       createdAt: true,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -390,6 +427,92 @@ export async function getUserGigs(username: string) {
         images,
         videos,
         documents,
+      },
+      owner: {
+        name: gig.owner.name,
+        username: gig.owner.username,
+      },
+      offersMultiplePackages: gig.offersMultiplePackages,
+      packages: {
+        basic: basicPackage,
+        standard: standardPackage,
+        premium: premiumPackage,
+      },
+      createdAt: gig.createdAt,
+    };
+  });
+}
+
+export async function getUserGigsById(id: string) {
+  let gigs = await db.gig.findMany({
+    where: {
+      owner: {
+        id,
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      status: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+          parentId: true,
+        },
+      },
+      packages: {
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          type: true,
+        },
+      },
+      offersMultiplePackages: true,
+      attachments: {
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          url: true,
+        },
+      },
+      owner: {
+        select: {
+          name: true,
+          username: true,
+        },
+      },
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return gigs.map((gig) => {
+    let images = gig.attachments.filter((att) => att.type === "image");
+    let videos = gig.attachments.filter((att) => att.type === "video");
+    let documents = gig.attachments.filter((att) => att.type === "document");
+    let basicPackage = gig.packages.find((p) => p.type === "basic");
+    let standardPackage = gig.packages.find((p) => p.type === "standard");
+    let premiumPackage = gig.packages.find((p) => p.type === "premium");
+    return {
+      id: gig.id,
+      title: gig.title,
+      slug: gig.slug,
+      status: gig.status,
+      category: gig.category,
+      attachaments: {
+        images,
+        videos,
+        documents,
+      },
+      owner: {
+        name: gig.owner.name,
+        username: gig.owner.username,
       },
       offersMultiplePackages: gig.offersMultiplePackages,
       packages: {

@@ -18,7 +18,7 @@ import {
 } from "@/server/api/routers/profile";
 import SkillsForm from "./_components/skills-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getUserGigs } from "@/server/api/routers/gig";
+import { getUserGigsByUsername } from "@/server/api/routers/gig";
 import GigActions from "./_components/gig-actions";
 
 type Props = {
@@ -32,8 +32,8 @@ const UserProfile = async (props: Props) => {
   if (user === null || !user.username) {
     return notFound();
   }
-  
-  let gigs = await getUserGigs(user.username);
+
+  let gigs = await getUserGigsByUsername(user.username);
   let languages = await getUserLanguages(user.id);
   let skills = await getUserSkills(user.id);
   let description = await getUserDescription(user.id);

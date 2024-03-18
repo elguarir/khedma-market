@@ -86,9 +86,9 @@ const Gallery = (props: Props) => {
                 <FormItem className="w-full">
                   <FormLabel>
                     Images{" "}
-                    <span className="text-muted-foreground">(up to 3)</span>
+                    <span className="text-muted-foreground">(up to 6)</span>
                   </FormLabel>
-                  <div className="grid min-h-56 grid-cols-3 gap-3">
+                  <div className="grid min-h-56 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     <UploadField
                       value={field.value}
                       maxFiles={3}
@@ -184,8 +184,7 @@ const Gallery = (props: Props) => {
                     />
                   </div>
                   <FormDescription>
-                    Get noticed by the right buyers with visual examples of your
-                    services.
+                    Add images to showcase the quality of your work.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -216,7 +215,7 @@ const Gallery = (props: Props) => {
                         isDragActive,
                         files,
                       }) => (
-                        <div className="grid min-h-56 grid-cols-3 gap-3">
+                        <div className="grid min-h-56 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                           {field.value.map((video, index) => (
                             <div
                               key={index}
