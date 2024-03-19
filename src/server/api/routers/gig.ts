@@ -525,6 +525,107 @@ export async function getUserGigsById(id: string) {
   });
 }
 
+export async function getGigDetails(username: string, slug: string) {
+  let gig = await db.gig.findFirst({
+    where: {
+      slug,
+      owner: {
+        username,
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      offersMultiplePackages: true,
+      status: true,
+      description: true,
+      owner: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          email: true,
+          image: true,
+          reviews: true,
+        },
+      },
+      category: {
+        select: {
+          id: true,
+          slug: true,
+          name: true,
+          parentId: true,
+        },
+      },
+      tags: true,
+      packages: true,
+      createdAt: true,
+      faqs: {
+        select: {
+          question: true,
+          answer: true,
+        },
+      },
+      attachments: {
+        select: {
+          id: true,
+          name: true,
+          url: true,
+          type: true,
+        },
+      },
+    },
+  });
+
+  if (!gig) return null;
+
+  let userRating = gig.owner.reviews.reduce((acc, review) => {
+    return acc + review.rating;
+  }, 0);
+  let rating = userRating / gig.owner.reviews.length;
+
+  let images = gig.attachments.filter((att) => att.type === "image");
+  let videos = gig.attachments.filter((att) => att.type === "video");
+  let documents = gig.attachments.filter((att) => att.type === "document");
+
+  let basicPackage = gig.packages.find((p) => p.type === "basic");
+  let standardPackage = gig.packages.find((p) => p.type === "standard");
+  let premiumPackage = gig.packages.find((p) => p.type === "premium");
+
+  return {
+    id: gig.id,
+    title: gig.title,
+    slug: gig.slug,
+    status: gig.status,
+    description: gig.description,
+    offersMultiplePackages: gig.offersMultiplePackages,
+    owner: {
+      id: gig.owner.id,
+      name: gig.owner.name,
+      username: gig.owner.username,
+      email: gig.owner.email,
+      image: gig.owner.image,
+      rating,
+      numberOfReviews: gig.owner.reviews.length,
+    },
+    category: gig.category,
+    tags: gig.tags,
+    packages: {
+      basic: basicPackage,
+      standard: standardPackage,
+      premium: premiumPackage,
+    },
+    createdAt: gig.createdAt,
+    faqs: gig.faqs,
+    attachments: {
+      images,
+      videos,
+      documents,
+    },
+  };
+}
+
 async function checkSlug(slug: string, ownerId: string, gigId: string) {
   let gig = await db.gig.findFirst({
     where: {

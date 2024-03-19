@@ -16,6 +16,7 @@ const InboxLayout = async ({ children }: PropsWithChildren) => {
     return redirect("/auth/sign-in");
   }
   let conversations = await getUserConversations(session.user.id);
+  
   return (
     <main className="grid h-full w-full grid-cols-12 bg-neutral-200/20 dark:bg-neutral-800/60 xl:h-screen">
       <aside className="col-span-full hidden h-full flex-col border-r p-1 xl:col-span-3 xl:flex">

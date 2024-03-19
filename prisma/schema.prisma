@@ -420,8 +420,8 @@ model GigTag {
 
 model GigFaq {
     id        String   @id @default(cuid())
-    question  String
-    answer    String
+    question  String   @db.Text
+    answer    String   @db.Text
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
     gig       Gig?     @relation(fields: [gigId], references: [id])

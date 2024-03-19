@@ -58,7 +58,7 @@ const NavBar = async () => {
               />
             </div>
             <Separator orientation={"vertical"} className="h-5" />
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               {session?.user ? (
                 <Button asChild>
                   <Link href={"/dashboard"}>Dashboard</Link>

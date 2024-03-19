@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/server/db";
-import { getServerAuthSession } from "@/server/auth";
+import { ExtendedUser, getServerAuthSession } from "@/server/auth";
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 
@@ -199,9 +199,11 @@ export async function getOrCreateConversationWithMessages(
 
   return await getConversationWithMessages({ byIds: { user1Id, user2Id } });
 }
+
 export type TGetUserConversations = Awaited<
   ReturnType<typeof getUserConversations>
 >;
+
 export async function getUserConversations(userId: string) {
   let conversations = await db.conversation.findMany({
     where: {
@@ -374,6 +376,137 @@ export type TMessage = Prisma.MessageGetPayload<{
     };
   };
 }>;
+
+export async function getOrCreateConversation(username:string, currentUser: ExtendedUser) {
+  let user = await db.user.findFirst({
+    where: {
+      username,
+    },
+  });
+  if (!user) {
+    return null;
+  }
+  
+  let conversation = await db.conversation.findFirst({
+    where: {
+      OR: [
+        {
+          senderId: currentUser.id,
+          receiverId: user.id,
+        },
+        {
+          senderId: user.id,
+          receiverId: currentUser.id,
+        },
+      ],
+    },
+    include: {
+      messages: {
+        orderBy: {
+          createdAt: "asc",
+        },
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          updatedAt: true,
+          attachements: {
+            select: {
+              id: true,
+              name: true,
+              url: true,
+              type: true,
+            },
+          },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              username: true,
+              image: true,
+            },
+          },
+        },
+      },
+      sender: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          username: true,
+          image: true,
+        },
+      },
+      receiver: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          username: true,
+          image: true,
+        },
+      },
+    },
+  });
+  if (conversation) {
+    return conversation;
+  }
+  return await db.conversation.create({
+    data: {
+      senderId: currentUser.id,
+      receiverId: user.id,
+    },
+    include: {
+      messages: {
+        orderBy: {
+          createdAt: "asc",
+        },
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          updatedAt: true,
+          attachements: {
+            select: {
+              id: true,
+              name: true,
+              url: true,
+              type: true,
+            },
+          },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              username: true,
+              image: true,
+            },
+          },
+        },
+      },
+      sender: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          username: true,
+          image: true,
+        },
+      },
+      receiver: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          username: true,
+          image: true,
+        },
+      },
+    },
+  });
+}
 
 /**
  * 
