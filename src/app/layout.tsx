@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { jimmySerif } from "@/lib/fonts";
 
 export const metadata = {
   title: "Khedma market",

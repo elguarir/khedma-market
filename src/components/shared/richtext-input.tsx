@@ -20,7 +20,6 @@ export default function RichTextInput({
     const EditorJS = (await import("@editorjs/editorjs")).default;
     const Header = (await import("@editorjs/header" as any)).default;
     const List = (await import("@editorjs/list" as any)).default;
-    const Checklist = (await import("@editorjs/checklist" as any)).default;
     const InlineCode = (await import("@editorjs/inline-code" as any)).default;
     const Delimiter = (await import("@editorjs/delimiter" as any)).default;
     const Highlight = (await import("@editorjs/marker" as any)).default;
@@ -48,7 +47,6 @@ export default function RichTextInput({
             },
           },
           list: List,
-          checklist: Checklist,
           delimiter: Delimiter,
           inlineCode: InlineCode,
           marker: Highlight,

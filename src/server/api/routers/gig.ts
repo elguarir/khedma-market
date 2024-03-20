@@ -524,7 +524,7 @@ export async function getUserGigsById(id: string) {
     };
   });
 }
-
+export type TGetGigDetails = Awaited<ReturnType<typeof getGigDetails>>;
 export async function getGigDetails(username: string, slug: string) {
   let gig = await db.gig.findFirst({
     where: {

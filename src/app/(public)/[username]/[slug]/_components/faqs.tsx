@@ -11,9 +11,13 @@ const Faqs = ({ faqs }: Props) => {
   if (!faqs) return null;
 
   return (
-    <Accordion.Root type="single" className="grid gap-2" collapsible>
+    <Accordion.Root type="single" className="grid gap-2 w-full" collapsible>
       {faqs.map((faq, index) => (
-        <Accordion.Item className="rounded-md border" value={index.toString()}>
+        <Accordion.Item
+          key={index}
+          className="rounded-md border"
+          value={index.toString()}
+        >
           <Accordion.Header>
             <Accordion.Trigger className="flex w-full flex-1 items-center justify-between rounded-md p-4 font-medium outline-none transition-all focus:ring-offset-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring [&[data-state=open]>svg]:rotate-180">
               {faq.question}

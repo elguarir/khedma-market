@@ -1,5 +1,6 @@
 import { Icons } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ExtendedUser } from "@/server/auth";
 import { format } from "date-fns";
 
 interface MessageProps {
@@ -21,8 +22,9 @@ interface MessageProps {
     name: string;
     url: string;
   }[];
+  currentUser: ExtendedUser;
 }
-export const Message = ({ message, user }: MessageProps) => (
+export const Message = ({ message, user, currentUser }: MessageProps) => (
   <div className="group flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors hover:bg-neutral-200/30 hover:dark:bg-neutral-900/50">
     <div>
       <Avatar className="h-10 w-10 border">
@@ -32,7 +34,9 @@ export const Message = ({ message, user }: MessageProps) => (
     </div>
     <div className="flex w-full flex-col gap-0.5">
       <div className="flex w-full items-center gap-2">
-        <h3 className="text-sm font-semibold">{user.name}</h3>
+        <h3 className="text-sm font-semibold">
+          {currentUser.id === user.id ? "Me" : user.name}
+        </h3>
         <p className="text-xs text-muted-foreground">
           {/* Mar 17, 2024, 12:07 AM */}
           {format(new Date(message.createdAt), "MMM d, yyyy, h:mm a")}

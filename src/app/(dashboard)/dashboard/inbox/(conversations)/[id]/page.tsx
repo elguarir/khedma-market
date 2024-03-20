@@ -44,7 +44,7 @@ const ConversationPage = async (props: Props) => {
         </div>
       </header>
       <div className="flex-1 bg-neutral-100 dark:bg-neutral-800/80">
-        <Conversation conversation={conv} />
+        <Conversation currentUser={session.user} conversation={conv} />
       </div>
       <footer className="border-t p-4">
         <SendMessageForm user={session.user} conversationId={conv.id} />

@@ -22,6 +22,7 @@ import { BlockRenderer } from "@/components/block-renderer";
 import { OutputData } from "@editorjs/editorjs";
 import { Separator } from "@/components/ui/separator";
 import Faqs from "./_components/faqs";
+import Packages from "./_components/packages";
 
 type Props = {
   params: { username: string; slug: string };
@@ -31,9 +32,9 @@ const GigDetailsPage = async (props: Props) => {
   let gig = await getGigDetails(props.params.username, props.params.slug);
   return (
     <main className="flex min-h-[calc(100vh-90px)] w-full flex-col py-8 xl:py-12">
-      <div className="grid min-h-[80vh] w-full grid-cols-11 gap-6">
+      <div className="grid w-full grid-cols-11 gap-y-12 xl:gap-x-16">
         {/* gig details */}
-        <div className="col-span-full flex h-full w-full flex-col gap-7 rounded-md bg-neutral-100/0 p-4  xl:col-span-7">
+        <div className="col-span-full flex  h-full w-full flex-col gap-7 rounded-md bg-neutral-100/0 p-4  xl:col-span-7">
           <div className="w-full">
             <Breadcrumb>
               <BreadcrumbList>
@@ -50,10 +51,6 @@ const GigDetailsPage = async (props: Props) => {
                     {gig?.category?.name}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
-                {/* <BreadcrumbSeparator>
-                  <SlashIcon />
-                </BreadcrumbSeparator>
-                <BreadcrumbItem></BreadcrumbItem> */}
               </BreadcrumbList>
             </Breadcrumb>
           </div>
@@ -107,15 +104,32 @@ const GigDetailsPage = async (props: Props) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="max-sm:-left-8" />
-            <CarouselNext className="max-sm:-right-8" />
+            <CarouselPrevious className="max-xl:-left-8" />
+            <CarouselNext className="max-xl:-right-8" />
           </Carousel>
           <div className="flex w-full flex-col gap-4">
-            <div className="prose prose-neutral w-full">
+            <div className="group prose prose-neutral w-full">
               <h2>About this gig</h2>
-              {(gig?.description as OutputData | null)?.blocks.map((block) => (
-                <BlockRenderer key={block.id} block={block} />
-              ))}
+              {(gig?.description as OutputData | null)?.blocks
+                .slice(0, 3)
+                .map((block) => <BlockRenderer key={block.id} block={block} />)}
+              <div className="hidden group-has-[:checked]:block">
+                {(gig?.description as OutputData | null)?.blocks
+                  .slice(3)
+                  .map((block) => (
+                    <BlockRenderer key={block.id} block={block} />
+                  ))}
+                <label
+                  htmlFor="read-more"
+                  className="text-primary-500 hidden cursor-pointer font-semibold underline transition group-has-[:checked]:block"
+                >
+                  Read less
+                </label>
+              </div>
+              <label className="text-primary-500 cursor-pointer font-semibold underline transition group-has-[:checked]:hidden">
+                Read more
+                <input type="checkbox" id="read-more" className="hidden" />
+              </label>
             </div>
           </div>
           {gig?.faqs && gig?.faqs.length > 0 && (
@@ -137,7 +151,7 @@ const GigDetailsPage = async (props: Props) => {
         </div>
 
         {/* packages & ordering */}
-        <div className="col-span-full h-full w-full rounded-md bg-neutral-100/0 p-4 xl:col-span-4"></div>
+        <Packages gig={gig} />
       </div>
     </main>
   );
