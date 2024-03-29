@@ -819,6 +819,68 @@ export async function doesOffersMultiplePackages(id: string) {
   return gig?.offersMultiplePackages;
 }
 
+export type TGetUserDetails = Awaited<ReturnType<typeof getUserDetails>>;
+export async function getUserDetails(id: string) {
+  let user = await db.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      skills: true,
+      email: true,
+      image: true,
+      description: true,
+      country: true,
+      city: true,
+      languages: {
+        select: {
+          language: {
+            select: {
+              name: true,
+              id: true,
+              nativeName: true,
+              value: true,
+            },
+          },
+          level: true,
+        },
+      },
+      reviews: true,
+      createdAt: true,
+    },
+  });
+
+  if (!user) return null;
+  let userRating = user.reviews.reduce((acc, review) => {
+    return acc + review.rating;
+  }, 0);
+  let rating = userRating / user.reviews.length;
+
+  return {
+    id: user.id,
+    name: user.name,
+    username: user.username,
+    email: user.email,
+    image: user.image,
+    description: user.description,
+    country: user.country,
+    city: user.city,
+    createdAt: user.createdAt,
+    reviews: user.reviews,
+    languages: user.languages.map((lang) => ({
+      language: lang.language,
+      level: lang.level,
+    })),
+    skills: user.skills,
+    rating,
+    userRating,
+    numberOfReviews: user.reviews.length
+  };
+}
+
 /***
  * 
  * model Gig {

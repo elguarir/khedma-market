@@ -4,22 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
+import { NavLinkProps } from "./navlinks";
 
-export type NavLinkProps = linkProps | accordianProps;
-
-interface linkProps {
-  label: string;
-  href: string;
-  icon?: React.ReactNode;
-  type: "link";
-}
-
-interface accordianProps {
-  label: string;
-  icon?: React.ReactNode;
-  type: "accordian";
-  items?: { label: string; href: string }[];
-}
 
 export const NavLink = ({ link }: { link: NavLinkProps }) => {
   let pathname = usePathname();

@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { db } from "@/server/db";
 import { getServerAuthSession } from "@/server/auth";
 import { personalFormSchema } from "@/lib/schemas/personal-info";
@@ -144,6 +148,62 @@ export const userRouter = createTRPCRouter({
           }
         }
       }
+    }),
+  checkUsername: protectedProcedure
+    .input(z.object({ username: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      let user = await db.user.findFirst({
+        where: {
+          username: input.username,
+          NOT: {
+            id: ctx.session.user.id,
+          },
+        },
+      });
+      return {
+        username: input.username,
+        isTaken: user ? true : false,
+      };
+    }),
+  updateAccount: protectedProcedure
+    .input(
+      z.object({
+        signUpAs: z.enum(["client", "freelancer", "company"]).default("client"),
+        username: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      let user = await db.user.findFirst({
+        where: {
+          username: input.username,
+          NOT: {
+            id: ctx.session.user.id,
+          },
+        },
+      });
+
+      if (user) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Username already taken",
+          cause: { username: "Username already taken" },
+        });
+      }
+
+      return await db.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          role: input.signUpAs,
+          username: input.username,
+        },
+        select: {
+          id: true,
+          role: true,
+          username: true,
+        },
+      });
     }),
 });
 

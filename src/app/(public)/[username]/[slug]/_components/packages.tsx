@@ -44,7 +44,7 @@ const Packages = ({ gig }: Props) => {
                 </div>
               </div>
             </div>
-            <div className="">
+            <div>
               <Button className="w-full">Order Now</Button>
             </div>
           </div>
@@ -67,7 +67,7 @@ const Packages = ({ gig }: Props) => {
               Premium
             </TabsTrigger>
           </TabsList>
-          <div className="min-h-80 rounded-lg border">
+          <div className="rounded-lg border">
             <TabsContent value="basic">
               <div className="flex flex-col gap-6 px-6 py-4">
                 <div className="flex items-center justify-between gap-2 text-lg font-semibold">
@@ -76,7 +76,6 @@ const Packages = ({ gig }: Props) => {
                     {gig?.packages.basic?.price} MAD
                   </span>
                 </div>
-
                 <div className="flex w-full flex-col gap-4">
                   <p className="text-sm font-[450] text-muted-foreground">
                     {gig?.packages.basic?.description}
@@ -100,6 +99,9 @@ const Packages = ({ gig }: Props) => {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div>
+                  <Button className="w-full">Order Now</Button>
                 </div>
               </div>
             </TabsContent>
@@ -136,6 +138,9 @@ const Packages = ({ gig }: Props) => {
                     </div>
                   </div>
                 </div>
+                <div>
+                  <Button className="w-full">Order Now</Button>
+                </div>
               </div>
             </TabsContent>
             <TabsContent value="premium">
@@ -170,6 +175,9 @@ const Packages = ({ gig }: Props) => {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div>
+                  <Button className="w-full">Order Now</Button>
                 </div>
               </div>
             </TabsContent>

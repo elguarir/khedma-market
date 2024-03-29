@@ -15,6 +15,7 @@ import { getUserByEmail, getUserById } from "@/lib/helpers/user";
 import { getAccountByUserId } from "@/lib/helpers/account";
 import { getTwoFactorConfirmationByUserId } from "@/lib/helpers/two-factor-confirmation";
 import NextAuth from "next-auth/next";
+import GoogleProvider from "next-auth/providers/google";
 
 export type ExtendedUser = DefaultSession["user"] & {
   id: string;
@@ -107,6 +108,11 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true,
     }),
     Credentials({

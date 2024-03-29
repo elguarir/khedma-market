@@ -10,46 +10,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
-import { NavLink, NavLinkProps } from "./nav-link";
 import { BellIcon } from "@radix-ui/react-icons";
+import LogoutButton from "./logout-button";
+import { NavLinkProps, freelancerNavLinks } from "./navlinks";
+import { NavLink } from "./nav-link";
 
 const SideBar = async () => {
   let session = await getServerAuthSession();
-  const navLinks: NavLinkProps[] = [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: <Icons.dashboardIcon className="h-5 w-5" />,
-      type: "link",
-    },
-    {
-      label: "Work",
-      icon: <Icons.workIcon className="h-5 w-5" />,
-      type: "accordian",
-      items: [
-        { label: "Gigs", href: "/dashboard/gigs" },
-        { label: "Portfolio", href: "/dashboard/portfolio" },
-      ],
-    },
-    {
-      label: "Earnings",
-      href: "/dashboard/earnings",
-      icon: <Icons.earningsIcon className="h-5 w-5" />,
-      type: "link",
-    },
-    {
-      label: "Inbox",
-      href: "/dashboard/inbox",
-      icon: <Icons.inboxIcon className="h-5 w-5" />,
-      type: "link",
-    },
-    {
-      label: "Settings",
-      href: "/dashboard/settings",
-      icon: <Icons.SettingsIcon className="h-5 w-5" />,
-      type: "link",
-    },
-  ];
+  
 
   return (
     <aside className="hidden h-screen flex-col border-r bg-neutral-100/40 dark:bg-neutral-800/40 lg:flex">
@@ -65,7 +33,7 @@ const SideBar = async () => {
         </div>
         <div className="pt flex h-screen flex-1 flex-col justify-between overflow-auto">
           <nav className="items-star grid gap-2 px-4 text-sm font-medium">
-            {navLinks.map((link) => (
+            {freelancerNavLinks.map((link) => (
               <NavLink key={link.label} link={link} />
             ))}
           </nav>
@@ -100,10 +68,12 @@ const SideBar = async () => {
               <DropdownMenuContent className="w-[265px]" align="center">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href={`/${session?.user.username}`}>Profile</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <LogoutButton />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

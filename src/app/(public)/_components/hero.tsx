@@ -10,7 +10,7 @@ const HeroSection = (props: Props) => {
     <div className="bg-dot-primary-dark/[0.20] relative flex h-[28rem] lg:h-[36rem] w-full overflow-hidden rounded-xl bg-background/[0.96] antialiased md:items-center md:justify-center">
       <Spotlight
         className="-top-20 left-0 md:-left-10 md:-top-20 lg:-top-40"
-        fill="green"
+        fill="lime"
       />
       <div className="relative z-20 grid w-full max-w-7xl grid-cols-1 gap-x-4 p-4 pt-20 md:pt-0 lg:grid-cols-2">
         <div className="flex flex-col lg:justify-center">

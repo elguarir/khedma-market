@@ -5,7 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { jimmySerif } from "@/lib/fonts";
+import { fontHeading } from "@/lib/fonts";
 
 export const metadata = {
   title: "Khedma market",
@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${GeistSans.className} ${GeistMono.variable}`}>
+      <body className={`${GeistSans.className} ${GeistMono.variable} ${fontHeading.variable}`}>
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <TooltipProvider delayDuration={200}>{children}</TooltipProvider>

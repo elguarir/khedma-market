@@ -11,7 +11,7 @@ async function PublicLayout({ children }: Props) {
     <ProgressBarProvider>
       <div className="min-h-screen bg-background text-foreground">
         <NavBar />
-        <div className="container flex min-h-[calc(100vh-69px)] w-full flex-1 py-2.5 max-md:px-6 ">
+        <div className="container flex min-h-[calc(100vh-69px)] w-full flex-1 px-6 py-2.5 md:px-8">
           {children}
         </div>
       </div>

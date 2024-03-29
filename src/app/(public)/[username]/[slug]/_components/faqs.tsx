@@ -19,7 +19,7 @@ const Faqs = ({ faqs }: Props) => {
           value={index.toString()}
         >
           <Accordion.Header>
-            <Accordion.Trigger className="flex w-full flex-1 items-center justify-between rounded-md p-4 font-medium outline-none transition-all focus:ring-offset-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring [&[data-state=open]>svg]:rotate-180">
+            <Accordion.Trigger className="flex w-full text-left flex-1 items-center justify-between rounded-md p-4 font-medium outline-none transition-all focus:ring-offset-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring [&[data-state=open]>svg]:rotate-180">
               {faq.question}
               <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
             </Accordion.Trigger>

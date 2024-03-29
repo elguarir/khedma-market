@@ -136,8 +136,8 @@
         ]
     },
     {
-        "name": "Digital Marketing",
-        "slug": "digital-marketing",
+        "name": "Analytics & Strategy",
+        "slug": "analytics-strategy",
         "subCategories": [
             {
                 "name": "Search Engine Optimization",
@@ -152,8 +152,8 @@
                 "slug": "video-e-commerce-marketing"
             },
             {
-                "name": "Analytics & Strategy",
-                "slug": "analytics-strategy"
+                "name": "Digital Marketing",
+                "slug": "digital-marketing"
             }
         ]
     },

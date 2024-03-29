@@ -5,6 +5,7 @@ import { Cross2Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ExtendedUser } from "@/server/auth";
+import { links } from "@/lib/constants/nav-links";
 
 interface MobileNavProps {
   user?: ExtendedUser;
@@ -45,52 +46,17 @@ const MobileNav = ({ user }: MobileNavProps) => {
             className="fixed right-0 top-16 z-30 mx-auto h-full w-full bg-background p-0 py-2 transition-[background-color] duration-200 md:hidden"
           >
             <ul className="grid divide-y divide-muted px-7 dark:divide-muted/40">
-              <li className="py-3">
-                <button className="flex w-full justify-between">
-                  <p className="font-semibold">Articles</p>
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={24}
-                    height={24}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5 text-gray-500 transition-all"
+              {links.map((link) => (
+                <li className="py-3">
+                  <Link
+                    onClick={() => setOpen(false)}
+                    className="flex w-full font-semibold capitalize"
+                    href={link.href}
                   >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg> */}
-                </button>
-              </li>
-              <li className="py-3">
-                <Link
-                  onClick={() => setOpen(false)}
-                  className="flex w-full font-semibold capitalize"
-                  href="/events"
-                >
-                  Events
-                </Link>
-              </li>
-              <li className="py-3">
-                <Link
-                  onClick={() => setOpen(false)}
-                  className="flex w-full font-semibold capitalize"
-                  href="/about"
-                >
-                  About
-                </Link>
-              </li>
-              <li className="py-3">
-                <Link
-                  onClick={() => setOpen(false)}
-                  className="flex w-full font-semibold capitalize"
-                  href="/contact"
-                >
-                  Contact Us
-                </Link>
-              </li>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
 
               {user ? (
                 <div className="grid w-full py-4">
@@ -112,7 +78,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                       className="flex w-full font-semibold capitalize"
                       asChild
                     >
-                      <Link href={"/sign-up"}>Sign Up</Link>
+                      <Link href={"/auth/sign-up"}>Sign Up</Link>
                     </Button>
                   </li>
                   <li>
@@ -122,7 +88,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                       asChild
                       variant={"outline"}
                     >
-                      <Link href={"/sign-in"}>Sign In</Link>
+                      <Link href={"/auth/sign-in"}>Sign In</Link>
                     </Button>
                   </li>
                 </div>

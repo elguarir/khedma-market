@@ -23,6 +23,8 @@ import { OutputData } from "@editorjs/editorjs";
 import { Separator } from "@/components/ui/separator";
 import Faqs from "./_components/faqs";
 import Packages from "./_components/packages";
+import AboutSeller from "./_components/about-seller";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: { username: string; slug: string };
@@ -30,11 +32,13 @@ type Props = {
 
 const GigDetailsPage = async (props: Props) => {
   let gig = await getGigDetails(props.params.username, props.params.slug);
+  if (!gig) return notFound();
+
   return (
     <main className="flex min-h-[calc(100vh-90px)] w-full flex-col py-8 xl:py-12">
       <div className="grid w-full grid-cols-11 gap-y-12 xl:gap-x-16">
         {/* gig details */}
-        <div className="col-span-full flex  h-full w-full flex-col gap-7 rounded-md bg-neutral-100/0 p-4  xl:col-span-7">
+        <div className="col-span-full flex  h-full w-full flex-col gap-7 rounded-md bg-neutral-100/0 xl:p-4  xl:col-span-7">
           <div className="w-full">
             <Breadcrumb>
               <BreadcrumbList>
@@ -104,8 +108,8 @@ const GigDetailsPage = async (props: Props) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="max-xl:-left-8" />
-            <CarouselNext className="max-xl:-right-8" />
+            <CarouselPrevious className="max-xl:-left-6" />
+            <CarouselNext className="max-xl:-right-6" />
           </Carousel>
           <div className="flex w-full flex-col gap-4">
             <div className="group prose prose-neutral w-full">
@@ -148,6 +152,10 @@ const GigDetailsPage = async (props: Props) => {
               </div>
             </>
           )}
+
+          <div className="py-16">
+            <AboutSeller id={gig.owner.id} />
+          </div>
         </div>
 
         {/* packages & ordering */}

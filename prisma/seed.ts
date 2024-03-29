@@ -107,8 +107,8 @@ async function main() {
   // languages
   // await seedLanguages();
   // categories
-  // await seedCategories();
-  await seedConversations()
+  await seedCategories();
+  // await seedConversations()
 }
 main()
   .then(async () => {

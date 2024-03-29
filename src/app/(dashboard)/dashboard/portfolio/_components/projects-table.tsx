@@ -38,7 +38,7 @@ const ProjectsTable = async (props: ProjectsTableProps) => {
           </TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="max-sm:min-w-[450px] sm:w-[550px]">
+              <TableHead className="max-sm:min-w-[450px] sm:w-[850px]">
                 PROJECT
               </TableHead>
               <TableHead className="max-sm:min-w-[450px] sm:w-[550px]">

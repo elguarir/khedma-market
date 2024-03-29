@@ -8,22 +8,12 @@ import { getServerAuthSession } from "@/server/auth";
 import { Icons } from "./icons";
 import { Search } from "lucide-react";
 import { Input } from "./ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { links } from "@/lib/constants/nav-links";
 
 const NavBar = async () => {
   let session = await getServerAuthSession();
   // a freelancing platform like fiverr, upwork, etc
-  let links = [
-    { label: "Home", href: "/" },
-    { label: "Explore", href: "/explore" },
-    { label: "Jobs", href: "/jobs" },
-  ];
+  
   return (
     <div className="border-b">
       <nav className="container py-2.5 max-md:px-6">

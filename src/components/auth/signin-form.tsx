@@ -43,13 +43,7 @@ export function SignInForm() {
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const [isSocialLogin, setIsSocialLogin] = useState<
-    | {
-        google?: boolean;
-        github?: boolean;
-      }
-    | undefined
-  >(undefined);
+  const [isSocialLogin, setIsSocialLogin] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -112,10 +106,16 @@ export function SignInForm() {
       {/* social login */}
       <div className="grid grid-cols-2 gap-3 pb-4 pt-2">
         <Button
-          isLoading={isSocialLogin?.google}
+          isLoading={isSocialLogin}
           loadingText="Signing in..."
           variant={"outline"}
           className="text-sm"
+          onClick={() => {
+            setIsSocialLogin(true);
+            signIn("google", {
+              callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+            });
+          }}
         >
           <svg
             fill="currentColor"
@@ -129,14 +129,14 @@ export function SignInForm() {
         </Button>
         <Button
           onClick={() => {
-            setIsSocialLogin({ github: true });
+            setIsSocialLogin(true);
             signIn("github", {
               callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
             });
           }}
           variant={"outline"}
           className="text-sm"
-          isLoading={isSocialLogin?.github}
+          isLoading={isSocialLogin}
           loadingText="Signing in..."
         >
           <svg

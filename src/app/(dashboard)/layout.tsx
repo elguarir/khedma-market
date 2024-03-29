@@ -2,7 +2,6 @@ import { LucideProps } from "lucide-react";
 import { getServerAuthSession } from "@/server/auth";
 import SideBar from "./dashboard/_components/sidebar";
 import { PropsWithChildren } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,18 +14,41 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
 import { redirect } from "next/navigation";
+import { getUserById } from "@/lib/helpers/user";
+import LogoutButton from "./dashboard/_components/logout-button";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import MobileSidebar from "./dashboard/_components/mobile-sidebar";
 export default async function layout({ children }: PropsWithChildren) {
   let session = await getServerAuthSession();
   if (!session || !session.user) return redirect("/auth/sign-in");
+  let dbUser = await getUserById(session.user.id);
+  if (!dbUser || !dbUser.role) return redirect("/onboarding");
   return (
     <div className="grid h-screen w-full lg:grid-cols-[280px_1fr]">
       <SideBar />
       <div className="flex h-full flex-1 flex-col">
-        <header className="flex h-14 items-center justify-between gap-4 border-b bg-neutral-100/40 px-6 dark:bg-neutral-800/40 lg:hidden lg:h-[60px]">
-          <Link className="lg:hidden" href="#">
-            <Icons.logo className="h-10 w-10" />
-            <span className="sr-only">Home</span>
-          </Link>
+        <header className="flex h-14 items-center justify-between gap-4 border-b bg-neutral-100/40 px-4 dark:bg-neutral-800/40 lg:hidden lg:h-[60px]">
+          <div className="flex items-center gap-3">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button size={"icon"} className="w-8 h-8 rounded-sm" variant={"outline"}>
+                  <HamburgerMenuIcon className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="max-[400px]:w-full" side={"left"}>
+                <MobileSidebar />
+              </SheetContent>
+            </Sheet>
+            <Link className="lg:hidden" href="#">
+              <Icons.logo className="h-10 w-10" />
+              <span className="sr-only">Home</span>
+            </Link>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -58,7 +80,7 @@ export default async function layout({ children }: PropsWithChildren) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <LogoutButton />
             </DropdownMenuContent>
           </DropdownMenu>
         </header>

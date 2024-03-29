@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
 import colors from "tailwindcss/colors";
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
@@ -30,10 +32,11 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: colors.green[700],
-          foreground: colors.green[50],
-          dark: colors.green[800],
-          darker: colors.green[900],
+          DEFAULT: colors.lime[700],
+          foreground: colors.lime[50],
+          light: colors.lime[600],          
+          dark: colors.lime[800],
+          darker: colors.lime[900],
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -68,6 +71,7 @@ const config = {
       fontFamily: {
         sans: ["var(--font-geist-sans)"],
         mono: ["var(--font-geist-mono)"],
+        heading: ['var(--font-heading)', ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
