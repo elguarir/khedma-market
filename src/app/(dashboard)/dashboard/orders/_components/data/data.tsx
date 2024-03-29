@@ -34,5 +34,5 @@ export const statuses = [
   value: string;
   label: string;
   variant: "default" | "secondary" | "destructive" | "outline" | "success" | "info";
-  icon: React.ElementType;
+  icon?: React.ComponentType<{ className?: string }>
 }[];
