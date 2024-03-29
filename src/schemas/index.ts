@@ -5,7 +5,6 @@ import { OutputData } from "@editorjs/editorjs";
 export const SettingsSchema = z
   .object({
     name: z.optional(z.string()),
-    role: z.enum([role.user, role.admin]),
     email: z.optional(z.string().email()),
     password: z.optional(z.string().min(6)),
     newPassword: z.optional(z.string().min(6)),

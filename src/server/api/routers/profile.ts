@@ -6,6 +6,7 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { db } from "@/server/db";
+import slugify from "slugify";
 
 export const profileRouter = createTRPCRouter({
   // skills
@@ -23,14 +24,15 @@ export const profileRouter = createTRPCRouter({
   addSkill: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        name: z.string(),
         level: z.enum(["beginner", "intermediate", "advanced", "expert"]),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const createdSkill = await ctx.db.userSkill.create({
+      const createdSkill = await ctx.db.skill.create({
         data: {
-          skillId: input.id,
+          name: input.name,
+          value: slugify(input.name, { lower: true, strict: true, trim: true }),
           level: input.level,
           userId: ctx.session.user.id,
         },
@@ -48,12 +50,9 @@ export const profileRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await ctx.db.userSkill.delete({
+      await ctx.db.skill.delete({
         where: {
-          userId_skillId: {
-            userId: ctx.session.user.id,
-            skillId: input.id,
-          },
+          id: input.id,
         },
       });
       return {
@@ -64,19 +63,20 @@ export const profileRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
+        name: z.string(),
         level: z.enum(["beginner", "intermediate", "advanced", "expert"]),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const updatedSkill = await ctx.db.userSkill.update({
+      const updatedSkill = await ctx.db.skill.update({
         where: {
-          userId_skillId: {
-            userId: ctx.session.user.id,
-            skillId: input.id,
-          },
+          id: input.id,
+          userId: ctx.session.user.id,
         },
         data: {
           level: input.level,
+          name: input.name,
+          value: slugify(input.name, { lower: true, strict: true, trim: true }),
         },
       });
       return {
@@ -261,25 +261,16 @@ export async function getUserDescription(userId: string) {
 }
 
 export async function getUserSkills(userId: string) {
-  let userSkills = await db.userSkill.findMany({
+  let userSkills = await db.skill.findMany({
     where: {
       userId,
     },
     select: {
-      skill: {
-        select: {
-          id: true,
-          name: true,
-          value: true,
-        },
-      },
+      id: true,
+      name: true,
+      value: true,
       level: true,
     },
   });
-  return userSkills.map((skill) => ({
-    id: skill.skill.id,
-    label: skill.skill.name,
-    value: skill.skill.value,
-    level: skill.level,
-  }));
+  return userSkills;
 }
