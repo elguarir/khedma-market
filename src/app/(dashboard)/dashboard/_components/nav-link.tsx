@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
-import { NavLinkProps } from "./navlinks";
+import { NavLinkProps } from "../../../../lib/constants/dashboard-links";
 
 
 export const NavLink = ({ link }: { link: NavLinkProps }) => {
@@ -15,7 +15,7 @@ export const NavLink = ({ link }: { link: NavLinkProps }) => {
         <Accordion.AccordionItem value={link.label}>
           <Accordion.Trigger
             className={cn(
-              "group flex w-full items-center gap-3 rounded-md px-3 py-2 text-muted-foreground transition-all hover:text-neutral-900 data-[state=open]:text-green-700 dark:text-neutral-400 dark:hover:text-neutral-50 dark:data-[state=open]:text-green-700",
+              "group flex w-full items-center gap-3 rounded-md px-3 py-2 text-muted-foreground transition-all hover:text-neutral-900 data-[state=open]:text-lime-700 dark:text-neutral-400 dark:hover:text-neutral-50 dark:data-[state=open]:text-lime-700",
             )}
           >
             {link.icon && link.icon}

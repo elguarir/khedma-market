@@ -57,3 +57,31 @@ export const freelancerNavLinks: NavLinkProps[] = [
     type: "link",
   },
 ];
+
+export const companyNavLinks: NavLinkProps[] = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: <Icons.dashboardIcon className="h-5 w-5" />,
+    type: "link",
+  },
+  {
+    label: "Jobs",
+    href: "/dashboard/jobs",
+    icon: <Icons.briefcase className="h-5 w-5" />,
+    type: "link",
+  },
+
+  {
+    label: "Inbox",
+    href: "/dashboard/inbox",
+    icon: <Icons.inboxIcon className="h-5 w-5" />,
+    type: "link",
+  },
+  {
+    label: "Settings",
+    href: "/dashboard/settings",
+    icon: <Icons.SettingsIcon className="h-5 w-5" />,
+    type: "link",
+  },
+];

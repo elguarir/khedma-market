@@ -107,7 +107,7 @@ const ProjectForm = (props: Props) => {
                         </SelectItem>
                         <SelectItem value="published">
                           <div className="flex items-center gap-2">
-                            <div className="h-1.5 w-1.5 rounded-full bg-green-600" />
+                            <div className="h-1.5 w-1.5 rounded-full bg-lime-600" />
                             Published
                           </div>
                         </SelectItem>

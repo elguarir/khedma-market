@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${GeistSans.className} ${GeistMono.variable} ${fontHeading.variable}`}>
+      <body className={`antialiased ${GeistSans.className} ${GeistMono.variable} ${fontHeading.variable}`}>
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <TooltipProvider delayDuration={200}>{children}</TooltipProvider>

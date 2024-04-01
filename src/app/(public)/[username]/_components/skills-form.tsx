@@ -82,7 +82,7 @@ const LanguagesForm = (props: LanguagesFormProps) => {
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    let skill = skills?.find((skill) => skill.value === values.name);
+    let skill = skills?.find((skill) => skill.name === values.name);
     if (!skill) return;
     if (skillEdit) {
       updateSkill(

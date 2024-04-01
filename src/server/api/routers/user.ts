@@ -10,6 +10,7 @@ import { personalFormSchema } from "@/lib/schemas/personal-info";
 import { accountFormSchema } from "@/lib/schemas/security-form";
 import { TRPCError } from "@trpc/server";
 import bcrypt from "bcryptjs";
+import { companySchema } from "@/schemas";
 
 export const userRouter = createTRPCRouter({
   getUserbyUsername: protectedProcedure
@@ -202,6 +203,33 @@ export const userRouter = createTRPCRouter({
           id: true,
           role: true,
           username: true,
+        },
+      });
+    }),
+  createCompany: protectedProcedure
+    .input(companySchema)
+    .mutation(async ({ ctx, input }) => {
+      let user = await db.user.findFirst({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          id: true,
+          role: true,
+        },
+      });
+
+      if (user?.role !== "company") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "User is not signed up as a company",
+        });
+      }
+
+      return await db.company.create({
+        data: {
+          ...input,
+          userId: user.id,
         },
       });
     }),

@@ -12,12 +12,13 @@ import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
 import { BellIcon } from "@radix-ui/react-icons";
 import LogoutButton from "./logout-button";
-import { NavLinkProps, freelancerNavLinks } from "./navlinks";
+import { NavLinkProps, companyNavLinks, freelancerNavLinks } from "@/lib/constants/dashboard-links";
 import { NavLink } from "./nav-link";
 
 const SideBar = async () => {
   let session = await getServerAuthSession();
-  
+  let role = session?.user?.role;
+  let links = role === "company" ? companyNavLinks : freelancerNavLinks;
 
   return (
     <aside className="hidden h-screen flex-col border-r bg-neutral-100/40 dark:bg-neutral-800/40 lg:flex">
@@ -33,7 +34,7 @@ const SideBar = async () => {
         </div>
         <div className="pt flex h-screen flex-1 flex-col justify-between overflow-auto">
           <nav className="items-star grid gap-2 px-4 text-sm font-medium">
-            {freelancerNavLinks.map((link) => (
+            {links.map((link) => (
               <NavLink key={link.label} link={link} />
             ))}
           </nav>

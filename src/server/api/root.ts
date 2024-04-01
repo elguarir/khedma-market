@@ -7,6 +7,7 @@ import { CategoryRouter } from "./routers/category";
 import { gigRouter } from "./routers/gig";
 import { projectRouter } from "./routers/project";
 import { conversationRouter } from "./routers/conversation";
+import { jobRouter } from "./routers/job";
 
 export const appRouter = createTRPCRouter({
   post: profileRouter,
@@ -17,6 +18,7 @@ export const appRouter = createTRPCRouter({
   gig: gigRouter,
   project: projectRouter,
   conversation: conversationRouter,
+  job: jobRouter,
 });
 
 export type AppRouter = typeof appRouter;

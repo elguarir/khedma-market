@@ -121,6 +121,77 @@ export const projectSchema = z.object({
   gallery: GallerySchema,
 });
 
+export const companySchema = z.object({
+  name: z.string({ required_error: "Required." }).min(1, "Required.").max(250, {
+    message: "Max 250 characters.",
+  }),
+  logo: z.string({ required_error: "Required." }).min(1, "Required."),
+  industry: z
+    .string({ required_error: "Required." })
+    .min(1, "Required.")
+    .max(250, { message: "Max 250 characters." }),
+  location: z
+    .string({ required_error: "Required." })
+    .min(1, "Required.")
+    .max(250, { message: "Max 250 characters." }),
+  description: z
+    .string({ required_error: "Required." })
+    .min(1, "Required.")
+    .max(250, { message: "Max 250 characters." }),
+  contactEmail: z
+    .string({ required_error: "Required." })
+    .min(1, "Required.")
+    .email({ message: "Invalid email." })
+    .max(250, { message: "Max 250 characters." }),
+  website: z
+    .string()
+    .max(250, { message: "A website url is not that long." })
+    .optional(),
+});
+
+export const jobSchema = z.object({
+  title: z.string().min(5, "Title is too short").max(250, "Title is too long"),
+  description: z
+    .any({ required_error: "Description is required" })
+    .refine((data: OutputData) => data && data.blocks.length > 0, {
+      message: "Description is required",
+    }),
+  location: z
+    .string()
+    .min(5, "Location is too short")
+    .max(250, "Location is too long"),
+  jobType: z.enum(["full_time", "part_time", "contract", "intern"]),
+  canBeRemote: z.boolean().default(false),
+  salary: z.string().optional(),
+});
+
+/**
+ * 
+ * model Job {
+    id          String   @id @default(cuid())
+    slug        String   @unique
+    title       String
+    description Json
+    location    String
+    salary      Float
+    canBeRemote Boolean  @map("can_be_remote")
+    companyId   String   @map("company_id")
+    type        JobType
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+
+    applications Application[]
+    company      Company       @relation(fields: [companyId], references: [id])
+}
+
+enum JobType {
+    full_time
+    part_time
+    contract
+    intern
+}
+ */
+
 /**
  * 
  * model Project {

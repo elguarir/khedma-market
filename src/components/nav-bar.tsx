@@ -37,7 +37,7 @@ const NavBar = async () => {
             ))}
           </ul>
           <div className="hidden h-full items-center gap-4 md:flex">
-            <div className="relative flex h-full w-72 items-center py-0.5">
+            <div className="relative flex h-full flex-1 max-w-72 items-center py-0.5">
               <div className="absolute left-3.5 top-1/2 -translate-y-1/2 transform">
                 <Search className="h-4 w-4" />
               </div>

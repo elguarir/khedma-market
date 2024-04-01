@@ -14,7 +14,7 @@ const callOutVariants = cva(
           "bg-secondary text-secondary-foreground hover:[&_button]:text-secondary-foreground hover:[&_button]:bg-neutral-700/10 hover:[&_button]:dark:bg-neutral-600/20",
         info: "bg-sky-700/10 text-sky-700 dark:bg-sky-700/20 dark:text-sky-500/80 hover:[&_button]:text-sky-600 hover:[&_button]:bg-sky-700/10",
         success:
-          "bg-green-700/10 text-green-700 dark:bg-green-700/20 dark:text-green-500/80 hover:[&_button]:text-green-700/80 hover:[&_button]:bg-green-700/10",
+          "bg-lime-700/10 text-lime-700 dark:bg-lime-700/20 dark:text-lime-500/80 hover:[&_button]:text-lime-700/80 hover:[&_button]:bg-lime-700/10",
         warning:
           "bg-yellow-700/10 text-yellow-700 dark:bg-yellow-700/20 dark:text-yellow-500/80 hover:[&_button]:text-yellow-600 hover:[&_button]:bg-yellow-700/10",
         danger:

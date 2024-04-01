@@ -17,17 +17,18 @@ import { redirect } from "next/navigation";
 import { getUserById } from "@/lib/helpers/user";
 import LogoutButton from "./dashboard/_components/logout-button";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import MobileSidebar from "./dashboard/_components/mobile-sidebar";
 export default async function layout({ children }: PropsWithChildren) {
   let session = await getServerAuthSession();
   if (!session || !session.user) return redirect("/auth/sign-in");
   let dbUser = await getUserById(session.user.id);
-  if (!dbUser || !dbUser.role) return redirect("/onboarding");
+  if (!dbUser || !dbUser.role || !dbUser.username)
+    return redirect("/onboarding");
+  let company = dbUser?.companies[0];
+  if (!company && dbUser.role === "company")
+    return redirect("/onboarding/company/setup");
+
   return (
     <div className="grid h-screen w-full lg:grid-cols-[280px_1fr]">
       <SideBar />
@@ -36,7 +37,11 @@ export default async function layout({ children }: PropsWithChildren) {
           <div className="flex items-center gap-3">
             <Sheet>
               <SheetTrigger asChild>
-                <Button size={"icon"} className="w-8 h-8 rounded-sm" variant={"outline"}>
+                <Button
+                  size={"icon"}
+                  className="h-8 w-8 rounded-sm"
+                  variant={"outline"}
+                >
                   <HamburgerMenuIcon className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
