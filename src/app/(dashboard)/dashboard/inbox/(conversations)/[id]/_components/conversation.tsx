@@ -21,10 +21,14 @@ const Conversation = ({ conversation, currentUser }: Props) => {
   const { messages, setShouldScroll, shouldScroll } = useConversation(
     conversation?.id,
   );
+
+  
   const scrollToBottom = () => {
     wrapperRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);

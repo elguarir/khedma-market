@@ -8,11 +8,12 @@ import { gigRouter } from "./routers/gig";
 import { projectRouter } from "./routers/project";
 import { conversationRouter } from "./routers/conversation";
 import { jobRouter } from "./routers/job";
+import { orderRouter } from "./routers/order";
 
 export const appRouter = createTRPCRouter({
-  post: profileRouter,
   user: userRouter,
   file: fileRouter,
+  order:orderRouter,
   profile: profileRouter,
   category: CategoryRouter,
   gig: gigRouter,

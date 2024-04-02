@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TGetGigDetails } from "@/server/api/routers/gig";
 import { ClockIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 type Props = {
   gig: TGetGigDetails;
@@ -45,7 +46,11 @@ const Packages = ({ gig }: Props) => {
               </div>
             </div>
             <div>
-              <Button className="w-full">Order Now</Button>
+              <Button asChild className="w-full">
+                <Link href={`/order/${gig?.owner.username}/${gig?.slug}/basic`}>
+                  Order Now
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -101,7 +106,13 @@ const Packages = ({ gig }: Props) => {
                   </div>
                 </div>
                 <div>
-                  <Button className="w-full">Order Now</Button>
+                  <Button asChild className="w-full">
+                    <Link
+                      href={`/order/${gig?.owner.username}/${gig?.slug}/basic`}
+                    >
+                      Order Now
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </TabsContent>
@@ -139,7 +150,13 @@ const Packages = ({ gig }: Props) => {
                   </div>
                 </div>
                 <div>
-                  <Button className="w-full">Order Now</Button>
+                  <Button asChild className="w-full">
+                    <Link
+                      href={`/order/${gig?.owner.username}/${gig?.slug}/standard`}
+                    >
+                      Order Now
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </TabsContent>
@@ -177,7 +194,13 @@ const Packages = ({ gig }: Props) => {
                   </div>
                 </div>
                 <div>
-                  <Button className="w-full">Order Now</Button>
+                  <Button asChild className="w-full">
+                    <Link
+                      href={`/order/${gig?.owner.username}/${gig?.slug}/premium`}
+                    >
+                      Order Now
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </TabsContent>
