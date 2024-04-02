@@ -2,7 +2,6 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import React from "react";
 import Link from "next/link";
-import { CategoryCardProps } from "./_components/category-card";
 import PopularCategories from "./_components/popular-categories";
 import { ServiceCard, ServiceCardProps } from "./_components/service-card";
 import { Button } from "@/components/ui/button";
@@ -11,71 +10,33 @@ import { db } from "@/server/db";
 type Props = {};
 
 const ServicesPage = async (props: Props) => {
-  let categories = [
-    {
-      title: "WordPress Development",
-      href: "/services/wordpress-development",
-      image:
-        "https://res.cloudinary.com/upwork-cloud/image/upload/catalog-ui-assets/taxonomy/category/wordpress.jpg",
-    },
-    {
-      title: "Logo Design",
-      href: "/services/logo-branding",
-      image:
-        "https://res.cloudinary.com/upwork-cloud/image/upload/catalog-ui-assets/taxonomy/category/logo-design.jpg",
-    },
-    {
-      title: "Video Editing",
-      href: "/services/editing-post-production",
-      image:
-        "https://res.cloudinary.com/upwork-cloud/image/upload/catalog-ui-assets/taxonomy/category/video-editing.jpg",
-    },
-    {
-      title: "Data Science & ML",
-      href: "/services/data-science-ml",
-      image:
-        "https://res.cloudinary.com/upwork-cloud/image/upload/catalog-ui-assets/taxonomy/category/data-analysis-reports.jpg",
-    },
-    {
-      title: "Legal Services",
-      href: "/services/legal-services",
-      image:
-        "https://res.cloudinary.com/upwork-cloud/image/upload/catalog-ui-assets/taxonomy/category/legal-writing.jpg",
-    },
-    {
-      title: "Editing & Proofreading",
-      href: "/services/editing-proofreading",
-      image:
-        "https://res.cloudinary.com/upwork-cloud/image/upload/catalog-ui-assets/taxonomy/category/proofreading-editing.jpg",
-    },
-  ] as CategoryCardProps[];
-  let services = [
-    {
-      author: {
-        avatar:
-          "https://fiverr-res.cloudinary.com/attachments/profile/photo/06a3d2ab90dbd3cb729930b1ba5acbaa-991539391674554543481/JPEG_20230124_153222_2646298220152317127.jpg",
-        id: "1",
-        name: "Darshan",
-        username: "darshan",
-      },
-      service: {
-        id: "1",
-        title:
-          "I will build, rebuild, redesign wordpress website or wordpress elementor website design",
-        createdAt: "2021-09-01T00:00:00.000Z",
-        price: 50.5,
-        images: [
-          "https://fiverr-res.cloudinary.com/gigs/189055476/original/5b809b0a85e30a57c311470a7aabaaa086d579cf.jpg",
-          "https://fiverr-res.cloudinary.com/gigs2/189055476/original/98ff0fbb6b0a57f612b64cf6f4ef3059c0c351db.jpg",
-        ],
-      },
-      numberOfReviews: 1250,
-      rating: 4.2,
-    },
-  ] as ServiceCardProps[];
+  // let services = [
+  //   {
+  //     author: {
+  //       avatar:
+  //         "https://fiverr-res.cloudinary.com/attachments/profile/photo/06a3d2ab90dbd3cb729930b1ba5acbaa-991539391674554543481/JPEG_20230124_153222_2646298220152317127.jpg",
+  //       id: "1",
+  //       name: "Darshan",
+  //       username: "darshan",
+  //     },
+  //     service: {
+  //       id: "1",
+  //       title:
+  //         "I will build, rebuild, redesign wordpress website or wordpress elementor website design",
+  //       createdAt: "2021-09-01T00:00:00.000Z",
+  //       price: 50.5,
+  //       images: [
+  //         "https://fiverr-res.cloudinary.com/gigs/189055476/original/5b809b0a85e30a57c311470a7aabaaa086d579cf.jpg",
+  //         "https://fiverr-res.cloudinary.com/gigs2/189055476/original/98ff0fbb6b0a57f612b64cf6f4ef3059c0c351db.jpg",
+  //       ],
+  //     },
+  //     numberOfReviews: 1250,
+  //     rating: 4.2,
+  //   },
+  // ] as ServiceCardProps[];
 
-  let dbServices = await getManyServices()
-  console.log("dbservices", dbServices)
+  let dbServices = await getPostedServices();
+  console.log("dbservices", dbServices);
   return (
     <main className="flex w-full flex-col py-10">
       <section className="grid grid-cols-12 rounded-lg bg-lime-900 bg-no-repeat text-lime-50 [background-position:100%] [background-size:contain] lg:bg-[url('https://www.upwork.com/static/assets/CatalogApp/img/desktop@1x.eb9fc13.png')]">
@@ -300,7 +261,7 @@ const ServicesPage = async (props: Props) => {
             </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {services.map((service) => (
+            {dbServices.map((service) => (
               <ServiceCard key={service.service.id} {...service} />
             ))}
           </div>
@@ -312,7 +273,7 @@ const ServicesPage = async (props: Props) => {
 
 export default ServicesPage;
 
-async function getManyServices() {
+async function getPostedServices() {
   let dbServices = await db.gig.findMany({
     where: {
       status: "published",
@@ -385,14 +346,15 @@ async function getManyServices() {
       service: {
         id: service.id,
         title: service.title,
+        slug:service.slug,
         images: service.attachments.map((attachment) => attachment.url),
         price: service.packages[0]?.price,
-        createdAt: service.createdAt.toISOString(),
+        createdAt: service.createdAt,
       },
       numberOfReviews,
       rating: averageRating,
     };
   });
 
-  return formattedServices
+  return formattedServices;
 }

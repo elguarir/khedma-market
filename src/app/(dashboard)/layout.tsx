@@ -49,7 +49,7 @@ export default async function layout({ children }: PropsWithChildren) {
                 <MobileSidebar />
               </SheetContent>
             </Sheet>
-            <Link className="lg:hidden" href="#">
+            <Link className="lg:hidden" href="/">
               <Icons.logo className="h-10 w-10" />
               <span className="sr-only">Home</span>
             </Link>

@@ -5,12 +5,20 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   ClockIcon,
+  InfoCircledIcon,
 } from "@radix-ui/react-icons";
 import { format } from "date-fns";
-import { DollarSign, MapPin } from "lucide-react";
+import { CheckCheck, DollarSign, MapPin } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { JobCard, JobCardProps } from "../_components/job-card";
+import { db } from "@/server/db";
+import { notFound } from "next/navigation";
+import { OutputData } from "@editorjs/editorjs";
+import { BlockRenderer } from "@/components/block-renderer";
+import { ApplyButton } from "../_components/apply-button";
+import { getServerAuthSession } from "@/server/auth";
+import Callout from "@/components/ui/callout";
 
 type Props = {
   params: {
@@ -19,55 +27,58 @@ type Props = {
 };
 
 const JobPage = async (props: Props) => {
-  //   let job = await db.job.findFirst({
-  //     where: {
-  //       slug: props.params.slug,
+  // let job = {
+  //   title: "UI/UX Designer",
+  //   slug: "ui-ux-designer",
+  //   jobtype: "contract",
+  //   company: {
+  //     name: "OCP Group",
+  //     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/OCP_Group.svg/1200px-OCP_Group.svg.png",
+  //     website: "https://ocp-group.ma",
+  //   },
+  //   canBeRemote: true,
+  //   location: "Marrakech",
+  //   salary: "5,000 MAD - 7,000 MAD",
+  //   createdAt: new Date("2024-03-23"),
+  // };
+
+  // let relatedJobs = [
+  //   {
+  //     title: "Data Scientist",
+  //     slug: "data-scientist",
+  //     jobtype: "part_time",
+  //     company: {
+  //       name: "Royal Air Maroc",
+  //       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Logo_Royal_Air_Maroc.svg/1024px-Logo_Royal_Air_Maroc.svg.png",
   //     },
-  //   });
+  //     canBeRemote: true,
+  //     location: "Casablanca",
+  //     salary: "8,000 MAD - 10,000 MAD",
+  //     createdAt: new Date("2024-03-21"),
+  //   },
+  //   {
+  //     title: "Software Engineer",
+  //     slug: "software-engineer",
+  //     jobtype: "full_time",
+  //     company: {
+  //       name: "Addoha Group",
+  //       logo: "https://ir.groupeaddoha.com/images/5dde9ef08336a.png",
+  //     },
+  //     canBeRemote: false,
+  //     location: "Casablanca",
+  //     salary: "25,000 MAD - 35,000 MAD",
+  //     createdAt: new Date("2024-03-25"),
+  //   },
+  // ] as JobCardProps[];
+  let res = await getJobBySlug(props.params.slug);
+  if (!res || !res.job) {
+    return notFound();
+  }
+  let session = await getServerAuthSession();
 
-  let job = {
-    title: "UI/UX Designer",
-    slug: "ui-ux-designer",
-    jobtype: "contract",
-    company: {
-      name: "OCP Group",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/OCP_Group.svg/1200px-OCP_Group.svg.png",
-      website: "https://ocp-group.ma",
-    },
-    canBeRemote: true,
-    location: "Marrakech",
-    salary: "5,000 MAD - 7,000 MAD",
-    createdAt: new Date("2024-03-23"),
-  };
-
-  let relatedJobs = [
-    {
-      title: "Data Scientist",
-      slug: "data-scientist",
-      jobtype: "part_time",
-      company: {
-        name: "Royal Air Maroc",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Logo_Royal_Air_Maroc.svg/1024px-Logo_Royal_Air_Maroc.svg.png",
-      },
-      canBeRemote: true,
-      location: "Casablanca",
-      salary: "8,000 MAD - 10,000 MAD",
-      createdAt: new Date("2024-03-21"),
-    },
-    {
-      title: "Software Engineer",
-      slug: "software-engineer",
-      jobtype: "full_time",
-      company: {
-        name: "Addoha Group",
-        logo: "https://ir.groupeaddoha.com/images/5dde9ef08336a.png",
-      },
-      canBeRemote: false,
-      location: "Casablanca",
-      salary: "25,000 MAD - 35,000 MAD",
-      createdAt: new Date("2024-03-25"),
-    },
-  ] as JobCardProps[];
+  let hasAlreadyApplied = res.job.applications.find(
+    (app) => app.userId === session?.user?.id,
+  );
 
   return (
     <main className="flex w-full flex-col py-16">
@@ -88,100 +99,13 @@ const JobPage = async (props: Props) => {
           {/* job details */}
           <div className="col-span-12 w-full max-md:order-2 md:col-span-7 lg:col-span-8 xl:col-span-9">
             <div className="flex flex-col space-y-2">
-              <h3 className="max-w-prose text-balance text-3xl font-bold md:text-4xl">
-                {job.title}
-              </h3>
-              <div className="prose prose-lime flex flex-col dark:prose-invert">
-                <div>
-                  <div>
-                    <h3>The Role</h3>
-                    <p>
-                      In the world of AI, behavioural predictions are leading
-                      the charge to better machine learning.
-                    </p>
-                    <p>
-                      There is so much happening in the AI space. Advances in
-                      the economic sectors have seen automated business
-                      practices rapidly increasing economic value. While the
-                      realm of the human sciences has used the power afforded by
-                      computational capabilities to solve many human based
-                      dilemmas. Even the art scene has adopted carefully
-                      selected ML applications to usher in the technological
-                      movement.
-                    </p>
-                    <p>
-                      As a Senior Client Engineer, you'll work alongside other
-                      engineers, designers, and product managers to tackle
-                      everything from huge company initiatives to modest but
-                      important bug fixes, from start to finish. You'll also
-                      collaborate with your product team on discovery, helping
-                      to assess the direction and feasibility of product
-                      changes. And, perhaps most importantly, you'll actively
-                      contribute to the evolution of the culture and processes
-                      of a growing engineering team.
-                    </p>
-                  </div>
-                  <div>
-                    <h3>About You</h3>
-                    <p>
-                      You love building great software. Your work could be
-                      supporting new feature development, migrating existing
-                      features, and creating other mobile and web solutions for
-                      customers. You'll have a primary focus on frontend
-                      development using Javascript. Our client's tech stack is
-                      JavaScript, primarily using React. A strong understanding
-                      of JS core (ES2019+) is required, with some exposure in
-                      Java as back-end technology. We use modern tools, which
-                      means you'll have the opportunity to work with Webpack,
-                      Redux, Apollo, Styled Components, and much more.
-                    </p>
-                    <p>
-                      You love learning. Engineering is an ever-evolving world.
-                      You enjoy playing with new tech and exploring areas that
-                      you might not have experience with yet. You are
-                      self-driven, self-learner willing to share knowledge and
-                      participate actively in your community.
-                    </p>
-                    <p>
-                      Having overlap with your team is critical when working in
-                      a global remote team. Modus requires all team members to
-                      overlap with EST morning hours daily. In addition,
-                      reliable high speed internet is a must.
-                    </p>
-                  </div>
-                  <div>
-                    <h3>Things You Might Do</h3>
-                    <p>
-                      We are a fast-growing, and remote-first company, so you'll
-                      likely get experience on many different projects across
-                      the organization. That said, here are some things you'll
-                      probably do:
-                    </p>
-                    <ul>
-                      <li>
-                        Give back to the community via open source and blog
-                        posts
-                      </li>
-                      <li>
-                        Travel and meet great people- as part of our
-                        remote-first lifestyle, it's important that we come
-                        together as needed to work together, meet each other in
-                        person and have fun together. Please keep that in mind
-                        when you apply
-                      </li>
-                      <li>
-                        Teach and be taught: Modus creates active teams that
-                        work in internal and external projects together, giving
-                        opportunities to stay relevant with the latest
-                        technologies and learning from experts worldwide
-                      </li>
-                      <li>
-                        Interact directly with internal and external clients to
-                        represent Modus and its values
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+              <h1 className="mb-8 max-w-prose text-balance text-3xl font-bold md:text-4xl">
+                {res.job.title}
+              </h1>
+              <div className="prose prose-lime flex flex-col dark:prose-invert prose-p:my-1.5">
+                {(res.job.description as OutputData | null)?.blocks.map(
+                  (block) => <BlockRenderer key={block.id} block={block} />,
+                )}
               </div>
               <div className="flex items-center justify-end gap-5">
                 <span className="font-medium text-primary-light">
@@ -223,18 +147,19 @@ const JobPage = async (props: Props) => {
                   </Button>
                 </div>
               </div>
-              <div className="flex flex-col space-y-4">
-                <h3 className="text-lg font-bold">Related Jobs</h3>
-                <Separator  />
-                <div className="flex-col flex divide-y py-6">
-                  {relatedJobs.map((job) => (
-                    <div className="py-3">
-
-                    <JobCard key={job.slug} {...job} />
-                    </div>
-                  ))}
+              {res.related.length > 0 && (
+                <div className="flex flex-col space-y-4">
+                  <h3 className="text-lg font-bold">Related Jobs</h3>
+                  <Separator />
+                  <div className="flex flex-col divide-y py-6">
+                    {res.related.map((job) => (
+                      <div className="py-3">
+                        <JobCard key={job.slug} {...job} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
           {/* company card */}
@@ -244,39 +169,56 @@ const JobPage = async (props: Props) => {
                 <Avatar className="h-[4.8rem] w-[4.8rem] border">
                   <AvatarImage
                     className="object-cover"
-                    src={job.company.logo}
+                    src={res.job.company.logo}
                   />
-                  <AvatarFallback>{job.company.name[0]}</AvatarFallback>
+                  <AvatarFallback>{res.job.company.name[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col items-center space-y-2">
-                  <h3 className="text-lg font-bold">{job.company.name}</h3>
+                  <h3 className="text-lg font-bold">{res.job.company.name}</h3>
                 </div>
               </div>
               <div className="grid w-full gap-y-1 text-neutral-700 dark:text-neutral-200">
                 <div className="flex items-center gap-2">
                   <ClockIcon className="h-4 w-4" />
-                  <p>{format(job.createdAt, "dd MMMM, yyyy")}</p>
+                  <p>{format(res.job.createdAt, "dd MMMM, yyyy")}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
                   <p>
-                    {job.location} / {job.canBeRemote && "Remote friendly"}
+                    {res.job.location} /{" "}
+                    {res.job.canBeRemote && "Remote friendly"}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-4 w-4" />
-                  <p>{job.salary}</p>
+                  <p>{res.job.salary}</p>
                 </div>
               </div>
 
               <div className="grid w-full gap-y-1">
-                <Button className="w-full rounded-full">
-                  Apply now
-                  <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </Button>
-                {job.company.website && (
+                {hasAlreadyApplied ? (
+                  <Callout
+                    variant={"success"}
+                    className="flex items-center gap-2"
+                  >
+                    <CheckCheck className="h-5 w-5" />
+                    You have already applied to this job
+                  </Callout>
+                ) : !session || !session.user ? (
+                  <Button asChild>
+                    <Link href={"/auth/sign-in"}>Sign in to apply</Link>
+                  </Button>
+                ) : session.user.role !== "freelancer" ? (
+                  <Callout variant={"info"} className="flex items-center gap-2">
+                    <InfoCircledIcon className="h-5 w-5" />
+                    You need to setup a freelancer profile to apply.
+                  </Callout>
+                ) : (
+                  <ApplyButton slug={res.job.slug} />
+                )}
+                {res.job.company.website && (
                   <Button variant={"link"} className="w-full" size={"icon"}>
-                    <Link href={job.company.website}>Visit Website</Link>
+                    <Link href={res.job.company.website}>Visit Website</Link>
                   </Button>
                 )}
               </div>
@@ -289,3 +231,91 @@ const JobPage = async (props: Props) => {
 };
 
 export default JobPage;
+
+async function getJobBySlug(slug: string | undefined) {
+  let job = await db.job.findUnique({
+    where: { slug: slug },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      type: true,
+      description: true,
+      canBeRemote: true,
+      location: true,
+      salary: true,
+      createdAt: true,
+      company: true,
+      applications: {
+        select: {
+          userId: true,
+        },
+      },
+    },
+  });
+  if (!job) return null;
+
+  let relatedJobs = await db.job.findMany({
+    where: {
+      OR: [
+        {
+          title: {
+            contains: job.title,
+          },
+        },
+        {
+          company: {
+            name: {
+              contains: job.company.name,
+            },
+          },
+        },
+        {
+          location: {
+            contains: job.location,
+          },
+        },
+      ],
+      NOT: {
+        slug: job.slug,
+      },
+    },
+    include: {
+      company: true,
+    },
+    take: 3,
+  });
+
+  return {
+    job: {
+      title: job.title,
+      slug: job.slug,
+      jobtype: job.type,
+      applications: job.applications,
+      company: {
+        name: job.company.name,
+        logo: job.company.logo,
+        website: job.company.website,
+      },
+      description: job.description,
+      canBeRemote: job.canBeRemote,
+      location: job.location,
+      salary: job.salary,
+      createdAt: job.createdAt,
+    },
+    related: relatedJobs.map((job) => ({
+      title: job.title,
+      slug: job.slug,
+      jobtype: job.type,
+      company: {
+        name: job.company.name,
+        logo: job.company.logo,
+      },
+      description: job.description,
+      canBeRemote: job.canBeRemote,
+      location: job.location,
+      salary: job.salary,
+      createdAt: job.createdAt,
+    })),
+  };
+}

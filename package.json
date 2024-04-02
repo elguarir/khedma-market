@@ -10,6 +10,7 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
+    "scrape": "tsx src/scripts/scrape.ts",
     "preview": "next build && next start",
     "dev": "next dev --turbo",
     "postinstall": "prisma generate",
@@ -86,6 +87,7 @@
     "geist": "^1.2.2",
     "html-react-parser": "^5.1.8",
     "libphonenumber-js": "^1.10.57",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.330.0",
     "mini-svg-data-uri": "^1.4.4",
     "nanoid": "^5.0.6",
@@ -121,7 +123,9 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/eslint": "^8.44.7",
+    "@types/lodash": "^4.17.0",
     "@types/node": "^18.17.0",
     "@types/numeral": "^2.0.5",
     "@types/react": "^18.2.37",
@@ -136,6 +140,7 @@
     "prettier": "^3.1.0",
     "prettier-plugin-tailwindcss": "^0.5.7",
     "prisma": "^5.10.1",
+    "puppeteer": "^22.6.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.1.6"
   },

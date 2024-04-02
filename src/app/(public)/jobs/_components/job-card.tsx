@@ -17,7 +17,7 @@ export interface JobCardProps {
     };
     canBeRemote: boolean;
     location: string;
-    salary: string;
+    salary: string | null;
     createdAt: Date;
   }
   export const JobCard = (props: JobCardProps) => (

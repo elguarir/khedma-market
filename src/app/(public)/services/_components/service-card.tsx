@@ -14,16 +14,17 @@ import numeral from "numeral";
 export type ServiceCardProps = {
   author: {
     id: string;
-    name: string;
-    username: string;
-    avatar: string;
+    name: string | null;
+    username: string | null;
+    avatar: string | null;
   };
   service: {
     id: string;
-    title: string;
+    title: string | null;
+    slug: string | null;
     images: string[];
-    price: number;
-    createdAt: string;
+    price: number | undefined;
+    createdAt: Date;
   };
   numberOfReviews: number;
   rating: number;
@@ -46,9 +47,9 @@ export const ServiceCard = (props: ServiceCardProps) => {
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={props.author.avatar} />
+            <AvatarImage src={props.author?.avatar ?? ""} />
             <AvatarFallback>
-              {props.author.name.charAt(0).toUpperCase()}
+              {props.author?.name?.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div>
@@ -62,7 +63,7 @@ export const ServiceCard = (props: ServiceCardProps) => {
         </div>
         <div>
           <Link
-            href={`/services/${props.service.id}`}
+            href={`/${props.author.username}/${props.service.slug}`}
             className="line-clamp-2 font-medium leading-5 transition-colors hover:underline"
           >
             {props.service.title}

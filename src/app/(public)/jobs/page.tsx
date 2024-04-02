@@ -1,26 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { cities } from "@/lib/constants/cities";
-import { formatDistance } from "date-fns";
-import { ArrowRight, Search } from "lucide-react";
 import Link from "next/link";
-import React from "react";
-import { JobCard, JobCardProps } from "./_components/job-card";
-import { job_types } from "@/lib/constants/jobtypes";
+import React, { Suspense } from "react";
+import { JobCardProps } from "./_components/job-card";
+import { db } from "@/server/db";
+import { FiltersSidebar } from "./_components/filters-sidebar";
+import { JobsTable } from "./_components/jobs-table";
+import { Await } from "@/lib/helpers/Await";
 
-type Props = {};
+type Props = {
+  searchParams: {
+    q: string | undefined;
+  };
+};
 
-const JobsPage = (props: Props) => {
+const JobsPage = async (props: Props) => {
   let jobs = [
     // {
     //   title: "Software Engineer Backend",
@@ -141,6 +134,7 @@ const JobsPage = (props: Props) => {
     },
   ] as JobCardProps[];
 
+  let dbJobs = getPostedJobs({ query: props.searchParams.q });
   return (
     <main className="flex w-full flex-col">
       <div className="grid min-h-[23rem] w-full grid-cols-12 rounded-md bg-lime-900/10 text-lime-950 dark:text-lime-50 ">
@@ -224,15 +218,11 @@ const JobsPage = (props: Props) => {
             <h3 className="text-2xl font-semibold text-lime-900 dark:text-lime-50">
               Latest jobs
             </h3>
-            <div className="flex flex-col divide-y">
-              {jobs
-                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-                .map((job) => (
-                  <div className="py-5">
-                    <JobCard key={job.title} {...job} />
-                  </div>
-                ))}
-            </div>
+            <Suspense fallback="Loading...">
+              <Await promise={dbJobs}>
+                {(jobs) => <JobsTable jobs={jobs} />}
+              </Await>
+            </Suspense>
           </div>
         </div>
         {/* filters sidebar */}
@@ -240,76 +230,46 @@ const JobsPage = (props: Props) => {
           <FiltersSidebar />
         </div>
       </div>
-      
     </main>
   );
 };
 
 export default JobsPage;
 
-const FiltersSidebar = () => (
-  <div className="flex w-full flex-col space-y-8 rounded-md border bg-neutral-100/40 p-5 dark:bg-neutral-800/40">
-    <div className="flex flex-col gap-2">
-      <div className="flex w-full items-center justify-between font-[550]">
-        Search
-        <Button className="p-0 text-xs font-[550]" variant={"link"}>
-          Clear
-        </Button>
-      </div>
-      <form method="get" className="flex items-center gap-2">
-        <Input name="q" placeholder="Eg: Data Scientist" />
-        <Button className="px-3">
-          <Search className="h-4 w-4" />
-        </Button>
-      </form>
-    </div>
-    <div className="flex flex-col gap-4">
-      <div className="flex w-full items-center justify-between font-[550]">
-        Job Type
-      </div>
-      <div className="flex flex-col space-y-3">
-        {Object.entries(job_types).map(([key, value]) => (
-          <Label
-            key={key}
-            className="flex items-center gap-2 font-[450] tracking-normal"
-          >
-            <Checkbox rounded={false} id={key} name="jobtype" value={key} />{" "}
-            {value}
-          </Label>
-        ))}
-      </div>
-    </div>
-    <div className="flex flex-col gap-2">
-      <div className="flex w-full items-center justify-between font-[550]">
-        Remote Friendly
-      </div>
-      <div className="flex flex-col space-y-3">
-        <Label className="flex items-center gap-2 font-[450] tracking-normal">
-          <Switch />
-          <span className="italic text-muted-foreground">Off</span>
-        </Label>
-      </div>
-    </div>
-    <div className="flex flex-col gap-2">
-      <div className="flex w-full items-center justify-between font-[550]">
-        Location
-      </div>
-      <div className="flex flex-col space-y-3">
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="Anywhere" />
-          </SelectTrigger>
-          <SelectContent>
-            {cities
-              .sort((a, b) => a.label.localeCompare(b.label))
-              .map((city) => (
-                <SelectItem key={city.value} value={city.value}>
-                  {city.label}
-                </SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
-  </div>
-);
+async function getPostedJobs({ query }: { query: string | undefined }) {
+  let jobs = await db.job.findMany({
+    include: {
+      company: true,
+    },
+    where: {
+      OR: [
+        {
+          title: {
+            contains: query,
+          },
+        },
+        {
+          company: {
+            name: {
+              contains: query,
+            },
+          },
+        },
+      ],
+    },
+  });
+
+  return jobs.map((job) => ({
+    title: job.title,
+    slug: job.slug,
+    jobtype: job.type,
+    company: {
+      name: job.company.name,
+      logo: job.company.logo,
+    },
+    canBeRemote: job.canBeRemote,
+    location: job.location,
+    salary: job.salary,
+    createdAt: job.createdAt,
+  }));
+}

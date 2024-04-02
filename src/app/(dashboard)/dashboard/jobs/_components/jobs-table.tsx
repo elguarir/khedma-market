@@ -1,13 +1,6 @@
 import { getUserJobs } from "@/server/api/routers/job";
 import React from "react";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   ClockIcon,
   DotsVerticalIcon,
   ExternalLinkIcon,
@@ -18,7 +11,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -49,7 +41,8 @@ const JobsTable = async (props: Props) => {
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
                   <p>
-                    {job.location}{job.canBeRemote && " / 🌍 Remote"}
+                    {job.location}
+                    {job.canBeRemote && " / 🌍 Remote"}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -71,7 +64,17 @@ const JobsTable = async (props: Props) => {
                     side="top"
                     className="w-40 max-w-full"
                   >
-                    <DropdownMenuItem>Preview</DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <a
+                        href={`/jobs/${job.slug}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 justify-between"
+                      >
+                        View
+                        <ExternalLinkIcon className="h-4 w-4" />
+                      </a>
+                    </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href={`/dashboard/jobs/${job.id}`}>Edit</Link>
                     </DropdownMenuItem>
@@ -91,7 +94,7 @@ const JobsTable = async (props: Props) => {
                     Applications
                     <Badge
                       variant={"success"}
-                      className="rounded-full w-5 flex items-center justify-center h-5 px-0.5 py-0.5 text-xs"
+                      className="flex h-5 w-5 items-center justify-center rounded-full px-0.5 py-0.5 text-xs"
                     >
                       {job.applications.length}
                     </Badge>

@@ -90,6 +90,39 @@ export const jobRouter = createTRPCRouter({
         message: "An error occurred while updating the job.",
       });
     }),
+
+  apply: protectedProcedure
+    .input(z.object({ slug: z.string(), coverLetter: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      let job = await ctx.db.job.findFirst({
+        where: {
+          slug: input.slug,
+        },
+      });
+
+      if (!job) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Job not found.",
+        });
+      }
+
+      let application = await ctx.db.application.create({
+        data: {
+          jobId: job.id,
+          coverLetter: input.coverLetter,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (application) {
+        return application;
+      }
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "An error occurred while applying for the job.",
+      });
+    }),
 });
 
 export async function getJobById(id: string) {

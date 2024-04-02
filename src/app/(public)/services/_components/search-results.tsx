@@ -23,11 +23,12 @@ type Props = {
   query?: string;
   price_range?: string;
   delivery_time?: string;
+  services?: ServiceCardProps[];
 };
 
 const SearchResults = (props: Props) => {
   const [min, max] = props.price_range?.split("-") || [0, 1000];
-
+  
   const [priceOpen, setPriceOpen] = useState(false);
   const [deliveryOpen, setDeliveryOpen] = useState(false);
   const [range, setRange] = useState([Number(min) || 0, Number(max) || 1000]);
@@ -71,72 +72,72 @@ const SearchResults = (props: Props) => {
     [searchParams],
   );
 
-  let services = [
-    {
-      author: {
-        avatar:
-          "https://fiverr-res.cloudinary.com/image/upload/v1/attachments/profile/photo/fbab78f482a1b26348e956cb132afd5a-1659973799034/d50ef9e4-9102-4d6a-872f-899dbb8a1757.jpg",
-        id: "1",
-        name: "Ahmed Maz",
-        username: "ahmedmaz",
-      },
-      service: {
-        id: "1",
-        title:
-          "I will make web apps using react, nextjs, nodejs or any other backend",
-        createdAt: "2021-09-01T00:00:00.000Z",
-        price: 80,
-        images: [
-          "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/282410535/original/92179208da509fd438e7baf36d659e3936f96179/make-web-apps-using-react-nextjs-nodejs-or-any-other-backend.png",
-        ],
-      },
-      numberOfReviews: 39,
-      rating: 4.5,
-    },
-    {
-      author: {
-        avatar:
-          "https://fiverr-res.cloudinary.com/attachments/profile/photo/06a3d2ab90dbd3cb729930b1ba5acbaa-991539391674554543481/JPEG_20230124_153222_2646298220152317127.jpg",
-        id: "1",
-        name: "Darshan",
-        username: "darshan",
-      },
-      service: {
-        id: "1",
-        title:
-          "I will build, rebuild, redesign wordpress website or wordpress elementor website design",
-        createdAt: "2021-09-01T00:00:00.000Z",
-        price: 50.5,
-        images: [
-          "https://fiverr-res.cloudinary.com/gigs/189055476/original/5b809b0a85e30a57c311470a7aabaaa086d579cf.jpg",
-          "https://fiverr-res.cloudinary.com/gigs2/189055476/original/98ff0fbb6b0a57f612b64cf6f4ef3059c0c351db.jpg",
-        ],
-      },
-      numberOfReviews: 1250,
-      rating: 4.2,
-    },
+  // let services = [
+  //   {
+  //     author: {
+  //       avatar:
+  //         "https://fiverr-res.cloudinary.com/image/upload/v1/attachments/profile/photo/fbab78f482a1b26348e956cb132afd5a-1659973799034/d50ef9e4-9102-4d6a-872f-899dbb8a1757.jpg",
+  //       id: "1",
+  //       name: "Ahmed Maz",
+  //       username: "ahmedmaz",
+  //     },
+  //     service: {
+  //       id: "1",
+  //       title:
+  //         "I will make web apps using react, nextjs, nodejs or any other backend",
+  //       createdAt: new Date("2021-09-01T00:00:00.000Z"),
+  //       price: 80,
+  //       images: [
+  //         "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/282410535/original/92179208da509fd438e7baf36d659e3936f96179/make-web-apps-using-react-nextjs-nodejs-or-any-other-backend.png",
+  //       ],
+  //     },
+  //     numberOfReviews: 39,
+  //     rating: 4.5,
+  //   },
+  //   {
+  //     author: {
+  //       avatar:
+  //         "https://fiverr-res.cloudinary.com/attachments/profile/photo/06a3d2ab90dbd3cb729930b1ba5acbaa-991539391674554543481/JPEG_20230124_153222_2646298220152317127.jpg",
+  //       id: "1",
+  //       name: "Darshan",
+  //       username: "darshan",
+  //     },
+  //     service: {
+  //       id: "1",
+  //       title:
+  //         "I will build, rebuild, redesign wordpress website or wordpress elementor website design",
+  //       createdAt: "2021-09-01T00:00:00.000Z",
+  //       price: 50.5,
+  //       images: [
+  //         "https://fiverr-res.cloudinary.com/gigs/189055476/original/5b809b0a85e30a57c311470a7aabaaa086d579cf.jpg",
+  //         "https://fiverr-res.cloudinary.com/gigs2/189055476/original/98ff0fbb6b0a57f612b64cf6f4ef3059c0c351db.jpg",
+  //       ],
+  //     },
+  //     numberOfReviews: 1250,
+  //     rating: 4.2,
+  //   },
 
-    {
-      author: {
-        avatar:
-          "https://fiverr-res.cloudinary.com/image/upload/v1/attachments/profile/photo/fbab78f482a1b26348e956cb132afd5a-1659973799034/d50ef9e4-9102-4d6a-872f-899dbb8a1757.jpg",
-        id: "1",
-        name: "Ahmed Maz",
-        username: "ahmedmaz",
-      },
-      service: {
-        id: "1",
-        title: "I will be your nextjs supabase developer",
-        createdAt: "2021-09-01T00:00:00.000Z",
-        price: 100,
-        images: [
-          "https://fiverr-res.cloudinary.com/images/gigs/321016864/original/1385874fd1ce69b867896e59e6fd55ad03d2b7f3/be-your-nextjs-supabase-developer.png",
-        ],
-      },
-      numberOfReviews: 39,
-      rating: 4.5,
-    },
-  ] as ServiceCardProps[];
+  //   {
+  //     author: {
+  //       avatar:
+  //         "https://fiverr-res.cloudinary.com/image/upload/v1/attachments/profile/photo/fbab78f482a1b26348e956cb132afd5a-1659973799034/d50ef9e4-9102-4d6a-872f-899dbb8a1757.jpg",
+  //       id: "1",
+  //       name: "Ahmed Maz",
+  //       username: "ahmedmaz",
+  //     },
+  //     service: {
+  //       id: "1",
+  //       title: "I will be your nextjs supabase developer",
+  //       createdAt: "2021-09-01T00:00:00.000Z",
+  //       price: 100,
+  //       images: [
+  //         "https://fiverr-res.cloudinary.com/images/gigs/321016864/original/1385874fd1ce69b867896e59e6fd55ad03d2b7f3/be-your-nextjs-supabase-developer.png",
+  //       ],
+  //     },
+  //     numberOfReviews: 39,
+  //     rating: 4.5,
+  //   },
+  // ] as ServiceCardProps[];
 
   return (
     <div className="flex flex-col space-y-4 py-6">
@@ -336,7 +337,7 @@ const SearchResults = (props: Props) => {
       </div>
 
       <div className="grid gap-x-6 gap-y-8 py-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {services.map((service) => (
+        {props.services?.map((service) => (
           <ServiceCard {...service} />
         ))}
         {new Array(2).fill(0).map((_, index) => (

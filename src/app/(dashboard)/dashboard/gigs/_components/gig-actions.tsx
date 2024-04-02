@@ -45,14 +45,24 @@ const GigActions = ({ gig }: Props) => {
         <DropdownMenuItem
           disabled={isLoading}
           onClick={() => {
-            toast.promise(
-              deleteGig({ id: gig.id }, { onSuccess: () => router.refresh() }),
-              {
-                loading: "Deleting gig...",
-                success: "Gig deleted successfully!",
-                error: "Failed to delete gig",
+            toast("Are you sure you want to delete this gig?", {
+              action: {
+                label: "Delete",
+                onClick: () => {
+                  toast.promise(
+                    deleteGig(
+                      { id: gig.id },
+                      { onSuccess: () => router.refresh() },
+                    ),
+                    {
+                      loading: "Deleting gig...",
+                      success: "Gig deleted successfully!",
+                      error: "Failed to delete gig",
+                    },
+                  );
+                },
               },
-            );
+            });
           }}
         >
           Delete

@@ -24,7 +24,7 @@ const SideBar = async () => {
     <aside className="hidden h-screen flex-col border-r bg-neutral-100/40 dark:bg-neutral-800/40 lg:flex">
       <div className="flex h-full flex-col gap-2">
         <div className="flex h-[60px] items-center border-b px-6">
-          <Link className="flex items-center gap-2 font-semibold" href="#">
+          <Link className="flex items-center gap-2 font-semibold" href="/">
             <Icons.logo className="h-11 w-11" />
           </Link>
           <Button className="ml-auto h-8 w-8" size="icon" variant="outline">

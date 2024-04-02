@@ -20,7 +20,8 @@ type Props = {
 };
 
 const PortfolioActions = ({ project }: Props) => {
-  let { mutateAsync: deleteProject, isLoading } = api.project.delete.useMutation();
+  let { mutateAsync: deleteProject, isLoading } =
+    api.project.delete.useMutation();
   let router = useRouter();
   return (
     <DropdownMenu>
@@ -39,17 +40,24 @@ const PortfolioActions = ({ project }: Props) => {
         <DropdownMenuItem
           disabled={isLoading}
           onClick={() => {
-            toast.promise(
-              deleteProject(
-                { id: project.id },
-                { onSuccess: () => router.refresh() },
-              ),
-              {
-                loading: "Deleting project...",
-                success: "Project deleted successfully!",
-                error: "Failed to delete project",
+            toast("Are you sure you want to delete this project?", {
+              action: {
+                label: "Delete",
+                onClick: () => {
+                  toast.promise(
+                    deleteProject(
+                      { id: project.id },
+                      { onSuccess: () => router.refresh() },
+                    ),
+                    {
+                      loading: "Deleting project...",
+                      success: "Project deleted successfully!",
+                      error: "Failed to delete project",
+                    },
+                  );
+                },
               },
-            );
+            });
           }}
         >
           Delete

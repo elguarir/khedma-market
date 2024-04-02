@@ -126,7 +126,7 @@ const LanguagesForm = (props: LanguagesFormProps) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <CardTitle className="flex w-full items-center justify-between">
-            Languages
+            Skills
             <button
               onClick={() => {
                 setEditMode(true);
